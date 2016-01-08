@@ -350,7 +350,7 @@ public class Menu {
 
 					@Override
 					public void handle(ActionEvent arg0) {
-						if(Xpos.getText().isEmpty() || Ypos.getText().isEmpty() || Energy.getText().isEmpty()){
+						if(Xpos.getText().isEmpty() || Ypos.getText().isEmpty() || Energy.getText().isEmpty() || animalsComboBox.getValue() == null){
 							notification.setText("ERROR!!: PLEASE FILL ALL FIELDS");
 						} else {
 							int selected = animalsComboBox.getSelectionModel().getSelectedIndex();
