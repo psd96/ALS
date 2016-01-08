@@ -31,10 +31,10 @@ import javafx.stage.Stage;
 
 public class Menu {
 	// Need to add error handlers and notifications.
-	// Need to do smellrange
+
+	final TextField Energy = new TextField("");
 	private MenuBar menuBar;
 	private boolean isPaused = false;
-
 	private Button button = new Button("Submit");
 	private Label notification = new Label();
 	private TextField SaveAs = new TextField("");
@@ -47,7 +47,6 @@ public class Menu {
 	private TextField Ypos = new TextField("");
 	private TextField Ydimension = new TextField("");
 	private TextField Xdimension = new TextField("");
-
 	private String[] paths;
 	private World world;
 	private Group root;
@@ -111,6 +110,7 @@ public class Menu {
 				grid.add(Xdimension, 1, 6, 3, 1);
 				grid.add(new Label("Y Dimension:"), 0, 7);
 				grid.add(Ydimension, 1, 7, 3, 1);
+				grid.add(notification, 0, 9, 3, 1);
 				grid.add(button, 0, 10);
 
 				button.setOnAction(new EventHandler<ActionEvent>() {
@@ -118,25 +118,32 @@ public class Menu {
 					@Override
 					public void handle(ActionEvent arg0) {
 						// TODO Auto-generated method stub
-						setFileName(SaveAs.getText());
-						getWorld().clearGroups();
-						setWorld(new World(getRoot(), Integer.parseInt(Food.getText()),
-								Integer.parseInt(Obstacles.getText()), Integer.parseInt(Bugs.getText()), Integer.parseInt(Lions.getText()), Integer.parseInt(Xdimension.getText()),
-								Integer.parseInt(Ydimension.getText()), Integer.parseInt(Shelters.getText())));
-						
-						try {
-							os1 = new ObjectOutputStream(new FileOutputStream("Configurations/" + getFileName() + ".txt"));
-							os1.writeObject(getWorld());
-							os1.close();
-							saveLatest(getFileName() + ".txt");
-						} catch (FileNotFoundException e1) {
-							// TODO Auto-generated catch block
-							e1.printStackTrace();
-						} catch (IOException e1) {
-							// TODO Auto-generated catch block
-							e1.printStackTrace();
+						if (SaveAs.getText().isEmpty() ||Bugs.getText().isEmpty() || Lions.getText().isEmpty() || Food.getText().isEmpty() || Obstacles.getText().isEmpty()
+								|| Shelters.getText().isEmpty() || Xdimension.getText().isEmpty() || Ydimension.getText().isEmpty()) {
+							notification.setText("ERROR!!: PLEASE FILL ALL FIELDS");
+
+						} else{
+							setFileName(SaveAs.getText());
+							getWorld().clearGroups();
+							setWorld(new World(getRoot(), Integer.parseInt(Food.getText()),
+									Integer.parseInt(Obstacles.getText()), Integer.parseInt(Bugs.getText()), Integer.parseInt(Lions.getText()), Integer.parseInt(Xdimension.getText()),
+									Integer.parseInt(Ydimension.getText()), Integer.parseInt(Shelters.getText())));
+
+							try {
+								os1 = new ObjectOutputStream(new FileOutputStream("Configurations/" + getFileName() + ".txt"));
+								os1.writeObject(getWorld());
+								os1.close();
+								saveLatest(getFileName() + ".txt");
+							} catch (FileNotFoundException e1) {
+								// TODO Auto-generated catch block
+								e1.printStackTrace();
+							} catch (IOException e1) {
+								// TODO Auto-generated catch block
+								e1.printStackTrace();
+							}
+							stage.close();
 						}
-						stage.close();
+
 					}
 
 				});
@@ -179,30 +186,39 @@ public class Menu {
 				grid.add(new Label("Files: "), 0, 0);
 				grid.add(filesComboBox, 1, 0);
 				grid.add(button, 3, 0);
+				grid.add(notification, 0, 9, 3, 1);
+
 				button.setOnAction(new EventHandler<ActionEvent>() {
 
 					@Override
 					public void handle(ActionEvent arg0) {
 						// TODO Auto-generated method stub
 						int selected = filesComboBox.getSelectionModel().getSelectedIndex();
-						try {
-							is1 = new ObjectInputStream(new FileInputStream("Configurations/" + Files.get(selected)));
-							World w;
-							w = (World) is1.readObject();
-							getWorld().clearGroups();
-							setWorld(new World(w, getRoot()));
-							saveLatest(Files.get(selected));
+						if (filesComboBox.getValue() == null) {
+							notification.setText("ERROR!!: PLEASE FILL ALL FIELDS");
 
-						} catch (FileNotFoundException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						} catch (IOException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						} catch (ClassNotFoundException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
+						} else {
+							try {
+								is1 = new ObjectInputStream(new FileInputStream("Configurations/" + Files.get(selected)));
+								World w;
+								w = (World) is1.readObject();
+								getWorld().clearGroups();
+								setWorld(new World(w, getRoot()));
+								saveLatest(Files.get(selected));
+
+							} catch (FileNotFoundException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							} catch (IOException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							} catch (ClassNotFoundException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+
 						}
+
 
 					}
 
@@ -245,24 +261,30 @@ public class Menu {
 				grid.setPadding(new Insets(5, 5, 5, 5));
 				grid.add(SaveAs, 1, 0, 3, 1);
 				grid.add(button, 0, 2);
+				grid.add(notification, 0, 3, 3, 1);
 				button.setOnAction(new EventHandler<ActionEvent>() {
 
 					@Override
 					public void handle(ActionEvent arg0) {
 						// TODO Auto-generated method stub
 						setFileName(SaveAs.getText());
-						try {
-							os1 = new ObjectOutputStream(
-									new FileOutputStream("Configurations/" + getFileName() + ".txt"));
-							os1.writeObject(getWorld());
-							os1.close();
-							saveLatest(getFileName() + ".txt");
-						} catch (FileNotFoundException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						} catch (IOException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
+						if(SaveAs.getText().isEmpty()){
+							notification.setText("ERROR!!: PLEASE FILL ALL FIELDS");
+						} else {
+							try {
+								os1 = new ObjectOutputStream(
+										new FileOutputStream("Configurations/" + getFileName() + ".txt"));
+								os1.writeObject(getWorld());
+								os1.close();
+								saveLatest(getFileName() + ".txt");
+							} catch (FileNotFoundException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							} catch (IOException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+
 						}
 
 					}
@@ -291,14 +313,15 @@ public class Menu {
 		edit.getItems().add(modifyLifeForm);
 		edit.getItems().add(removeLifeForm);
 		edit.getItems().add(addLifeForm);
+
 		modifyLifeForm.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent arg0) {
-				Stage stage = new Stage();
+				final Stage stage = new Stage();
 				Group root = new Group();
 				Scene scene = new Scene(root, 600, 600);
 				stage.setTitle("Modify Lifeform");
-				ArrayList<String> animalNames = new ArrayList<>();
+				final ArrayList<String> animalNames = new ArrayList<>();
 				for (int i = 0; i < getWorld().animalList.size(); i++) {
 					animalNames.add(getWorld().animalList.get(i).getName());
 				}
@@ -317,15 +340,22 @@ public class Menu {
 				grid.add(Xpos, 1, 5, 3, 1);
 				grid.add(new Label("Ypos: "), 0, 6);
 				grid.add(Ypos, 1, 6, 3, 1);
+				grid.add(new Label("Energy: "), 0, 7);
+				grid.add(Energy, 1, 7, 3, 1);
+				grid.add(notification, 0, 9, 3, 1);
+
+
 				animalsComboBox.setOnAction(new EventHandler<ActionEvent>() {
 					@Override
 					public void handle(ActionEvent arg0) {
 						// TODO Auto-generated method stub
-						int selected = animalsComboBox.getSelectionModel().getSelectedIndex();
-						String xpos = Integer.toString(getWorld().animalList.get(selected).getXpos());
-						Xpos.setText(xpos);
-						String ypos = Integer.toString(getWorld().animalList.get(selected).getYpos());
-						Ypos.setText(ypos);
+							int selected = animalsComboBox.getSelectionModel().getSelectedIndex();
+							String xpos = Integer.toString(getWorld().animalList.get(selected).getXpos());
+							Xpos.setText(xpos);
+							String ypos = Integer.toString(getWorld().animalList.get(selected).getYpos());
+							Ypos.setText(ypos);
+							String energy = Integer.toString(getWorld().animalList.get(selected).getEnergy());
+							Energy.setText(energy);
 					}
 
 				});
@@ -335,11 +365,17 @@ public class Menu {
 					@Override
 					public void handle(ActionEvent arg0) {
 						// TODO Auto-generated method stub
-						int selected = animalsComboBox.getSelectionModel().getSelectedIndex();
-						getWorld().grid[getWorld().animalList.get(selected).getXpos()][getWorld().animalList
-								.get(selected).getYpos()] = ' ';
-						getWorld().animalList.get(selected).setXpos(Integer.parseInt(Xpos.getText()));
-						getWorld().animalList.get(selected).setYpos(Integer.parseInt(Ypos.getText()));
+						if(Xpos.getText().isEmpty() || Ypos.getText().isEmpty() || Energy.getText().isEmpty()){
+							notification.setText("ERROR!!: PLEASE FILL ALL FIELDS");
+						} else {
+							int selected = animalsComboBox.getSelectionModel().getSelectedIndex();
+							getWorld().grid[getWorld().animalList.get(selected).getXpos()][getWorld().animalList
+									.get(selected).getYpos()] = ' ';
+							getWorld().animalList.get(selected).setXpos(Integer.parseInt(Xpos.getText()));
+							getWorld().animalList.get(selected).setYpos(Integer.parseInt(Ypos.getText()));
+							stage.close();
+
+						}
 					}
 
 				});
@@ -355,7 +391,7 @@ public class Menu {
 		removeLifeForm.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent arg0) {
-				Stage stage = new Stage();
+				final Stage stage = new Stage();
 				Group root = new Group();
 				Scene scene = new Scene(root, 300, 100);
 				stage.setTitle("Remove Lifeform");
@@ -376,13 +412,20 @@ public class Menu {
 				grid.add(new Label("Animals: "), 0, 0);
 				grid.add(animalsComboBox, 1, 0);
 				grid.add(button, 3, 0);
+				grid.add(notification, 0, 4, 3, 1);
+
 				button.setOnAction(new EventHandler<ActionEvent>() {
 
 					@Override
 					public void handle(ActionEvent arg0) {
-						// TODO Auto-generated method stub
-						int selected = animalsComboBox.getSelectionModel().getSelectedIndex();
-						getWorld().animalList.remove(selected);
+						if(animalsComboBox.getValue() == null){
+							notification.setText("ERROR!!: PLEASE FILL ALL FIELDS");
+						} else {
+							// TODO Auto-generated method stub
+							int selected = animalsComboBox.getSelectionModel().getSelectedIndex();
+							getWorld().animalList.remove(selected);
+							stage.close();
+						}
 					}
 
 				});
@@ -391,8 +434,6 @@ public class Menu {
 				root.getChildren().add(grid);
 				stage.setScene(scene);
 				stage.show();
-
-				System.out.println("remove life form clicked");
 			}
 		});
 		addLifeForm.setOnAction(new EventHandler<ActionEvent>() {
@@ -411,17 +452,23 @@ public class Menu {
 				grid.add(new Label("Animals: "), 0, 0);
 				grid.add(animalsComboBox, 1, 0);
 				grid.add(button, 0, 1);
+				grid.add(notification, 0, 2, 3, 1);
+
 				button.setOnAction(new EventHandler<ActionEvent>() {
 					@Override
 					public void handle(ActionEvent arg0) {
 						// TODO Auto-generated method stub
-						int selected = animalsComboBox.getSelectionModel().getSelectedIndex();
-						if (selected == 0) {
-							getWorld().AddBug();
-						} else if (selected == 1) {
-							getWorld().AddLion();
+						if(animalsComboBox.getValue() == null){
+							notification.setText("ERROR!!: PLEASE FILL ALL FIELDS");
+						} else {
+							int selected = animalsComboBox.getSelectionModel().getSelectedIndex();
+							if (selected == 0) {
+								getWorld().AddBug();
+							} else if (selected == 1) {
+								getWorld().AddLion();
+							}
+							stage.close();
 						}
-						stage.close();
 					}
 
 				});
@@ -479,7 +526,7 @@ public class Menu {
 		editConfig.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent arg0) {
-				Stage stage = new Stage();
+				final Stage stage = new Stage();
 				Group root = new Group();
 				Scene scene = new Scene(root, 600, 600);
 				stage.setTitle("Edit Configuration");
@@ -502,6 +549,8 @@ public class Menu {
 				grid.add(new Label("Y Dimension:"), 0, 6);
 				grid.add(Ydimension, 1, 6, 3, 1);
 				grid.add(button, 0, 10);
+				grid.add(notification, 0, 8, 3, 1);
+
 
 				String bugsSize = Integer.toString(getWorld().bugList.size());
 				Bugs.setText(bugsSize);
@@ -515,16 +564,22 @@ public class Menu {
 				Xdimension.setText(xDimension);
 				String yDimension = Integer.toString(getWorld().getYdimension());
 				Ydimension.setText(yDimension);
+
 				button.setOnAction(new EventHandler<ActionEvent>() {
 
 					@Override
 					public void handle(ActionEvent arg0) {
 						// TODO Auto-generated method stub
-						getWorld().clearGroups();
-						setWorld(new World(getRoot(), Integer.parseInt(Food.getText()),
-								Integer.parseInt(Obstacles.getText()), Integer.parseInt(Bugs.getText()),
-								Integer.parseInt(Lions.getText()), Integer.parseInt(Xdimension.getText()),
-								Integer.parseInt(Ydimension.getText()), Integer.parseInt(Shelters.getText())));
+						if(Bugs.getText().isEmpty() || Lions.getText().isEmpty() || Food.getText().isEmpty() || Obstacles.getText().isEmpty() || Xdimension.getText().isEmpty() || Ydimension.getText().isEmpty()){
+							notification.setText("ERROR!!: PLEASE FILL ALL FIELDS");
+						}else {
+							getWorld().clearGroups();
+							setWorld(new World(getRoot(), Integer.parseInt(Food.getText()),
+									Integer.parseInt(Obstacles.getText()), Integer.parseInt(Bugs.getText()),
+									Integer.parseInt(Lions.getText()), Integer.parseInt(Xdimension.getText()),
+									Integer.parseInt(Ydimension.getText()), Integer.parseInt(Shelters.getText())));
+							stage.close();
+						}
 					}
 
 				});
