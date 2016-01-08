@@ -13,7 +13,6 @@ public abstract class Herbivore extends LifeForm implements Serializable {
 		this.setSmellrange(smellfood);
 		original = getSymbol();
 		
-		// TODO Auto-generated constructor stub
 	}
 	
 
