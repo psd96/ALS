@@ -30,7 +30,7 @@ import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
 public class Menu {
-	// Need to add error handlers and notifications.
+	//Done stuff
 
 	final TextField Energy = new TextField("");
 	private MenuBar menuBar;
@@ -60,7 +60,6 @@ public class Menu {
 		try {
 			loadLatest();
 		} catch (FileNotFoundException e2) {
-			// TODO Auto-generated catch block
 			e2.printStackTrace();
 		}
 
@@ -117,7 +116,6 @@ public class Menu {
 
 					@Override
 					public void handle(ActionEvent arg0) {
-						// TODO Auto-generated method stub
 						if (SaveAs.getText().isEmpty() ||Bugs.getText().isEmpty() || Lions.getText().isEmpty() || Food.getText().isEmpty() || Obstacles.getText().isEmpty()
 								|| Shelters.getText().isEmpty() || Xdimension.getText().isEmpty() || Ydimension.getText().isEmpty()) {
 							notification.setText("ERROR!!: PLEASE FILL ALL FIELDS");
@@ -135,10 +133,8 @@ public class Menu {
 								os1.close();
 								saveLatest(getFileName() + ".txt");
 							} catch (FileNotFoundException e1) {
-								// TODO Auto-generated catch block
 								e1.printStackTrace();
 							} catch (IOException e1) {
-								// TODO Auto-generated catch block
 								e1.printStackTrace();
 							}
 							stage.close();
@@ -192,7 +188,6 @@ public class Menu {
 
 					@Override
 					public void handle(ActionEvent arg0) {
-						// TODO Auto-generated method stub
 						int selected = filesComboBox.getSelectionModel().getSelectedIndex();
 						if (filesComboBox.getValue() == null) {
 							notification.setText("ERROR!!: PLEASE FILL ALL FIELDS");
@@ -207,13 +202,10 @@ public class Menu {
 								saveLatest(Files.get(selected));
 
 							} catch (FileNotFoundException e) {
-								// TODO Auto-generated catch block
 								e.printStackTrace();
 							} catch (IOException e) {
-								// TODO Auto-generated catch block
 								e.printStackTrace();
 							} catch (ClassNotFoundException e) {
-								// TODO Auto-generated catch block
 								e.printStackTrace();
 							}
 
@@ -240,10 +232,8 @@ public class Menu {
 					os1.close();
 					saveLatest(getFileName() + ".txt");
 				} catch (FileNotFoundException e1) {
-					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				} catch (IOException e1) {
-					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
 				System.out.println("Save Clicked");
@@ -266,7 +256,6 @@ public class Menu {
 
 					@Override
 					public void handle(ActionEvent arg0) {
-						// TODO Auto-generated method stub
 						setFileName(SaveAs.getText());
 						if(SaveAs.getText().isEmpty()){
 							notification.setText("ERROR!!: PLEASE FILL ALL FIELDS");
@@ -278,10 +267,8 @@ public class Menu {
 								os1.close();
 								saveLatest(getFileName() + ".txt");
 							} catch (FileNotFoundException e) {
-								// TODO Auto-generated catch block
 								e.printStackTrace();
 							} catch (IOException e) {
-								// TODO Auto-generated catch block
 								e.printStackTrace();
 							}
 
@@ -348,7 +335,6 @@ public class Menu {
 				animalsComboBox.setOnAction(new EventHandler<ActionEvent>() {
 					@Override
 					public void handle(ActionEvent arg0) {
-						// TODO Auto-generated method stub
 							int selected = animalsComboBox.getSelectionModel().getSelectedIndex();
 							String xpos = Integer.toString(getWorld().animalList.get(selected).getXpos());
 							Xpos.setText(xpos);
@@ -364,7 +350,6 @@ public class Menu {
 
 					@Override
 					public void handle(ActionEvent arg0) {
-						// TODO Auto-generated method stub
 						if(Xpos.getText().isEmpty() || Ypos.getText().isEmpty() || Energy.getText().isEmpty()){
 							notification.setText("ERROR!!: PLEASE FILL ALL FIELDS");
 						} else {
@@ -421,7 +406,6 @@ public class Menu {
 						if(animalsComboBox.getValue() == null){
 							notification.setText("ERROR!!: PLEASE FILL ALL FIELDS");
 						} else {
-							// TODO Auto-generated method stub
 							int selected = animalsComboBox.getSelectionModel().getSelectedIndex();
 							getWorld().animalList.remove(selected);
 							stage.close();
@@ -457,7 +441,6 @@ public class Menu {
 				button.setOnAction(new EventHandler<ActionEvent>() {
 					@Override
 					public void handle(ActionEvent arg0) {
-						// TODO Auto-generated method stub
 						if(animalsComboBox.getValue() == null){
 							notification.setText("ERROR!!: PLEASE FILL ALL FIELDS");
 						} else {
@@ -569,7 +552,6 @@ public class Menu {
 
 					@Override
 					public void handle(ActionEvent arg0) {
-						// TODO Auto-generated method stub
 						if(Bugs.getText().isEmpty() || Lions.getText().isEmpty() || Food.getText().isEmpty() || Obstacles.getText().isEmpty() || Xdimension.getText().isEmpty() || Ydimension.getText().isEmpty()){
 							notification.setText("ERROR!!: PLEASE FILL ALL FIELDS");
 						}else {
@@ -666,7 +648,6 @@ public class Menu {
 				try {
 					loadLatest();
 				} catch (FileNotFoundException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 				isPaused = false;
@@ -729,7 +710,6 @@ public class Menu {
 			filewriter.close();
 
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
@@ -751,10 +731,8 @@ public class Menu {
 			w = (World) is1.readObject();
 			setWorld(new World(w, getRoot()));
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} catch (ClassNotFoundException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 
