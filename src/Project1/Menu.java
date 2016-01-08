@@ -157,20 +157,19 @@ public class Menu {
 				stage.setTitle("Open Configuration");
 
 				// Gets all files in root dir ending with .txt
-				File file = null;
-				file = new File("Configurations/");
+				File file = new File("Configurations/");
 				paths = file.list();
-				final ArrayList<String> Files = new ArrayList<String>();
-				for (String paths : paths) {
-					if (paths.endsWith(".txt")) {
-						Files.add(paths);
+				final ArrayList<String> Files = new ArrayList<>();
+				for (String path : paths) {
+					if (path.endsWith(".txt")) {
+						Files.add(path);
 					}
 				}
 				
 				
 				ObservableList<String> obList = FXCollections.observableList(Files);
 
-				final ComboBox<String> filesComboBox = new ComboBox<String>();
+				final ComboBox<String> filesComboBox = new ComboBox<>();
 				filesComboBox.setItems(obList);
 
 				GridPane grid = new GridPane();
@@ -299,13 +298,13 @@ public class Menu {
 				Group root = new Group();
 				Scene scene = new Scene(root, 600, 600);
 				stage.setTitle("Modify Lifeform");
-				ArrayList<String> animalNames = new ArrayList<String>();
+				ArrayList<String> animalNames = new ArrayList<>();
 				for (int i = 0; i < getWorld().animalList.size(); i++) {
 					animalNames.add(getWorld().animalList.get(i).getName());
 				}
 				ObservableList<String> obList = FXCollections.observableList(animalNames);
 
-				final ComboBox<String> animalsComboBox = new ComboBox<String>();
+				final ComboBox<String> animalsComboBox = new ComboBox<>();
 				animalsComboBox.setItems(obList);
 				final GridPane grid = new GridPane();
 				grid.setVgap(4);
@@ -361,13 +360,13 @@ public class Menu {
 				Scene scene = new Scene(root, 300, 100);
 				stage.setTitle("Remove Lifeform");
 
-				ArrayList<String> animalNames = new ArrayList<String>();
+				ArrayList<String> animalNames = new ArrayList<>();
 				for (int i = 0; i < getWorld().animalList.size(); i++) {
 					animalNames.add(getWorld().animalList.get(i).getName());
 				}
 				ObservableList<String> obList = FXCollections.observableList(animalNames);
 
-				final ComboBox<String> animalsComboBox = new ComboBox<String>();
+				final ComboBox<String> animalsComboBox = new ComboBox<>();
 				animalsComboBox.setItems(obList);
 
 				GridPane grid = new GridPane();
@@ -403,7 +402,7 @@ public class Menu {
 				Group root = new Group();
 				Scene scene = new Scene(root, 600, 600);
 				stage.setTitle("Add lifeform");
-				final ComboBox<String> animalsComboBox = new ComboBox<String>();
+				final ComboBox<String> animalsComboBox = new ComboBox<>();
 				animalsComboBox.getItems().addAll("Bug", "Lion");
 				final GridPane grid = new GridPane();
 				grid.setVgap(4);
