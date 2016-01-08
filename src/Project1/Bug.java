@@ -38,12 +38,13 @@ public class Bug extends Herbivore {
 		final TextField Energy = new TextField("");
 		final TextField Name = new TextField("");
 		final TextField ID = new TextField("");
+		final TextField SmellRange= new TextField("");
 		final Label notification = new Label("");
 		Button button = new Button("Submit");
 		final Stage stage = new Stage();
 		Group root = new Group();
 		Scene scene = new Scene(root, 600, 600);
-		stage.setTitle("Add bug");
+		stage.setTitle("Add Bug");
 		final ComboBox<String> animalsComboBox = new ComboBox<String>();
 		animalsComboBox.getItems().addAll("Bug", "Lion");
 		final GridPane grid = new GridPane();
@@ -59,10 +60,12 @@ public class Bug extends Herbivore {
 		grid.add(ID, 1, 4, 3, 1);
 		grid.add(new Label("Energy: "), 0, 5);
 		grid.add(Energy, 1, 5, 3, 1);
-		grid.add(new Label("Xpos: "), 0, 6);
-		grid.add(Xpos, 1, 6, 3, 1);
-		grid.add(new Label("Ypos: "), 0, 7);
-		grid.add(Ypos, 1, 7, 3, 1);
+		grid.add(new Label("Smell Range: "), 0, 6);
+		grid.add(SmellRange, 1, 6, 3, 1);
+		grid.add(new Label("Xpos: "), 0, 7);
+		grid.add(Xpos, 1, 7, 3, 1);
+		grid.add(new Label("Ypos: "), 0, 8);
+		grid.add(Ypos, 1, 8, 3, 1);
 		grid.add(notification, 0, 9, 3, 1);
 		button.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
@@ -82,6 +85,7 @@ public class Bug extends Herbivore {
 						setXpos(Integer.parseInt(Xpos.getText()));
 						setYpos(Integer.parseInt(Ypos.getText()));
 						setXdimension(getXdimension());
+						setSmellrange(Integer.parseInt(SmellRange.getText()));
 						stage.close();
 					}
 				}
