@@ -45,7 +45,7 @@ public class GUI extends Application {
 			public void handle(ActionEvent arg0) {
 				primaryStage.setWidth(menu.getWorld().getXdimension() * 24);
 				primaryStage.setHeight(menu.getWorld().getYdimension() * 26);
-				if (menu.isPaused()) {
+				if (menu.Pause()) {
 					menu.getWorld().run();
 				} else{
 					menu.getWorld().display();

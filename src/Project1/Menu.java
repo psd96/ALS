@@ -34,7 +34,7 @@ public class Menu {
 
 	final TextField Energy = new TextField("");
 	private MenuBar menuBar;
-	private boolean isPaused = false;
+	private boolean Pause = false;
 	private Button button = new Button("Submit");
 	private Label notification = new Label();
 	private TextField SaveAs = new TextField("");
@@ -638,7 +638,7 @@ public class Menu {
 		pausePlay.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent arg0) {
-				isPaused = !isPaused;
+				Pause = !Pause;
 			}
 		});
 		restart.setOnAction(new EventHandler<ActionEvent>() {
@@ -650,7 +650,7 @@ public class Menu {
 				} catch (FileNotFoundException e) {
 					e.printStackTrace();
 				}
-				isPaused = false;
+				Pause = false;
 			}
 		});
 		toggleMap.setOnAction(new EventHandler<ActionEvent>() {
@@ -668,8 +668,8 @@ public class Menu {
 		menuBar.prefWidthProperty().bind(primaryStage.widthProperty());
 	}
 
-	public boolean isPaused() {
-		return isPaused;
+	public boolean Pause() {
+		return Pause;
 	}
 
 	public MenuBar getMenuBar() {
