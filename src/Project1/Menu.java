@@ -118,33 +118,32 @@ public class Menu {
 
 					@Override
 					public void handle(ActionEvent arg0) {
-						if (SaveAs.getText().isEmpty() ||Bugs.getText().isEmpty() || Lions.getText().isEmpty() || Food.getText().isEmpty() || Obstacles.getText().isEmpty()
+						if (SaveAs.getText().isEmpty() || Bugs.getText().isEmpty() || Lions.getText().isEmpty() || Food.getText().isEmpty() || Obstacles.getText().isEmpty()
 								|| Shelters.getText().isEmpty() || Xdimension.getText().isEmpty() || Ydimension.getText().isEmpty()) {
 							notification.setText("ERROR!!: PLEASE FILL ALL FIELDS");
 
-						} else{
+						} else {
 							setFileName(SaveAs.getText());
 							getWorld().clearGroups();
 							setWorld(new World(getRoot(), Integer.parseInt(Food.getText()),
 									Integer.parseInt(Obstacles.getText()), Integer.parseInt(Bugs.getText()), Integer.parseInt(Lions.getText()), Integer.parseInt(Xdimension.getText()),
 									Integer.parseInt(Ydimension.getText()), Integer.parseInt(Shelters.getText())));
 
-							try {
-								os1 = new ObjectOutputStream(new FileOutputStream("Configurations/" + getFileName() + ".txt"));
-								os1.writeObject(getWorld());
-								os1.close();
-								saveLatest(getFileName() + ".txt");
-							} catch (FileNotFoundException e1) {
-								e1.printStackTrace();
-							} catch (IOException e1) {
-								e1.printStackTrace();
-							}
 							stage.close();
 						}
 
 					}
-
 				});
+				try {
+					os1 = new ObjectOutputStream(new FileOutputStream("Configurations/" + getFileName() + ".txt"));
+					os1.writeObject(getWorld());
+					os1.close();
+					saveLatest(getFileName() + ".txt");
+				} catch (FileNotFoundException e1) {
+					e1.printStackTrace();
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				}
 				root = (Group) scene.getRoot();
 				root.getChildren().add(grid);
 				stage.setScene(scene);
@@ -622,6 +621,9 @@ public class Menu {
 				grid.add(new Label("Map Dimensions: "), 0, 0);
 				grid.add(new Label("X-Dimension: " + world.getXdimension()), 0, 1);
 				grid.add(new Label("Y-Dimension: " + world.getYdimension()), 0, 2);
+				grid.add(new Label("Food: " + getWorld().foodLeft()), 0, 4);
+				grid.add(new Label("Obstacles: " + getWorld().getObstacles()), 0, 5);
+				grid.add(new Label("Shelters: " + getWorld().getShelters()), 0, 6);
 				root = (Group) scene.getRoot();
 				root.getChildren().add(grid);
 				stage.setScene(scene);
