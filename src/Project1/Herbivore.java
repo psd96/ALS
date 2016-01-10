@@ -1,6 +1,7 @@
 package Project1;
 
 import java.io.Serializable;
+import java.util.Random;
 
 
 @SuppressWarnings("serial")
@@ -126,7 +127,7 @@ public abstract class Herbivore extends LifeForm implements Serializable {
 		} else {
 			Move(getDirectionOfFood());
 		}
-		
+
 		this.setSymbol(original);
 
 		if (this.grid[this.xpos][this.ypos] == '^') {
@@ -134,12 +135,18 @@ public abstract class Herbivore extends LifeForm implements Serializable {
 		}
 
 		if (this.grid[this.xpos][this.ypos] != ' ') {
-			this.energy += Character.getNumericValue(this.grid[this.xpos][this.ypos]);
+			if (this.grid[this.xpos][this.ypos] == '*') {
+				Random rand = new Random();
+				int poison = (rand.nextInt(9) + 1);
+				this.energy -= poison;
+			} else {
+				this.energy += Character.getNumericValue(this.grid[this.xpos][this.ypos]);
+			}
 		}
-		System.out.println("\tenergy: " + energy);
-		System.out.println("\tposition: x = " + xpos + " y = " + ypos);
+			System.out.println("\tenergy: " + energy);
+			System.out.println("\tposition: x = " + xpos + " y = " + ypos);
 
-		setGridpos();
+			setGridpos();
 	}
 
 }

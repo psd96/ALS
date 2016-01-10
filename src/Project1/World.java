@@ -153,7 +153,12 @@ public class World implements Serializable {
 			px = rand.nextInt(getXdimension());
 			py = rand.nextInt(getYdimension());
 		} while (this.grid[px][py] != ' ');
-		grid[px][py] = (char) ('0' + (rand.nextInt(9) + 1));
+		boolean isFood = rand.nextBoolean();
+		if(isFood == true) {
+			grid[px][py] = (char) ('0' + (rand.nextInt(9) + 1));
+		} else{
+			grid[px][py] = '*';
+		}
 	}
 
 	public void AddFood(int px, int py) {
@@ -281,7 +286,7 @@ public class World implements Serializable {
 				if (grid[x][y] == 'X') {
 					Circle obstacle = null;
 					CreateCircle(x, y, obstacle, obstacleGroup, Color.GREEN);
-				} else if (Character.isDigit(grid[x][y])) {
+				} else if (Character.isDigit(grid[x][y]) || grid[x][y] == '*') {
 					Circle food = null;
 					CreateCircle(x, y, food, foodGroup, Color.BLUE);
 				} else if (grid[x][y] == '^') {
@@ -306,7 +311,7 @@ public class World implements Serializable {
 		foodLeft = 0;
 		for (int x = 0; x < getXdimension(); x++) {
 			for (int y = 0; y < getYdimension(); y++) {
-				if (Character.isDigit(grid[x][y])) {
+				if (Character.isDigit(grid[x][y]) || grid[x][y]=='*') {
 					foodLeft++;
 				}
 			}
