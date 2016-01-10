@@ -27,6 +27,7 @@ import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 public class Menu {
@@ -702,10 +703,50 @@ public class Menu {
 			}
 		});
 
+		javafx.scene.control.Menu help = new javafx.scene.control.Menu("Help");
+		MenuItem appHelp = new MenuItem("Application Help");
+		MenuItem author = new MenuItem("Information on Author");
+		help.getItems().add(appHelp);
+		help.getItems().add(author);
+
+		appHelp.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent actionEvent) {
+				Stage stage = new Stage();
+				Group root = new Group();
+				Scene scene = new Scene(root, 300, 300);
+				stage.setTitle("Application Help");
+				Label text = new Label("This application is a 2D artificial life simulator.\n" + "You can create multiple life forms and add \n" + "objects to a world and watch them simulate life.");
+				text.setWrapText(true);
+				root = (Group) scene.getRoot();
+				root.getChildren().add(text);
+				stage.setScene(scene);
+				stage.show();
+			}
+		});
+
+		author.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent actionEvent) {
+				Stage stage = new Stage();
+				Group root = new Group();
+				Scene scene = new Scene(root, 300, 300);
+				stage.setTitle("Information on Author");
+				Label text = new Label("This application is a 2D artificial life simulator.\n" + "Created by Parveer Dhanda.");
+				text.setWrapText(true);
+				root = (Group) scene.getRoot();
+				root.getChildren().add(text);
+				stage.setScene(scene);
+				stage.show();
+			}
+
+		});
+
 		menuBar.getMenus().add(file);
 		menuBar.getMenus().add(edit);
 		menuBar.getMenus().add(view);
 		menuBar.getMenus().add(simulate);
+		menuBar.getMenus().add(help);
 
 		menuBar.prefWidthProperty().bind(primaryStage.widthProperty());
 	}
