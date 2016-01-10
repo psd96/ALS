@@ -16,8 +16,12 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 
 public class GUI extends Application {
+	public static void main(String[] args) throws FileNotFoundException, IOException {
+		Application.launch(args);
+	}
+
 	@Override
-	public void start(Stage primaryStage) throws Exception {
+	public void start(final Stage primaryStage) throws Exception {
 		// Fix for OS X El Capitan
 		try {
 			Class<?> macFontFinderClass = Class.forName("com.sun.t2k.MacFontFinder");
@@ -27,19 +31,20 @@ public class GUI extends Application {
 		} catch (Exception e) {
 			// ignore
 		}
-		
+
 		Group root = new Group();
-		Scene scene = new Scene(root, 600, 600);
-		
+		Scene scene = new Scene(root);
+
 		final Menu menu = new Menu(primaryStage, root);
 		root.getChildren().add(menu.getMenuBar());
-		
-		
+
+
 		KeyFrame frame = new KeyFrame(Duration.millis(300), new EventHandler<ActionEvent>() {
 
 			@Override
 			public void handle(ActionEvent arg0) {
-				// TODO Auto-generated method stub
+				primaryStage.setWidth(menu.getWorld().getXdimension() * 24);
+				primaryStage.setHeight(menu.getWorld().getYdimension() * 26);
 				if (menu.isPaused()) {
 					menu.getWorld().run();
 				} else{
@@ -53,9 +58,5 @@ public class GUI extends Application {
 
 		primaryStage.setScene(scene);
 		primaryStage.show();
-	}
-
-	public static void main(String[] args) throws FileNotFoundException, IOException {
-		Application.launch(args);
 	}
 }
