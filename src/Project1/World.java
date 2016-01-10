@@ -11,8 +11,6 @@ import javafx.scene.shape.Circle;
 
 @SuppressWarnings("serial")
 public class World implements Serializable {
-	private int size_x;
-	private int size_y;
 	char[][] grid;
 	List<LifeForm> animalList = new ArrayList<LifeForm>();
 	List<Bug> bugList = new ArrayList<Bug>();
@@ -21,11 +19,15 @@ public class World implements Serializable {
 	List<LifeForm> shelterList = new ArrayList<LifeForm>();
 	int[][] foodArray = new int[100][3];
 	int[][] obstaclesArray = new int[100][2];
+	private int size_x;
+	private int size_y;
 	transient private Group bugGroup = new Group();
 	transient private Group foodGroup = new Group();
 	transient private Group obstacleGroup = new Group();
 	transient private Group shelterGroup = new Group();
 	private int foodLeft;
+	private int bugs;
+	private int lions;
 	private int shelters = 0;
 	private int Food = 0;
 	private int Obstacles = 0;
@@ -37,7 +39,8 @@ public class World implements Serializable {
 		setShelters(shelters);
 		setXdimension(sizex);
 		setYdimension(sizey);
-
+		setBugs(bugs);
+		setLions(lions);
 		grid = new char[getXdimension()][getYdimension()];
 
 		for (int i = 0; i < sizex; i++) {
@@ -91,14 +94,29 @@ public class World implements Serializable {
 		}
 
 	}
+	public int getBugs() {
+		return bugs;
+	}
 
-	public void setGrid(char grid[][]) {
-		this.grid = grid;
+	public void setBugs(int bugs) {
+		this.bugs = bugs;
+	}
+
+	public int getLions() {
+		return lions;
+	}
+
+	public void setLions(int lions) {
+		this.lions = lions;
 	}
 
 	public char[][] getGrid() {
 		return grid;
 
+	}
+
+	public void setGrid(char grid[][]) {
+		this.grid = grid;
 	}
 
 	public int getXdimension() {
@@ -127,9 +145,6 @@ public class World implements Serializable {
 		grid[px][py] = '^';
 	}
 
-	public void AddShelter(int px, int py) {
-		grid[px][py] = '^';
-	}
 
 	public void AddFood() {
 		Random rand = new Random();
@@ -158,7 +173,7 @@ public class World implements Serializable {
 	}
 
 	public void AddBug() {
-		Bug bug = new Bug(getXdimension(), getYdimension());
+		Bug bug = new Bug(getXdimension(), getYdimension(), getBugs());
 		bug.setGrid(this.grid);
 		bug.setGridpos();
 		animalList.add(bug);
@@ -166,7 +181,7 @@ public class World implements Serializable {
 	}
 
 	public void AddLion() {
-		Lion lion = new Lion(getXdimension(), getYdimension());
+		Lion lion = new Lion(getXdimension(), getYdimension(), getLions());
 		lion.setGrid(this.grid);
 		lion.setGridpos();
 		animalList.add(lion);
@@ -299,6 +314,10 @@ public class World implements Serializable {
 		return foodLeft;
 	}
 
+	public void toggleDisplay(){
+
+	}
+
 	public void run() {
 		checkCollision();
 		checkShelter();
@@ -336,20 +355,20 @@ public class World implements Serializable {
 		shelterGroup.getChildren().clear();
 	}
 
-	public void setFood(int food) {
-		Food = food;
-	}
-
-	public void setObstacles(int obstacles) {
-		Obstacles = obstacles;
-	}
-
 	public int getFood() {
 		return Food;
 	}
 
+	public void setFood(int food) {
+		Food = food;
+	}
+
 	public int getObstacles() {
 		return Obstacles;
+	}
+
+	public void setObstacles(int obstacles) {
+		Obstacles = obstacles;
 	}
 
 	public int getShelters() {

@@ -16,9 +16,9 @@ import javafx.stage.Stage;
 @SuppressWarnings("serial")
 public class Bug extends Herbivore {
 
-	public Bug(int dx, int dy) {
+	public Bug(int dx, int dy, int length) {
 		super(dx, dy);
-		AddBug();
+		AddBug(length);
 	}
 	
 	
@@ -31,7 +31,8 @@ public class Bug extends Herbivore {
 		return type;
 	}
 	
-	public void AddBug() {
+	public void AddBug(int length) {
+		int counter = length;
 		final TextField Xpos = new TextField("");
 		final TextField Ypos = new TextField("");
 		final TextField Energy = new TextField("");
@@ -50,7 +51,7 @@ public class Bug extends Herbivore {
 		grid.setHgap(10);
 		grid.setPadding(new Insets(5, 5, 5, 5));
 		grid.add(new Label("Animals: Bug"), 0, 0);
-		grid.add(button, 0, 10);
+		grid.add(button, 0, 11);
 		grid.add(new Label("Name: "), 0, 3);
 		grid.add(Name, 1, 3, 3, 1);
 		grid.add(new Label("ID: "), 0, 4);
@@ -63,6 +64,8 @@ public class Bug extends Herbivore {
 		grid.add(Xpos, 1, 7, 3, 1);
 		grid.add(new Label("Ypos: "), 0, 8);
 		grid.add(Ypos, 1, 8, 3, 1);
+		grid.add(new Label("Bug " + length + " of " + length),0,10);
+		counter --;
 		grid.add(notification, 0, 9, 3, 1);
 		button.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
