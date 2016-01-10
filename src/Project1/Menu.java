@@ -34,7 +34,8 @@ public class Menu {
 
 	final TextField Energy = new TextField("");
 	private MenuBar menuBar;
-	private boolean Pause = false;
+	private boolean Pause = true;
+	private boolean Toggle = false;
 	private Button button = new Button("Submit");
 	private Label notification = new Label();
 	private TextField SaveAs = new TextField("");
@@ -87,7 +88,7 @@ public class Menu {
 			public void handle(ActionEvent e) {
 				final Stage stage = new Stage();
 				Group root = new Group();
-				Scene scene = new Scene(root, 600, 600);
+				Scene scene = new Scene(root, 300, 300);
 				stage.setTitle("New Configuration");
 				GridPane grid = new GridPane();
 				grid.setVgap(4);
@@ -154,9 +155,9 @@ public class Menu {
 		fileOpenConfig.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent e) {
-				Stage stage = new Stage();
+				final Stage stage = new Stage();
 				Group root = new Group();
-				Scene scene = new Scene(root, 600, 600);
+				Scene scene = new Scene(root, 300, 100);
 				stage.setTitle("Open Configuration");
 
 				// Gets all files in root dir ending with .txt
@@ -208,6 +209,8 @@ public class Menu {
 							} catch (ClassNotFoundException e) {
 								e.printStackTrace();
 							}
+							stage.close();
+
 
 						}
 
@@ -244,7 +247,7 @@ public class Menu {
 			public void handle(ActionEvent e) {
 				Stage stage = new Stage();
 				Group root = new Group();
-				Scene scene = new Scene(root, 600, 600);
+				Scene scene = new Scene(root, 220, 100);
 				stage.setTitle("Save As");
 				GridPane grid = new GridPane();
 				grid.add(new Label("Save As:"), 0, 0);
@@ -304,9 +307,11 @@ public class Menu {
 		modifyLifeForm.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent arg0) {
+				Button refresh = new Button("Refresh");
+
 				final Stage stage = new Stage();
 				Group root = new Group();
-				Scene scene = new Scene(root, 600, 600);
+				Scene scene = new Scene(root, 400, 200);
 				stage.setTitle("Modify Lifeform");
 				final ArrayList<String> animalNames = new ArrayList<>();
 				for (int i = 0; i < getWorld().animalList.size(); i++) {
@@ -322,29 +327,34 @@ public class Menu {
 				grid.setPadding(new Insets(5, 5, 5, 5));
 				grid.add(new Label("Animals: "), 0, 0);
 				grid.add(animalsComboBox, 1, 0);
-				grid.add(button, 10, 0);
+				grid.add(button, 0, 9);
+				grid.add(refresh, 0,1);
 				grid.add(new Label("Xpos: "), 0, 5);
 				grid.add(Xpos, 1, 5, 3, 1);
 				grid.add(new Label("Ypos: "), 0, 6);
 				grid.add(Ypos, 1, 6, 3, 1);
 				grid.add(new Label("Energy: "), 0, 7);
 				grid.add(Energy, 1, 7, 3, 1);
-				grid.add(notification, 0, 9, 3, 1);
+				grid.add(notification, 0, 10, 3, 1);
 
 
-				animalsComboBox.setOnAction(new EventHandler<ActionEvent>() {
+
+				refresh.setOnAction(new EventHandler<ActionEvent>() {
 					@Override
 					public void handle(ActionEvent arg0) {
-							int selected = animalsComboBox.getSelectionModel().getSelectedIndex();
-							String xpos = Integer.toString(getWorld().animalList.get(selected).getXpos());
-							Xpos.setText(xpos);
-							String ypos = Integer.toString(getWorld().animalList.get(selected).getYpos());
-							Ypos.setText(ypos);
-							String energy = Integer.toString(getWorld().animalList.get(selected).getEnergy());
-							Energy.setText(energy);
+						int selected = animalsComboBox.getSelectionModel().getSelectedIndex();
+
+						String xpos = Integer.toString(getWorld().animalList.get(selected).getXpos());
+						Xpos.setText(xpos);
+						String ypos = Integer.toString(getWorld().animalList.get(selected).getYpos());
+						Ypos.setText(ypos);
+						String energy = Integer.toString(getWorld().animalList.get(selected).getEnergy());
+						Energy.setText(energy);
 					}
 
 				});
+
+
 
 				button.setOnAction(new EventHandler<ActionEvent>() {
 
@@ -425,7 +435,7 @@ public class Menu {
 			public void handle(ActionEvent arg0) {
 				final Stage stage = new Stage();
 				Group root = new Group();
-				Scene scene = new Scene(root, 600, 600);
+				Scene scene = new Scene(root, 250, 100);
 				stage.setTitle("Add lifeform");
 				final ComboBox<String> animalsComboBox = new ComboBox<>();
 				animalsComboBox.getItems().addAll("Bug", "Lion");
@@ -480,7 +490,7 @@ public class Menu {
 			public void handle(ActionEvent arg0) {
 				Stage stage = new Stage();
 				Group root = new Group();
-				Scene scene = new Scene(root, 550, 300);
+				Scene scene = new Scene(root, 650, 300);
 				stage.setTitle("Display Configuration");
 				GridPane grid = new GridPane();
 				grid.setVgap(4);
@@ -511,7 +521,7 @@ public class Menu {
 			public void handle(ActionEvent arg0) {
 				final Stage stage = new Stage();
 				Group root = new Group();
-				Scene scene = new Scene(root, 600, 600);
+				Scene scene = new Scene(root, 300, 300);
 				stage.setTitle("Edit Configuration");
 				GridPane grid = new GridPane();
 				grid.setVgap(4);
@@ -602,15 +612,15 @@ public class Menu {
 			public void handle(ActionEvent arg0) {
 				Stage stage = new Stage();
 				Group root = new Group();
-				Scene scene = new Scene(root, 600, 600);
+				Scene scene = new Scene(root, 200, 100);
 				stage.setTitle("Map Information");
 				GridPane grid = new GridPane();
 				grid.setVgap(4);
 				grid.setHgap(10);
 				grid.setPadding(new Insets(5, 5, 5, 5));
 				grid.add(new Label("Map Dimensions: "), 0, 0);
-				grid.add(new Label("X-Dimension: " + world.getXdimension()), 1, 1);
-				grid.add(new Label("Y-Dimension: " + world.getYdimension()), 1, 2);
+				grid.add(new Label("X-Dimension: " + world.getXdimension()), 0, 1);
+				grid.add(new Label("Y-Dimension: " + world.getYdimension()), 0, 2);
 				root = (Group) scene.getRoot();
 				root.getChildren().add(grid);
 				stage.setScene(scene);
@@ -622,25 +632,30 @@ public class Menu {
 		// Simulate
 		javafx.scene.control.Menu simulate = new javafx.scene.control.Menu("Simulate");
 		MenuItem run = new MenuItem("Run");
-		MenuItem pausePlay = new MenuItem("Pause/Play");
+		MenuItem pause = new MenuItem("Pause");
 		MenuItem restart = new MenuItem("Restart");
+		MenuItem stop = new MenuItem("Stop");
+		MenuItem reset = new MenuItem("Reset");
 		MenuItem toggleMap = new MenuItem("Toggle Map");
 		simulate.getItems().add(run);
-		simulate.getItems().add(pausePlay);
+		simulate.getItems().add(pause);
 		simulate.getItems().add(restart);
+		simulate.getItems().add(reset);
 		simulate.getItems().add(toggleMap);
+
 		run.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent arg0) {
-				getWorld().display();
+				Pause = false;
 			}
 		});
-		pausePlay.setOnAction(new EventHandler<ActionEvent>() {
+		pause.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent arg0) {
-				Pause = !Pause;
+				Pause = true;
 			}
 		});
+
 		restart.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent arg0) {
@@ -653,9 +668,36 @@ public class Menu {
 				Pause = false;
 			}
 		});
+
+		stop.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent arg0) {
+				int x = getWorld().getXdimension();
+				int y = getWorld().getYdimension();
+				getWorld().clearGroups();
+				setWorld(new World(getRoot(), 0, 0, 0, 0, x, y, 0));
+
+
+			}
+		});
+
+		reset.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent arg0) {
+				getWorld().clearGroups();
+				try {
+					loadLatest();
+				} catch (FileNotFoundException e) {
+					e.printStackTrace();
+				}
+				Pause = true;
+			}
+		});
 		toggleMap.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent arg0) {
+				Toggle = !Toggle;
+
 				System.out.println("was clicked");
 			}
 		});
@@ -670,6 +712,10 @@ public class Menu {
 
 	public boolean Pause() {
 		return Pause;
+	}
+
+	public boolean Toggle(){
+		return Toggle;
 	}
 
 	public MenuBar getMenuBar() {
@@ -725,6 +771,7 @@ public class Menu {
 				sb.append(line);
 			}
 			reader.close();
+
 			String filename = sb.toString();
 			is1 = new ObjectInputStream(new FileInputStream("Configurations/" + filename));
 			World w;

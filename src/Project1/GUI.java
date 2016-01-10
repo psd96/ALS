@@ -12,6 +12,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Scene;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
@@ -33,7 +34,7 @@ public class GUI extends Application {
 		}
 
 		Group root = new Group();
-		Scene scene = new Scene(root);
+		final Scene scene = new Scene(root);
 
 		final Menu menu = new Menu(primaryStage, root);
 		root.getChildren().add(menu.getMenuBar());
@@ -45,7 +46,13 @@ public class GUI extends Application {
 			public void handle(ActionEvent arg0) {
 				primaryStage.setWidth(menu.getWorld().getXdimension() * 24);
 				primaryStage.setHeight(menu.getWorld().getYdimension() * 26);
-				if (menu.Pause()) {
+				if (!menu.Pause()) {
+					if(menu.Toggle()){
+						scene.setFill(Color.BLACK);
+						
+					} else {
+						scene.setFill(Color.WHITE);
+					}
 					menu.getWorld().run();
 				} else{
 					menu.getWorld().display();

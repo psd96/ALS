@@ -15,14 +15,12 @@ public abstract class Carnivore extends LifeForm {
 		this.setSmellrange(smellrange);
 		this.setXdimension(dx);
 		this.setYdimension(dy);
-		// TODO Auto-generated constructor stub
 	}
 	
-	public Carnivore(int dx, int dy, int smellfood) {
+	public Carnivore(int dx, int dy) {
 		this.setXdimension(dx);
 		this.setYdimension(dy);
-		this.setSmellrange(smellfood);
-		// TODO Auto-generated constructor stub
+
 	}
 
 	public boolean smellFood(Direction direction) {

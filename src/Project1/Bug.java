@@ -17,10 +17,9 @@ import javafx.stage.Stage;
 public class Bug extends Herbivore {
 
 	public Bug(int dx, int dy) {
-		super(dx, dy, 5);
+		super(dx, dy);
 		AddBug();
-		// TODO Auto-generated constructor stub
-	} 
+	}
 	
 	
 	public Color getFill() {
@@ -43,17 +42,15 @@ public class Bug extends Herbivore {
 		Button button = new Button("Submit");
 		final Stage stage = new Stage();
 		Group root = new Group();
-		Scene scene = new Scene(root, 600, 600);
+		Scene scene = new Scene(root, 300, 300);
 		stage.setTitle("Add Bug");
-		final ComboBox<String> animalsComboBox = new ComboBox<String>();
-		animalsComboBox.getItems().addAll("Bug", "Lion");
+
 		final GridPane grid = new GridPane();
 		grid.setVgap(4);
 		grid.setHgap(10);
 		grid.setPadding(new Insets(5, 5, 5, 5));
-		grid.add(new Label("Animals: "), 0, 0);
-		grid.add(animalsComboBox, 1, 0);
-		grid.add(button, 10, 0);
+		grid.add(new Label("Animals: Bug"), 0, 0);
+		grid.add(button, 0, 10);
 		grid.add(new Label("Name: "), 0, 3);
 		grid.add(Name, 1, 3, 3, 1);
 		grid.add(new Label("ID: "), 0, 4);
@@ -70,24 +67,20 @@ public class Bug extends Herbivore {
 		button.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent arg0) {
-				// TODO Auto-generated method stub
-				int selected = animalsComboBox.getSelectionModel().getSelectedIndex();
-				if (animalsComboBox.getValue() == null ||Name.getText().isEmpty() || ID.getText().isEmpty() || Energy.getText().isEmpty() || Xpos.getText().isEmpty()
+				if (Name.getText().isEmpty() || ID.getText().isEmpty() || Energy.getText().isEmpty() || Xpos.getText().isEmpty()
 						|| Ypos.getText().isEmpty()) {
 					notification.setText("ERROR!!: PLEASE FILL ALL FIELDS");
 
 				} else {
-					if (selected == 0) {
-						setName(Name.getText());
-						setBugID(Integer.parseInt(ID.getText()));
-						setEnergy(Integer.parseInt(Energy.getText()));
-						setSymbol(Name.getText().charAt(0));
-						setXpos(Integer.parseInt(Xpos.getText()));
-						setYpos(Integer.parseInt(Ypos.getText()));
-						setXdimension(getXdimension());
-						setSmellrange(Integer.parseInt(SmellRange.getText()));
-						stage.close();
-					}
+					setName(Name.getText());
+					setBugID(Integer.parseInt(ID.getText()));
+					setEnergy(Integer.parseInt(Energy.getText()));
+					setSymbol(Name.getText().charAt(0));
+					setXpos(Integer.parseInt(Xpos.getText()));
+					setYpos(Integer.parseInt(Ypos.getText()));
+					setXdimension(getXdimension());
+					setSmellrange(Integer.parseInt(SmellRange.getText()));
+					stage.close();
 				}
 			}
 

@@ -7,10 +7,9 @@ import java.io.Serializable;
 public abstract class Herbivore extends LifeForm implements Serializable {
 	private char original;
 
-	public Herbivore(int dx,int dy, int smellfood) {
+	public Herbivore(int dx,int dy) {
 		this.setXdimension(dx);
 		this.setYdimension(dy);
-		this.setSmellrange(smellfood);
 		original = getSymbol();
 		
 	}

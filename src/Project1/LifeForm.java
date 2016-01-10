@@ -8,16 +8,16 @@ import javafx.scene.paint.Color;
 @SuppressWarnings("serial")
 public abstract class LifeForm implements Serializable {
 
-	private String name;
-	private char symbol;
 	protected int energy;
 	protected int xpos;
 	protected int ypos;
-	private int BugID;
 	protected int smellrange;
-	protected int size_x = 25;
-	protected int size_y = 25;
+	protected int size_x;
+	protected int size_y;
 	protected char grid[][];
+	private String name;
+	private char symbol;
+	private int BugID;
 
 	public int getXdimension() {
 		return size_x;
@@ -32,7 +32,7 @@ public abstract class LifeForm implements Serializable {
 	}
 
 	public void setYdimension(int size_y) {
-		this.size_y = getYdimension();
+		this.size_y = size_y;
 	}
 
 	public String getName() {
@@ -103,10 +103,6 @@ public abstract class LifeForm implements Serializable {
 		grid[xpos][ypos] = symbol;
 	}
 
-	public enum Direction {
-		North, East, South, West;
-	}
-
 	public boolean smellFood(Direction direction) {
 		boolean found;
 		switch (direction) {
@@ -125,7 +121,7 @@ public abstract class LifeForm implements Serializable {
 		case East:
 			found = false;
 			for (int i = 0; i < this.smellrange; i++) {
-				if (this.xpos + i + 1 < size_x) {
+				if (this.xpos + i + 1 < getXdimension()) {
 					if (Character.isUpperCase(this.grid[this.xpos + 1 + i][this.ypos]) || this.grid[this.xpos + 1 + i][this.ypos] == '^') {
 						break;
 					}else if (this.grid[this.xpos + 1 + i][this.ypos] != ' ') {
@@ -137,7 +133,7 @@ public abstract class LifeForm implements Serializable {
 		case South:
 			found = false;
 			for (int i = 0; i < this.smellrange; i++) {
-				if (this.ypos + 1 + i < size_y) {
+				if (this.ypos + 1 + i < getYdimension()) {
 					if (Character.isUpperCase(this.grid[this.xpos][this.ypos + 1 + i]) || this.grid[this.xpos][this.ypos + 1 + i] == '^') {
 						break;
 					}else if (this.grid[this.xpos][this.ypos + 1 + i] != ' ') {
@@ -186,7 +182,6 @@ public abstract class LifeForm implements Serializable {
 		}
 	}
 
-
 	public void Move(Direction d){
 		this.grid[this.xpos][this.ypos] = ' ';
 
@@ -218,14 +213,13 @@ public abstract class LifeForm implements Serializable {
 		}
 	}
 
-
 	public void update() {
 		Move(getDirectionOfFood());
-		
+
 		if (this.grid[this.xpos][this.ypos] == '^') {
 			this.setSymbol('^');
 		}
-		
+
 		if (this.grid[this.xpos][this.ypos] != ' ') {
 			this.energy += Character.getNumericValue(this.grid[this.xpos][this.ypos]);
 		}
@@ -234,8 +228,12 @@ public abstract class LifeForm implements Serializable {
 
 		setGridpos();
 	}
+
+public abstract Color getFill();
 	
-	public abstract Color getFill();;
 	public abstract String getType();;
+		public enum Direction {
+		North, East, South, West;
+	};
 	
 }
