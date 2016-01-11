@@ -716,7 +716,7 @@ public class Menu {
 		MenuItem restart = new MenuItem("Restart");
 		MenuItem stop = new MenuItem("Stop");
 		MenuItem reset = new MenuItem("Reset");
-		MenuItem toggleMap = new MenuItem("Toggle Map");
+		final MenuItem toggleMap = new MenuItem("Toggle Map : OFF");
 		simulate.getItems().add(run);
 		simulate.getItems().add(pause);
 		simulate.getItems().add(restart);
@@ -780,11 +780,17 @@ public class Menu {
 			}
 		});
 
-
+		//Will toggle the display between iterations
 		toggleMap.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent arg0) {
 				Toggle = !Toggle;
+				if(Toggle){
+					toggleMap.setText("Toggle Map : ON");
+				} else {
+					toggleMap.setText("Toggle Map : OFF");
+
+				}
 
 				System.out.println("was clicked");
 			}

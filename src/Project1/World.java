@@ -16,8 +16,6 @@ public class World implements Serializable {
 	List<Lion> lionList = new ArrayList<>();
 	List<LifeForm> hurdList = new ArrayList<>();
 	List<LifeForm> shelterList = new ArrayList<>();
-	int[][] foodArray = new int[100][3];
-	int[][] obstaclesArray = new int[100][2];
 	private int size_x;
 	private int size_y;
 	transient private Group bugGroup = new Group();
@@ -25,8 +23,6 @@ public class World implements Serializable {
 	transient private Group obstacleGroup = new Group();
 	transient private Group shelterGroup = new Group();
 	private int foodLeft;
-	private int bugs;
-	private int lions;
 	private int shelters = 0;
 	private int Food = 0;
 	private int Obstacles = 0;
@@ -89,7 +85,7 @@ public class World implements Serializable {
 
 		//Gets the animalList and adds all the animals to the grid
 		for(LifeForm i : animalList){
-			i.setGrid();
+			i.setGrid(grid);
 			i.setGridpos();
 		}
 
@@ -192,7 +188,7 @@ public class World implements Serializable {
 	//Adds Bug to the grid
 	public void AddBug() {
 		Bug bug = new Bug(getXdimension(), getYdimension());
-		bug.setGrid();
+		bug.setGrid(grid);
 		bug.setGridpos();
 		animalList.add(bug);
 		bugList.add(bug);
@@ -201,7 +197,7 @@ public class World implements Serializable {
 	//Adds Lion to the grid
 	public void AddLion() {
 		Lion lion = new Lion(getXdimension(), getYdimension());
-		lion.setGrid();
+		lion.setGrid(grid);
 		lion.setGridpos();
 		animalList.add(lion);
 		lionList.add(lion);
@@ -210,7 +206,7 @@ public class World implements Serializable {
 	//Adds a herd to the grid in a given position and with a given energy
 	public void AddHerd(int xpos, int ypos, int energy, String specie) {
 		Herd herd = new Herd(energy, xpos, ypos, getXdimension(), getYdimension());
-		herd.setGrid();
+		herd.setGrid(grid);
 		herd.setGridpos();
 		herd.setHerdType(specie);
 		herd.setMembers(2);
@@ -355,15 +351,20 @@ public class World implements Serializable {
 		return foodLeft;
 	}
 
+	public void Toggle (boolean isToggle){
+		if(isToggle){
+			clearGroups();
+		} else {
+			display();
+		}
+	}
+
 	//Runs the world
-	public void run(boolean toggle) {
+	public void run(boolean isToggle) {
 
 		checkCollision();
 		checkShelter();
-
-		if(!toggle){
-			display();
-		}
+		Toggle(isToggle);
 		for (int j = 0; j < animalList.size(); j++) {
 			System.out.println("    bug: " + animalList.get(j).getSymbol());
 			//Updates each bug

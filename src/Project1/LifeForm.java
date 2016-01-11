@@ -77,7 +77,7 @@ public abstract class LifeForm implements Serializable {
 		return grid;
 	}
 
-	public void setGrid() {
+	public void setGrid(char [][] grid) {
 		this.grid = grid;
 	}
 
