@@ -18,6 +18,8 @@ public abstract class LifeForm implements Serializable {
 	private String name;
 	private char symbol;
 	private int BugID;
+	private String herdType;
+	private int members;
 
 	//Getter and Setter methods
 	public int getXdimension() {
@@ -102,6 +104,23 @@ public abstract class LifeForm implements Serializable {
 
 	public void setGridpos() {
 		grid[xpos][ypos] = symbol;
+	}
+
+	public String getHerdType() {
+		return herdType;
+	}
+
+	public void setHerdType(String herdType) {
+		this.herdType = herdType;
+	}
+
+
+	public int getMembers() {
+		return members;
+	}
+
+	public void setMembers(int members) {
+		this.members = members;
 	}
 
 

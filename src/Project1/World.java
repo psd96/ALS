@@ -292,7 +292,7 @@ public class World implements Serializable {
 							int x = animalList.get(i).getXpos();
 							int y = animalList.get(i).getYpos();
 							//Stores which species the herd is made up off
-							String specie = animalList.get(i).getClass().toString();
+							String specie = animalList.get(i).getClass().getName();
 							int energy = animalList.get(i).getEnergy() + animalList.get(j).getEnergy();
 							hurdList.add(animalList.get(i));
 							hurdList.add(animalList.get(j));
@@ -301,26 +301,26 @@ public class World implements Serializable {
 							AddHerd(x, y, energy, specie);
 
 							//If one is a hurd and the other is the same specie it will join the herd
-						} else if (animalList.get(j) instanceof Herd && animalList.get(i).getClass().toString() == ((Herd) animalList.get(j)).getHerdType()) {
+						} else if (animalList.get(j) instanceof Herd && animalList.get(i).getClass().getName() == animalList.get(j).getHerdType()) {
 							animalList.get(j).setEnergy(animalList.get(j).getEnergy() + animalList.get(i).getEnergy());
 							hurdList.add(animalList.get(i));
-							((Herd) animalList.get(j)).setMembers(3);
+							(animalList.get(j)).setMembers(animalList.get(j).getMembers() + 1);
 							animalList.remove(i);
 
-						} else if (animalList.get(i) instanceof Herd && animalList.get(j).getClass().toString() == ((Herd) animalList.get(i)).getHerdType()) {
+						} else if (animalList.get(i) instanceof Herd && animalList.get(j).getClass().getName() == animalList.get(i).getHerdType()) {
 							animalList.get(i).setEnergy(animalList.get(j).getEnergy() + animalList.get(i).getEnergy());
 							hurdList.add(animalList.get(j));
-							((Herd) animalList.get(i)).setMembers(3);
+							(animalList.get(i)).setMembers(animalList.get(i).getMembers() + 1);
 							animalList.remove(j);
 
 							//If both carnivores but different species, the one with a greater energy will eat the other
 						} else if (animalList.get(i).getEnergy() < animalList.get(j).getEnergy()) {
-							animalList.get(i).setEnergy(animalList.get(j).getEnergy() + animalList.get(i).getEnergy());
-							animalList.remove(j);
-
-						} else {
-							animalList.get(j).setEnergy(animalList.get(i).getEnergy() + animalList.get(j).getEnergy());
+							animalList.get(j).setEnergy(animalList.get(j).getEnergy() + animalList.get(i).getEnergy());
 							animalList.remove(i);
+
+						} else if(animalList.get(j).getEnergy() < animalList.get(i).getEnergy()) {
+							animalList.get(i).setEnergy(animalList.get(i).getEnergy() + animalList.get(j).getEnergy());
+							animalList.remove(j);
 						}
 					}
 				}
@@ -387,7 +387,7 @@ public class World implements Serializable {
 			System.out.println("    bug: " + animalList.get(j).getSymbol());
 			//Updates each bug
 			animalList.get(j).update();
-			String temp = animalList.get(j).getClass().toString();
+
 
 			//If an animals energy has reached 0, the bus is removed and food is added in its position
 			if (animalList.get(j).getEnergy() <= 0) {
