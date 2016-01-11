@@ -9,7 +9,6 @@ import javafx.scene.Group;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 
-@SuppressWarnings("serial")
 public class World implements Serializable {
 	char[][] grid;
 	List<LifeForm> animalList = new ArrayList<LifeForm>();
@@ -226,12 +225,14 @@ public class World implements Serializable {
 		lionList.add(lion);
 	}
 
-	//Adds a hurd to the grid in a given position and with a given energy
-	public void AddHurd(int xpos, int ypos, int energy) {
-		Hurd hurd = new Hurd(energy, xpos, ypos, getXdimension(), getYdimension());
-		hurd.setGrid(this.grid);
-		hurd.setGridpos();
-		animalList.add(hurd);
+	//Adds a herd to the grid in a given position and with a given energy
+	public void AddHerd(int xpos, int ypos, int energy, String specie) {
+		Herd herd = new Herd(energy, xpos, ypos, getXdimension(), getYdimension());
+		herd.setGrid(this.grid);
+		herd.setGridpos();
+		herd.setHerdType(specie);
+		herd.setMembers(2);
+		animalList.add(herd);
 	}
 
 	//Checks to see if the bug can enter a shelter - has to be a herbivore and energy < 20
@@ -286,32 +287,33 @@ public class World implements Serializable {
 
 						//If both are carnivores
 					} else if (animalList.get(i) instanceof Carnivore && animalList.get(j) instanceof Carnivore) {
-						//If both are the same specie they will create a hurd and energy will be combined
+						//If both are the same specie they will create a herd and energy will be combined
 						if (animalList.get(i).getClass() == animalList.get(j).getClass()) {
 							int x = animalList.get(i).getXpos();
 							int y = animalList.get(i).getYpos();
-							String temp = animalList.get(i).getClass().toString();
-							int num1 = temp.lastIndexOf(".");
-							String specie = temp.substring(num1);
+							//Stores which species the herd is made up off
+							String specie = animalList.get(i).getClass().toString();
 							int energy = animalList.get(i).getEnergy() + animalList.get(j).getEnergy();
 							hurdList.add(animalList.get(i));
 							hurdList.add(animalList.get(j));
 							animalList.remove(i);
 							animalList.remove(j);
-							AddHurd(x, y, energy);
+							AddHerd(x, y, energy, specie);
 
-							//If one is a hurd and the other is the same specie it will join the hurd
-						} else if (animalList.get(i) instanceof Lion && animalList.get(j) instanceof Hurd) {
+							//If one is a hurd and the other is the same specie it will join the herd
+						} else if (animalList.get(j) instanceof Herd && animalList.get(i).getClass().toString() == ((Herd) animalList.get(j)).getHerdType()) {
 							animalList.get(j).setEnergy(animalList.get(j).getEnergy() + animalList.get(i).getEnergy());
 							hurdList.add(animalList.get(i));
+							((Herd) animalList.get(j)).setMembers(3);
 							animalList.remove(i);
 
-						} else if (animalList.get(i) instanceof Hurd && animalList.get(j) instanceof Lion) {
+						} else if (animalList.get(i) instanceof Herd && animalList.get(j).getClass().toString() == ((Herd) animalList.get(i)).getHerdType()) {
 							animalList.get(i).setEnergy(animalList.get(j).getEnergy() + animalList.get(i).getEnergy());
 							hurdList.add(animalList.get(j));
+							((Herd) animalList.get(i)).setMembers(3);
 							animalList.remove(j);
 
-							//If both carnivores but diffrent species, the one with a greater energy will eat the other
+							//If both carnivores but different species, the one with a greater energy will eat the other
 						} else if (animalList.get(i).getEnergy() < animalList.get(j).getEnergy()) {
 							animalList.get(i).setEnergy(animalList.get(j).getEnergy() + animalList.get(i).getEnergy());
 							animalList.remove(j);
@@ -385,11 +387,13 @@ public class World implements Serializable {
 			System.out.println("    bug: " + animalList.get(j).getSymbol());
 			//Updates each bug
 			animalList.get(j).update();
+			String temp = animalList.get(j).getClass().toString();
 
 			//If an animals energy has reached 0, the bus is removed and food is added in its position
 			if (animalList.get(j).getEnergy() <= 0) {
 				this.grid[animalList.get(j).getXpos()][animalList.get(j).getYpos()] = ' ';
 				AddFood(animalList.get(j).getXpos(), animalList.get(j).getYpos());
+
 				animalList.remove(j);
 				bugGroup.getChildren().remove(j);
 				j--;

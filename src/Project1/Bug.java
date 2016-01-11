@@ -13,7 +13,6 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
-@SuppressWarnings("serial")
 public class Bug extends Herbivore {
 
 	public Bug(int dx, int dy, int length) { //Constructor

@@ -13,7 +13,6 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
-@SuppressWarnings("serial")
 public class Lion extends Carnivore {
 
 	public Lion(int dx, int dy, int length) { //Constrctor

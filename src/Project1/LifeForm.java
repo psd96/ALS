@@ -5,7 +5,6 @@ import java.util.Random;
 
 import javafx.scene.paint.Color;
 
-@SuppressWarnings("serial")
 public abstract class LifeForm implements Serializable {
 
 	//Encapulated variables

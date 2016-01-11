@@ -4,7 +4,6 @@ import java.io.Serializable;
 import java.util.Random;
 
 
-@SuppressWarnings("serial")
 public abstract class Herbivore extends LifeForm implements Serializable {
 	private char original;
 

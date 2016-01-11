@@ -1,7 +1,6 @@
 package Project1;
 
 
-@SuppressWarnings("serial")
 public abstract class Carnivore extends LifeForm {
 	
 	
