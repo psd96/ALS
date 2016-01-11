@@ -7,10 +7,11 @@ import java.util.Random;
 public abstract class Herbivore extends LifeForm implements Serializable {
 	private char original;
 
-	public Herbivore(int dx,int dy) { //Constructor
+	public Herbivore(int dx,int dy, String specie) { //Constructor
 		this.setXdimension(dx);
 		this.setYdimension(dy);
 		original = getSymbol();
+		this.setType(specie);
 		
 	}
 	

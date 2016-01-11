@@ -47,13 +47,7 @@ public class GUI extends Application {
 				primaryStage.setWidth(menu.getWorld().getXdimension() * 24);
 				primaryStage.setHeight(menu.getWorld().getYdimension() * 26);
 				if (!menu.Pause()) {
-					if(menu.Toggle()){
-						scene.setFill(Color.BLACK);
-						
-					} else {
-						scene.setFill(Color.WHITE);
-					}
-					menu.getWorld().run();
+					menu.getWorld().run(menu.Toggle());
 				} else{
 					menu.getWorld().display();
 				}

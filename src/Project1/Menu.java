@@ -27,7 +27,6 @@ import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
-import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 public class Menu {
@@ -61,11 +60,14 @@ public class Menu {
 		// Load latest config here to start
 		/*try {
 			loadLatest();
-		} catch (FileNotFoundException e2) {
-			e2.printStackTrace();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+			setWorld(new World(getRoot(), 0, 0, 0, 0, 25, 25, 0));
+
 		}*/
 
 		setWorld(new World(getRoot(), 0, 0, 0, 0, 25, 25, 0));
+
 
 		// Top Menu Bar
 		menuBar = new MenuBar();
@@ -120,21 +122,29 @@ public class Menu {
 
 					@Override
 					public void handle(ActionEvent arg0) {
-						if (SaveAs.getText().isEmpty() || Bugs.getText().isEmpty() || Lions.getText().isEmpty() || Food.getText().isEmpty() || Obstacles.getText().isEmpty()
-								|| Shelters.getText().isEmpty() || Xdimension.getText().isEmpty() || Ydimension.getText().isEmpty()) {
-							notification.setText("ERROR!!: PLEASE FILL ALL FIELDS");
+						if (!SaveAs.getText().isEmpty() && !Bugs.getText().isEmpty() && !Lions.getText().isEmpty() && !Food.getText().isEmpty() && !Obstacles.getText().isEmpty()
+								&& !Shelters.getText().isEmpty() && !Xdimension.getText().isEmpty() && !Ydimension.getText().isEmpty()) {
+							if(!checkValid(Xdimension) || !checkValid(Ydimension) || !checkValid(Shelters) || !checkValid(Obstacles)|| !checkValid(Food) || !checkValid(Lions) || !checkValid(Bugs)) {
+                                notification.setText("ERROR!!: PLEASE ENTER AN INTEGER");
+                            } else {
+								if (Integer.parseInt(Food.getText()) + Integer.parseInt(Obstacles.getText()) + Integer.parseInt(Bugs.getText()) + Integer.parseInt(Lions.getText()) + Integer.parseInt(Shelters.getText()) >
+										Integer.parseInt(Xdimension.getText()) * Integer.parseInt(Ydimension.getText())) {
+									notification.setText("ERROR!!: TOO MANY OBJECT FOR WORLD DIMENSIONS");
+								} else {
+									// Will save the configs name, and then set the new world constructor with the users data
+									setFileName(SaveAs.getText());
+									getWorld().clearGroups();
+									setWorld(new World(getRoot(), Integer.parseInt(Food.getText()),
+											Integer.parseInt(Obstacles.getText()), Integer.parseInt(Bugs.getText()), Integer.parseInt(Lions.getText()), Integer.parseInt(Xdimension.getText()),
+											Integer.parseInt(Ydimension.getText()), Integer.parseInt(Shelters.getText())));
 
+									// Closes the stage
+									stage.close();
+								}
+							}
 						} else {
-							// Will save the configs name, and then set the new rold constructor with the users data
-							setFileName(SaveAs.getText());
-							getWorld().clearGroups();
-							setWorld(new World(getRoot(), Integer.parseInt(Food.getText()),
-									Integer.parseInt(Obstacles.getText()), Integer.parseInt(Bugs.getText()), Integer.parseInt(Lions.getText()), Integer.parseInt(Xdimension.getText()),
-									Integer.parseInt(Ydimension.getText()), Integer.parseInt(Shelters.getText())));
-
-							// Closes the stage
-							stage.close();
-						}
+                    notification.setText("ERROR!!: PLEASE FILL ALL FIELDS");
+                }
 
 					}
 				});
@@ -144,9 +154,7 @@ public class Menu {
 					os1.writeObject(getWorld());
 					os1.close();
 					saveLatest(getFileName() + ".txt");
-				} catch (FileNotFoundException e1) {
-					e1.printStackTrace();
-				} catch (IOException e1) {
+				}catch (IOException e1) {
 					e1.printStackTrace();
 				}
 				root = (Group) scene.getRoot();
@@ -212,11 +220,7 @@ public class Menu {
 								setWorld(new World(w, getRoot()));
 								saveLatest(Files.get(selected));
 
-							} catch (FileNotFoundException e) {
-								e.printStackTrace();
-							} catch (IOException e) {
-								e.printStackTrace();
-							} catch (ClassNotFoundException e) {
+							} catch (IOException | ClassNotFoundException e) {
 								e.printStackTrace();
 							}
 							//Closes stage
@@ -248,8 +252,6 @@ public class Menu {
 					os1.writeObject(getWorld());
 					os1.close();
 					saveLatest(getFileName() + ".txt");
-				} catch (FileNotFoundException e1) {
-					e1.printStackTrace();
 				} catch (IOException e1) {
 					e1.printStackTrace();
 				}
@@ -289,8 +291,6 @@ public class Menu {
 								os1.writeObject(getWorld());
 								os1.close();
 								saveLatest(getFileName() + ".txt");
-							} catch (FileNotFoundException e) {
-								e.printStackTrace();
 							} catch (IOException e) {
 								e.printStackTrace();
 							}
@@ -388,19 +388,24 @@ public class Menu {
 
 					@Override
 					public void handle(ActionEvent arg0) {
-						if(Xpos.getText().isEmpty() || Ypos.getText().isEmpty() || Energy.getText().isEmpty() || animalsComboBox.getValue() == null){
+						if(Xpos.getText().isEmpty() || Ypos.getText().isEmpty() || Energy.getText().isEmpty() || animalsComboBox.getValue() == null ){
 							notification.setText("ERROR!!: PLEASE FILL ALL FIELDS");
+						} else if (!checkValid(Xpos) || !checkValid(Ypos) || !checkValid(Energy)) {
+							notification.setText("ERROR!!: PLEASE ENTER AN INTEGER");
 						} else {
-							//Edit the animals attributes to what the user has entered
-							int selected = animalsComboBox.getSelectionModel().getSelectedIndex();
-							getWorld().grid[getWorld().animalList.get(selected).getXpos()][getWorld().animalList
-									.get(selected).getYpos()] = ' ';
-							getWorld().animalList.get(selected).setXpos(Integer.parseInt(Xpos.getText()));
-							getWorld().animalList.get(selected).setYpos(Integer.parseInt(Ypos.getText()));
+							if (Integer.parseInt(Xpos.toString()) <= getWorld().getXdimension() && Integer.parseInt(Ypos.toString()) <= getWorld().getYdimension()) {
+								// Edit the animals attributes to what the user has entered
+								int selected = animalsComboBox.getSelectionModel().getSelectedIndex();
+								getWorld().grid[getWorld().animalList.get(selected).getXpos()][getWorld().animalList
+										.get(selected).getYpos()] = ' ';
+								getWorld().animalList.get(selected).setXpos(Integer.parseInt(Xpos.getText()));
+								getWorld().animalList.get(selected).setYpos(Integer.parseInt(Ypos.getText()));
 
-							//Closes stage
-							stage.close();
-
+								//Closes stage
+								stage.close();
+							} else {
+								notification.setText("ERROR!!: CO-ORDINATES LIE OUTSIDE THE DIMENSIONS OF THE MAP");
+							}
 						}
 					}
 
@@ -615,16 +620,29 @@ public class Menu {
 
 					@Override
 					public void handle(ActionEvent arg0) {
-						if(Bugs.getText().isEmpty() || Lions.getText().isEmpty() || Food.getText().isEmpty() || Obstacles.getText().isEmpty() || Xdimension.getText().isEmpty() || Ydimension.getText().isEmpty()){
+						if (!Bugs.getText().isEmpty() && !Lions.getText().isEmpty() && !Food.getText().isEmpty() && !Obstacles.getText().isEmpty()
+								&& !Shelters.getText().isEmpty() && !Xdimension.getText().isEmpty() && !Ydimension.getText().isEmpty()) {
+							if (!checkValid(Xdimension) || !checkValid(Ydimension) || !checkValid(Shelters) || !checkValid(Obstacles) || !checkValid(Food) || !checkValid(Lions) || !checkValid(Bugs)) {
+								notification.setText("ERROR!!: PLEASE ENTER AN INTEGER");
+							} else {
+								//Checks if number of objects is greater than max allowed in the entered dimensions
+								if (Integer.parseInt(Food.getText()) + Integer.parseInt(Obstacles.getText()) + Integer.parseInt(Bugs.getText()) + Integer.parseInt(Lions.getText()) + Integer.parseInt(Shelters.getText()) >
+										Integer.parseInt(Xdimension.getText()) * Integer.parseInt(Ydimension.getText())) {
+									notification.setText("ERROR!!: TOO MANY OBJECT FOR WORLD DIMENSIONS");
+								} else {
+									// Will save the configs name, and then set the new world constructor with the users data
+									setFileName(SaveAs.getText());
+									getWorld().clearGroups();
+									setWorld(new World(getRoot(), Integer.parseInt(Food.getText()),
+											Integer.parseInt(Obstacles.getText()), Integer.parseInt(Bugs.getText()), Integer.parseInt(Lions.getText()), Integer.parseInt(Xdimension.getText()),
+											Integer.parseInt(Ydimension.getText()), Integer.parseInt(Shelters.getText())));
+
+									// Closes the stage
+									stage.close();
+								}
+							}
+						} else {
 							notification.setText("ERROR!!: PLEASE FILL ALL FIELDS");
-						}else {
-							//Will take the users input and create a new world
-							getWorld().clearGroups();
-							setWorld(new World(getRoot(), Integer.parseInt(Food.getText()),
-									Integer.parseInt(Obstacles.getText()), Integer.parseInt(Bugs.getText()),
-									Integer.parseInt(Lions.getText()), Integer.parseInt(Xdimension.getText()),
-									Integer.parseInt(Ydimension.getText()), Integer.parseInt(Shelters.getText())));
-							stage.close();
 						}
 					}
 
@@ -901,14 +919,23 @@ public class Menu {
 			World w;
 			w = (World) is1.readObject();
 			setWorld(new World(w, getRoot()));
-			} catch (IOException e) {
-				e.printStackTrace();
-			} catch (ClassNotFoundException e) {
+			} catch (IOException | ClassNotFoundException e) {
 				e.printStackTrace();
 			}
 
 	}
 
-	
+	public boolean checkValid(TextField text) {
+		if (Integer.parseInt(text.getText()) >= 0) {
+			try {
+				Integer.parseInt(text.getText());
+				return true;
+			} catch (NumberFormatException e) {
+				return false;
+			}
+		} else {
+			return false;
+		}
+	}
 
 }

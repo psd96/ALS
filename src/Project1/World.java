@@ -11,11 +11,11 @@ import javafx.scene.shape.Circle;
 
 public class World implements Serializable {
 	char[][] grid;
-	List<LifeForm> animalList = new ArrayList<LifeForm>();
-	List<Bug> bugList = new ArrayList<Bug>();
-	List<Lion> lionList = new ArrayList<Lion>();
-	List<LifeForm> hurdList = new ArrayList<LifeForm>();
-	List<LifeForm> shelterList = new ArrayList<LifeForm>();
+	List<LifeForm> animalList = new ArrayList<>();
+	List<Bug> bugList = new ArrayList<>();
+	List<Lion> lionList = new ArrayList<>();
+	List<LifeForm> hurdList = new ArrayList<>();
+	List<LifeForm> shelterList = new ArrayList<>();
 	int[][] foodArray = new int[100][3];
 	int[][] obstaclesArray = new int[100][2];
 	private int size_x;
@@ -39,8 +39,6 @@ public class World implements Serializable {
 		setShelters(shelters);
 		setXdimension(sizex);
 		setYdimension(sizey);
-		setBugs(bugs);
-		setLions(lions);
 		grid = new char[getXdimension()][getYdimension()];
 
 		for (int i = 0; i < sizex; i++) {
@@ -90,28 +88,12 @@ public class World implements Serializable {
 		setYdimension(w.getYdimension());
 
 		//Gets the animalList and adds all the animals to the grid
-		for(int i=0; i<animalList.size();i++){
-			animalList.get(i).setGrid(grid);
-			animalList.get(i).setGridpos();
+		for(LifeForm i : animalList){
+			i.setGrid();
+			i.setGridpos();
 		}
 
 	}
-	public int getBugs() {
-		return bugs;
-	}
-
-	public void setBugs(int bugs) {
-		this.bugs = bugs;
-	}
-
-	public int getLions() {
-		return lions;
-	}
-
-	public void setLions(int lions) {
-		this.lions = lions;
-	}
-
 	public char[][] getGrid() {
 		return grid;
 
@@ -182,7 +164,7 @@ public class World implements Serializable {
 		} while (this.grid[px][py] != ' ');
 		//Randomly generate boolean to determine if to add food or poison
 		boolean isFood = rand.nextBoolean();
-		if(isFood == true) {
+		if(isFood) {
 			grid[px][py] = (char) ('0' + (rand.nextInt(9) + 1));
 		} else{
 			grid[px][py] = '*';
@@ -209,8 +191,8 @@ public class World implements Serializable {
 
 	//Adds Bug to the grid
 	public void AddBug() {
-		Bug bug = new Bug(getXdimension(), getYdimension(), getBugs());
-		bug.setGrid(this.grid);
+		Bug bug = new Bug(getXdimension(), getYdimension());
+		bug.setGrid();
 		bug.setGridpos();
 		animalList.add(bug);
 		bugList.add(bug);
@@ -218,8 +200,8 @@ public class World implements Serializable {
 
 	//Adds Lion to the grid
 	public void AddLion() {
-		Lion lion = new Lion(getXdimension(), getYdimension(), getLions());
-		lion.setGrid(this.grid);
+		Lion lion = new Lion(getXdimension(), getYdimension());
+		lion.setGrid();
 		lion.setGridpos();
 		animalList.add(lion);
 		lionList.add(lion);
@@ -228,7 +210,7 @@ public class World implements Serializable {
 	//Adds a herd to the grid in a given position and with a given energy
 	public void AddHerd(int xpos, int ypos, int energy, String specie) {
 		Herd herd = new Herd(energy, xpos, ypos, getXdimension(), getYdimension());
-		herd.setGrid(this.grid);
+		herd.setGrid();
 		herd.setGridpos();
 		herd.setHerdType(specie);
 		herd.setMembers(2);
@@ -333,7 +315,7 @@ public class World implements Serializable {
 		//Clears the groups
 		clearGroups();
 
-		//Loops throught the grid and adds a circle in that position depending on the attribute in each position
+		//Loops through the grid and adds a circle in that position depending on the attribute in each position
 		for (int x = 0; x < size_x; x++) {
 			for (int y = 0; y < size_y; y++) {
 				if (grid[x][y] == 'X') {
@@ -373,22 +355,19 @@ public class World implements Serializable {
 		return foodLeft;
 	}
 
-	public void toggleDisplay(){
-
-	}
-
 	//Runs the world
-	public void run() {
+	public void run(boolean toggle) {
 
 		checkCollision();
 		checkShelter();
-		display();
+
+		if(!toggle){
+			display();
+		}
 		for (int j = 0; j < animalList.size(); j++) {
 			System.out.println("    bug: " + animalList.get(j).getSymbol());
 			//Updates each bug
 			animalList.get(j).update();
-
-
 			//If an animals energy has reached 0, the bus is removed and food is added in its position
 			if (animalList.get(j).getEnergy() <= 0) {
 				this.grid[animalList.get(j).getXpos()][animalList.get(j).getYpos()] = ' ';
