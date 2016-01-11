@@ -8,6 +8,7 @@ import javafx.scene.paint.Color;
 @SuppressWarnings("serial")
 public abstract class LifeForm implements Serializable {
 
+	//Encapulated variables
 	protected int energy;
 	protected int xpos;
 	protected int ypos;
@@ -19,6 +20,7 @@ public abstract class LifeForm implements Serializable {
 	private char symbol;
 	private int BugID;
 
+	//Getter and Setter methods
 	public int getXdimension() {
 		return size_x;
 	}
@@ -103,7 +105,14 @@ public abstract class LifeForm implements Serializable {
 		grid[xpos][ypos] = symbol;
 	}
 
-	public boolean smellFood(Direction direction) {
+
+	//Abstract methods
+	public abstract Color getFill();
+
+	public abstract String getType();;
+
+		//Main methods
+	public boolean smellFood(Direction direction) { //Returns the direction if food is found
 		boolean found;
 		switch (direction) {
 		case North:
@@ -156,16 +165,16 @@ public abstract class LifeForm implements Serializable {
 			return found;
 		}
 		return false;
-	}
+	};
 
-	public Direction getRandomDirection(Direction d) {
+	public Direction getRandomDirection(Direction d) { //Picks a random direction and returns it
 		Random rand = new Random();
 		int temp = rand.nextInt(Direction.values().length);
 		d = Direction.values()[temp];
 		return d;
 	}
 
-	public Direction getDirectionOfFood() {
+	public Direction getDirectionOfFood() { //Will return the direction of the food
 		Direction direction = Direction.North;
 		boolean found = false;
 
@@ -182,7 +191,7 @@ public abstract class LifeForm implements Serializable {
 		}
 	}
 
-	public void Move(Direction d){
+	public void Move(Direction d){//Move the animals towards the food
 		this.grid[this.xpos][this.ypos] = ' ';
 
 		switch (d) {
@@ -213,13 +222,14 @@ public abstract class LifeForm implements Serializable {
 		}
 	}
 
-	public void update() {
-		Move(getDirectionOfFood());
+	public void update() { //Updates the attributes of the animals
+		Move(getDirectionOfFood());//Moves animal towards the food
 
 		if (this.grid[this.xpos][this.ypos] == '^') {
 			this.setSymbol('^');
 		}
 
+		//If food is found it will assign the food energy value and add it to the animals energy
 		if (this.grid[this.xpos][this.ypos] != ' ') {
 			this.energy += Character.getNumericValue(this.grid[this.xpos][this.ypos]);
 		}
@@ -229,11 +239,8 @@ public abstract class LifeForm implements Serializable {
 		setGridpos();
 	}
 
-public abstract Color getFill();
-	
-	public abstract String getType();;
-		public enum Direction {
+public enum Direction {
 		North, East, South, West;
-	};
-	
+	}
+
 }

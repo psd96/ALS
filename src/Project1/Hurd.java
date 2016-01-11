@@ -5,6 +5,8 @@ import javafx.scene.paint.Color;
 @SuppressWarnings("serial")
 public class Hurd extends Carnivore {
 
+	private String specie;
+
 	public Hurd(int energy, int xpos, int ypos, int dx, int dy) {
 		super("Hurd", 'H', energy, xpos, ypos, 003, 5, dx, dy);
 	}

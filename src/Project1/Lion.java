@@ -16,21 +16,21 @@ import javafx.stage.Stage;
 @SuppressWarnings("serial")
 public class Lion extends Carnivore {
 
-	public Lion(int dx, int dy, int length) {
+	public Lion(int dx, int dy, int length) { //Constrctor
 		super(dx, dy);
 		AddLion(length);
 	}
 	
-	public Color getFill(){
+	public Color getFill(){ //Sets the colour which lions should be displayed on the grid
 		return Color.ORANGE;
 	}
 	
-	public String getType(){
+	public String getType(){ //Returns the specie of lion
 		String type = "Lion";
 		return type;
 	}
 	
-	public void AddLion(int length) {
+	public void AddLion(int length) { //This method displays the form for user to enter lions details and sets them.
 		int counter = length;
 		final TextField Xpos = new TextField("");
 		final TextField Ypos = new TextField("");

@@ -5,7 +5,7 @@ package Project1;
 public abstract class Carnivore extends LifeForm {
 	
 	
-	public Carnivore(String name, char symbol, int energy, int xpos, int ypos, int bugID, int smellrange, int dx, int dy) {
+	public Carnivore(String name, char symbol, int energy, int xpos, int ypos, int bugID, int smellrange, int dx, int dy) {//Constructor
 		this.setName(name);
 		this.setSymbol(symbol);
 		this.setEnergy(energy);
@@ -17,13 +17,13 @@ public abstract class Carnivore extends LifeForm {
 		this.setYdimension(dy);
 	}
 	
-	public Carnivore(int dx, int dy) {
+	public Carnivore(int dx, int dy) { //Constructor
 		this.setXdimension(dx);
 		this.setYdimension(dy);
 
 	}
 
-	public boolean smellFood(Direction direction) {
+	public boolean smellFood(Direction direction) { //Smaell food fuction detects food or other lifeforms in a given direction
 		boolean found;
 		switch (direction) {
 		case North:

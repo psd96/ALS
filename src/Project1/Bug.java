@@ -16,22 +16,22 @@ import javafx.stage.Stage;
 @SuppressWarnings("serial")
 public class Bug extends Herbivore {
 
-	public Bug(int dx, int dy, int length) {
+	public Bug(int dx, int dy, int length) { //Constructor
 		super(dx, dy);
 		AddBug(length);
 	}
 	
 	
-	public Color getFill() {
+	public Color getFill() { //Sets the colour which bugs should be displayed on the grid
 		return Color.RED;
 	}
 	
-	public String getType(){
+	public String getType(){ //Returns the specie of bug
 		String type = "Bug";
 		return type;
 	}
 	
-	public void AddBug(int length) {
+	public void AddBug(int length) { //This method displays the form for user to enter bugs details and sets them.
 		int counter = length;
 		final TextField Xpos = new TextField("");
 		final TextField Ypos = new TextField("");

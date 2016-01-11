@@ -70,6 +70,7 @@ public class Menu {
 		// Top Menu Bar
 		menuBar = new MenuBar();
 		menuBar.setOpacity(0.8);
+
 		// File
 		javafx.scene.control.Menu file = new javafx.scene.control.Menu("File");
 		MenuItem fileNewConfig = new MenuItem("New Configuration");
@@ -84,7 +85,7 @@ public class Menu {
 		file.getItems().add(fileSaveAs);
 		file.getItems().add(fileExit);
 
-		fileNewConfig.setOnAction(new EventHandler<ActionEvent>() {
+		fileNewConfig.setOnAction(new EventHandler<ActionEvent>() { //Allows the user to set a new world configuration
 			@Override
 			public void handle(ActionEvent e) {
 				final Stage stage = new Stage();
@@ -114,6 +115,7 @@ public class Menu {
 				grid.add(notification, 0, 9, 3, 1);
 				grid.add(button, 0, 10);
 
+				//When the button is clicked the following is done
 				button.setOnAction(new EventHandler<ActionEvent>() {
 
 					@Override
@@ -123,17 +125,20 @@ public class Menu {
 							notification.setText("ERROR!!: PLEASE FILL ALL FIELDS");
 
 						} else {
+							// Will save the configs name, and then set the new rold constructor with the users data
 							setFileName(SaveAs.getText());
 							getWorld().clearGroups();
 							setWorld(new World(getRoot(), Integer.parseInt(Food.getText()),
 									Integer.parseInt(Obstacles.getText()), Integer.parseInt(Bugs.getText()), Integer.parseInt(Lions.getText()), Integer.parseInt(Xdimension.getText()),
 									Integer.parseInt(Ydimension.getText()), Integer.parseInt(Shelters.getText())));
 
+							// Closes the stage
 							stage.close();
 						}
 
 					}
 				});
+				//Save the config to the entered file name
 				try {
 					os1 = new ObjectOutputStream(new FileOutputStream("Configurations/" + getFileName() + ".txt"));
 					os1.writeObject(getWorld());
@@ -152,6 +157,8 @@ public class Menu {
 			}
 
 		});
+
+		// Opens a saved configuration
 		fileOpenConfig.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent e) {
@@ -160,7 +167,7 @@ public class Menu {
 				Scene scene = new Scene(root, 300, 100);
 				stage.setTitle("Open Configuration");
 
-				// Gets all files in root dir ending with .txt
+				// Gets all files in configuration file ending with .txt
 				File file = new File("Configurations/");
 				paths = file.list();
 				final ArrayList<String> Files = new ArrayList<>();
@@ -170,7 +177,7 @@ public class Menu {
 					}
 				}
 				
-				
+				//Adds the files to ObserbaleList so can be displayed in ComboBox
 				ObservableList<String> obList = FXCollections.observableList(Files);
 
 				final ComboBox<String> filesComboBox = new ComboBox<>();
@@ -185,6 +192,7 @@ public class Menu {
 				grid.add(button, 3, 0);
 				grid.add(notification, 0, 9, 3, 1);
 
+				//Once the button is clicked, the foloowing is done
 				button.setOnAction(new EventHandler<ActionEvent>() {
 
 					@Override
@@ -195,10 +203,12 @@ public class Menu {
 
 						} else {
 							try {
+								//Reads the world saved in the file
 								is1 = new ObjectInputStream(new FileInputStream("Configurations/" + Files.get(selected)));
 								World w;
 								w = (World) is1.readObject();
 								getWorld().clearGroups();
+								// Creates new world with the info in the config file
 								setWorld(new World(w, getRoot()));
 								saveLatest(Files.get(selected));
 
@@ -209,6 +219,7 @@ public class Menu {
 							} catch (ClassNotFoundException e) {
 								e.printStackTrace();
 							}
+							//Closes stage
 							stage.close();
 
 
@@ -226,10 +237,13 @@ public class Menu {
 				System.out.println("OpenConfig Clicked");
 			}
 		});
+
+		//Saves the configuration under the current name
 		fileSave.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent e) {
 				try {
+					//Saves the config to a file
 					os1 = new ObjectOutputStream(new FileOutputStream("Configurations/" + getFileName() + ".txt"));
 					os1.writeObject(getWorld());
 					os1.close();
@@ -242,6 +256,8 @@ public class Menu {
 				System.out.println("Save Clicked");
 			}
 		});
+
+		// Saves the current config under a new name
 		fileSaveAs.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent e) {
@@ -255,14 +271,18 @@ public class Menu {
 				grid.add(SaveAs, 1, 0, 3, 1);
 				grid.add(button, 0, 2);
 				grid.add(notification, 0, 3, 3, 1);
+
+				// Once the button is pressed, the following is done
 				button.setOnAction(new EventHandler<ActionEvent>() {
 
 					@Override
 					public void handle(ActionEvent arg0) {
+						//Sets the file name from what the user entered
 						setFileName(SaveAs.getText());
 						if(SaveAs.getText().isEmpty()){
 							notification.setText("ERROR!!: PLEASE FILL ALL FIELDS");
 						} else {
+							// Saves the current config under the file name entered
 							try {
 								os1 = new ObjectOutputStream(
 										new FileOutputStream("Configurations/" + getFileName() + ".txt"));
@@ -287,6 +307,8 @@ public class Menu {
 				System.out.println("SaveAs Clicked");
 			}
 		});
+
+		// Exits the application
 		fileExit.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent e) {
@@ -313,14 +335,19 @@ public class Menu {
 				Group root = new Group();
 				Scene scene = new Scene(root, 400, 200);
 				stage.setTitle("Modify Lifeform");
+
+				//Adds all the animals names into a ArrayList
 				final ArrayList<String> animalNames = new ArrayList<>();
 				for (int i = 0; i < getWorld().animalList.size(); i++) {
 					animalNames.add(getWorld().animalList.get(i).getName());
 				}
-				ObservableList<String> obList = FXCollections.observableList(animalNames);
 
+				//ArrayList is then passed to ObservableList so it can be diaplayed in the ComboBox
+				ObservableList<String> obList = FXCollections.observableList(animalNames);
 				final ComboBox<String> animalsComboBox = new ComboBox<>();
 				animalsComboBox.setItems(obList);
+
+				//Adds the labels and textfeilds to the grid in the positions entered
 				final GridPane grid = new GridPane();
 				grid.setVgap(4);
 				grid.setHgap(10);
@@ -338,10 +365,11 @@ public class Menu {
 				grid.add(notification, 0, 10, 3, 1);
 
 
-
+				//When refresh button is clicked the following is done
 				refresh.setOnAction(new EventHandler<ActionEvent>() {
 					@Override
 					public void handle(ActionEvent arg0) {
+						//Will load the X-position, Y-position and energy of the animal selected
 						int selected = animalsComboBox.getSelectionModel().getSelectedIndex();
 
 						String xpos = Integer.toString(getWorld().animalList.get(selected).getXpos());
@@ -355,7 +383,7 @@ public class Menu {
 				});
 
 
-
+				//When the sumbit button is clicked the following is done
 				button.setOnAction(new EventHandler<ActionEvent>() {
 
 					@Override
@@ -363,11 +391,14 @@ public class Menu {
 						if(Xpos.getText().isEmpty() || Ypos.getText().isEmpty() || Energy.getText().isEmpty() || animalsComboBox.getValue() == null){
 							notification.setText("ERROR!!: PLEASE FILL ALL FIELDS");
 						} else {
+							//Edit the animals attributes to what the user has entered
 							int selected = animalsComboBox.getSelectionModel().getSelectedIndex();
 							getWorld().grid[getWorld().animalList.get(selected).getXpos()][getWorld().animalList
 									.get(selected).getYpos()] = ' ';
 							getWorld().animalList.get(selected).setXpos(Integer.parseInt(Xpos.getText()));
 							getWorld().animalList.get(selected).setYpos(Integer.parseInt(Ypos.getText()));
+
+							//Closes stage
 							stage.close();
 
 						}
@@ -383,23 +414,27 @@ public class Menu {
 			}
 		});
 
+		//Removes a animal from the current world
 		removeLifeForm.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent arg0) {
+
 				final Stage stage = new Stage();
 				Group root = new Group();
 				Scene scene = new Scene(root, 300, 100);
 				stage.setTitle("Remove Lifeform");
 
+				//Adds all the animals names into a ArrayList
 				ArrayList<String> animalNames = new ArrayList<>();
 				for (int i = 0; i < getWorld().animalList.size(); i++) {
 					animalNames.add(getWorld().animalList.get(i).getName());
 				}
+				//ArrayList is then passed to ObservableList so it can be diaplayed in the ComboBox
 				ObservableList<String> obList = FXCollections.observableList(animalNames);
-
 				final ComboBox<String> animalsComboBox = new ComboBox<>();
 				animalsComboBox.setItems(obList);
 
+				//Adds the labels and textfeilds to the grid in the positions entered
 				GridPane grid = new GridPane();
 				grid.setVgap(4);
 				grid.setHgap(10);
@@ -409,6 +444,7 @@ public class Menu {
 				grid.add(button, 3, 0);
 				grid.add(notification, 0, 4, 3, 1);
 
+				// When the button is clicked the following is done
 				button.setOnAction(new EventHandler<ActionEvent>() {
 
 					@Override
@@ -416,8 +452,10 @@ public class Menu {
 						if(animalsComboBox.getValue() == null){
 							notification.setText("ERROR!!: PLEASE FILL ALL FIELDS");
 						} else {
+							//Remove the selected animal from the current world
 							int selected = animalsComboBox.getSelectionModel().getSelectedIndex();
 							getWorld().animalList.remove(selected);
+							//Closes the stage
 							stage.close();
 						}
 					}
@@ -430,6 +468,7 @@ public class Menu {
 				stage.show();
 			}
 		});
+		//Adds a life form to the current world
 		addLifeForm.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent arg0) {
@@ -437,6 +476,8 @@ public class Menu {
 				Group root = new Group();
 				Scene scene = new Scene(root, 250, 100);
 				stage.setTitle("Add lifeform");
+
+				//Adds the life forms available to the ComboBox
 				final ComboBox<String> animalsComboBox = new ComboBox<>();
 				animalsComboBox.getItems().addAll("Bug", "Lion");
 				final GridPane grid = new GridPane();
@@ -448,12 +489,14 @@ public class Menu {
 				grid.add(button, 0, 1);
 				grid.add(notification, 0, 2, 3, 1);
 
+				//The following is done when the button is clicked
 				button.setOnAction(new EventHandler<ActionEvent>() {
 					@Override
 					public void handle(ActionEvent arg0) {
 						if(animalsComboBox.getValue() == null){
 							notification.setText("ERROR!!: PLEASE FILL ALL FIELDS");
 						} else {
+							//Will get the selected index and add that animal to the world
 							int selected = animalsComboBox.getSelectionModel().getSelectedIndex();
 							if (selected == 0) {
 								getWorld().AddBug();
@@ -485,6 +528,7 @@ public class Menu {
 		view.getItems().add(editConfig);
 		view.getItems().add(displayMapInfo);
 
+		// Will display all the attributes in the current config, food, obstacles, shelters and animals
 		displayConfig.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent arg0) {
@@ -496,9 +540,12 @@ public class Menu {
 				grid.setVgap(4);
 				grid.setHgap(10);
 				grid.setPadding(new Insets(5, 5, 5, 5));
+
+				//Will print out the number of food, obstacles and shelters in the current world
 				grid.add(new Label("Food: " + getWorld().foodLeft()), 0, 0);
 				grid.add(new Label("Obstacles: " + getWorld().getObstacles()), 0, 1);
 				grid.add(new Label("Shelters: " + getWorld().getShelters()), 0, 2);
+				//Print out the number animals and the details of each animal
 				grid.add(new Label("Animals: " + getWorld().animalList.size()), 0, 3);
 				for (int i = 0; i < getWorld().animalList.size(); i++) {
 					grid.add(new Label("ID: " + getWorld().animalList.get(i).getBugID()), 1, i + 4);
@@ -516,6 +563,8 @@ public class Menu {
 				System.out.println("was clicked");
 			}
 		});
+
+		//Allows the user to edit the current config
 		editConfig.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent arg0) {
@@ -544,7 +593,7 @@ public class Menu {
 				grid.add(button, 0, 10);
 				grid.add(notification, 0, 8, 3, 1);
 
-
+				//Will display the current configuration
 				String bugsSize = Integer.toString(getWorld().bugList.size());
 				Bugs.setText(bugsSize);
 				String lionsSize = Integer.toString(getWorld().lionList.size());
@@ -558,6 +607,7 @@ public class Menu {
 				String yDimension = Integer.toString(getWorld().getYdimension());
 				Ydimension.setText(yDimension);
 
+				//The following is run once the button is clicked
 				button.setOnAction(new EventHandler<ActionEvent>() {
 
 					@Override
@@ -565,6 +615,7 @@ public class Menu {
 						if(Bugs.getText().isEmpty() || Lions.getText().isEmpty() || Food.getText().isEmpty() || Obstacles.getText().isEmpty() || Xdimension.getText().isEmpty() || Ydimension.getText().isEmpty()){
 							notification.setText("ERROR!!: PLEASE FILL ALL FIELDS");
 						}else {
+							//Will take the users input and create a new world
 							getWorld().clearGroups();
 							setWorld(new World(getRoot(), Integer.parseInt(Food.getText()),
 									Integer.parseInt(Obstacles.getText()), Integer.parseInt(Bugs.getText()),
@@ -582,6 +633,8 @@ public class Menu {
 				System.out.println("was  clicked");
 			}
 		});
+
+		//Displays all of the animals in the current world
 		displayLifeForms.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent arg0) {
@@ -593,6 +646,7 @@ public class Menu {
 				grid.setVgap(4);
 				grid.setHgap(10);
 				grid.setPadding(new Insets(5, 5, 5, 5));
+				//Print out the number of animals in the current and all the attributes about them
 				grid.add(new Label("Animals: " + world.animalList.size()), 0, 0);
 				for (int i = 0; i < world.animalList.size(); i++) {
 					grid.add(new Label("Name: " + world.animalList.get(i).getName()), 1, i + 1);
@@ -607,6 +661,8 @@ public class Menu {
 				System.out.println("was clicked");
 			}
 		});
+
+		//Will display the dimensions, number of food, obstacles and shelters in the current world
 		displayMapInfo.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent arg0) {
@@ -646,12 +702,15 @@ public class Menu {
 		simulate.getItems().add(reset);
 		simulate.getItems().add(toggleMap);
 
+		//Will run the application by setting Pause to false
 		run.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent arg0) {
 				Pause = false;
 			}
 		});
+
+		//Will pause the application by setting Pause to true
 		pause.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent arg0) {
@@ -659,6 +718,7 @@ public class Menu {
 			}
 		});
 
+		//Will restart the application
 		restart.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent arg0) {
@@ -672,6 +732,7 @@ public class Menu {
 			}
 		});
 
+		//Will stop the application by clearing the stage
 		stop.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent arg0) {
@@ -684,6 +745,7 @@ public class Menu {
 			}
 		});
 
+		//Will start the application from the beginning and pause it
 		reset.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent arg0) {
@@ -696,6 +758,8 @@ public class Menu {
 				Pause = true;
 			}
 		});
+
+
 		toggleMap.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent arg0) {
@@ -711,6 +775,7 @@ public class Menu {
 		help.getItems().add(appHelp);
 		help.getItems().add(author);
 
+		//Displays information about the application
 		appHelp.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent actionEvent) {
@@ -727,6 +792,7 @@ public class Menu {
 			}
 		});
 
+		//Displays information about the author
 		author.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent actionEvent) {
@@ -744,6 +810,7 @@ public class Menu {
 
 		});
 
+		//Adds the menu options to the menu bar
 		menuBar.getMenus().add(file);
 		menuBar.getMenus().add(edit);
 		menuBar.getMenus().add(view);
@@ -753,43 +820,53 @@ public class Menu {
 		menuBar.prefWidthProperty().bind(primaryStage.widthProperty());
 	}
 
+	//Returns the pause value
 	public boolean Pause() {
 		return Pause;
 	}
 
+	//Returns the toggle value
 	public boolean Toggle(){
 		return Toggle;
 	}
 
+	//Returns the menu bar
 	public MenuBar getMenuBar() {
 		return menuBar;
 	}
 
+	//Retruns the current world
 	public World getWorld() {
 		return this.world;
 	}
 
+	//Sets the world passed in to the current world
 	public void setWorld(World world) {
 		this.world = world;
 	}
 
+	//Returns the current root
 	public Group getRoot() {
 		return this.root;
 	}
 
+	//Sets the root passed in to the current root
 	public void setRoot(Group root) {
 		this.root = root;
 
 	}
 
+	//Returns the current filename of the config
 	public String getFileName() {
 		return this.filename;
 	}
 
+	//Sets the configs filename to the current filename
 	public void setFileName(String filename) {
 		this.filename = filename;
 	}
-	
+
+	//Method saves the last opened config filename into a file
 	public void saveLatest(String filename){
 		File file = new File("last.txt");
 		try {
@@ -803,7 +880,8 @@ public class Menu {
 		}
 		
 	}
-	
+
+	//Loads the last opened cofig
 	public void loadLatest() throws FileNotFoundException {
 		File file = new File("last.txt");
 		String line;

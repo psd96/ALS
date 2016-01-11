@@ -8,7 +8,7 @@ import java.util.Random;
 public abstract class Herbivore extends LifeForm implements Serializable {
 	private char original;
 
-	public Herbivore(int dx,int dy) {
+	public Herbivore(int dx,int dy) { //Constructor
 		this.setXdimension(dx);
 		this.setYdimension(dy);
 		original = getSymbol();
@@ -16,7 +16,7 @@ public abstract class Herbivore extends LifeForm implements Serializable {
 	}
 	
 
-	public boolean smellShelter(Direction direction) {
+	public boolean smellShelter(Direction direction) { //Function thats finds the nearest shelter in a given smellRange
 		boolean found;
 		switch (direction) {
 		case North:
@@ -71,7 +71,7 @@ public abstract class Herbivore extends LifeForm implements Serializable {
 		return false;
 	}
 
-	public Direction getDirectionOfShelter() {
+	public Direction getDirectionOfShelter() { //Will return the direction in which a shelter lies
 		Direction direction = Direction.North;
 		boolean found = false;
 
@@ -88,7 +88,7 @@ public abstract class Herbivore extends LifeForm implements Serializable {
 		}
 	}
 	
-	public void MoveHome(Direction d) {
+	public void MoveHome(Direction d) { //Moves the bug towards the shelter
 		if (this.grid[this.xpos][this.ypos] != '^') {
 			this.grid[this.xpos][this.ypos] = ' ';
 		}
@@ -122,6 +122,7 @@ public abstract class Herbivore extends LifeForm implements Serializable {
 	}
 
 	public void update() {
+		//Bug moves towards a shelter if its energy is below 20 toherwise it goes around looking for food
 		if (energy < 20) {
 			MoveHome(getDirectionOfShelter());
 		} else {
@@ -134,8 +135,10 @@ public abstract class Herbivore extends LifeForm implements Serializable {
 			this.setSymbol('^');
 		}
 
+		//If the position is a food value it will get the assigned food energy and add it to the animals energy
 		if (this.grid[this.xpos][this.ypos] != ' ') {
 			if (this.grid[this.xpos][this.ypos] == '*') {
+				//If it is a * it is poison so it will generate a number between 0 and 9 and take thats away from the animals energy
 				Random rand = new Random();
 				int poison = (rand.nextInt(9) + 1);
 				this.energy -= poison;
