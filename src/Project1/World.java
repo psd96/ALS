@@ -159,8 +159,7 @@ public class World implements Serializable {
 			py = rand.nextInt(getYdimension());
 		} while (this.grid[px][py] != ' ');
 		//Randomly generate boolean to determine if to add food or poison
-		boolean isFood = rand.nextBoolean();
-		if(isFood) {
+		if(rand.nextInt(3) > 0) {
 			grid[px][py] = (char) ('0' + (rand.nextInt(9) + 1));
 		} else{
 			grid[px][py] = '*';
