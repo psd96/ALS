@@ -317,9 +317,12 @@ public class World implements Serializable {
 				if (grid[x][y] == 'X') {
 					Circle obstacle = null;
 					CreateCircle(x, y, obstacle, obstacleGroup, Color.GREEN);
-				} else if (Character.isDigit(grid[x][y]) || grid[x][y] == '*') {
+				} else if (Character.isDigit(grid[x][y])) {
 					Circle food = null;
 					CreateCircle(x, y, food, foodGroup, Color.BLUE);
+				} else if(grid[x][y] == '*'){
+					Circle poison = null;
+					CreateCircle(x, y, poison, foodGroup, Color.DARKCYAN);
 				} else if (grid[x][y] == '^') {
 					Circle shelter = null;
 					CreateCircle(x, y, shelter, shelterGroup, Color.BLACK);
