@@ -184,9 +184,8 @@ public class Menu {
 					}
 				}
 				
-				//Adds the files to ObserbaleList so can be displayed in ComboBox
+				//Adds the files to ObservableList so can be displayed in ComboBox
 				ObservableList<String> obList = FXCollections.observableList(Files);
-
 				final ComboBox<String> filesComboBox = new ComboBox<>();
 				filesComboBox.setItems(obList);
 
