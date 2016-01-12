@@ -323,7 +323,7 @@ public class World implements Serializable {
 				} else if(grid[x][y] == '*'){
 					Circle poison = null;
 					CreateCircle(x, y, poison, foodGroup, Color.DARKCYAN);
-				} else if (grid[x][y] == '^') {
+				} else if (grid[x][y] == '^' ) {
 					Circle shelter = null;
 					CreateCircle(x, y, shelter, shelterGroup, Color.BLACK);
 				} else if (grid[x][y] != ' ') {
