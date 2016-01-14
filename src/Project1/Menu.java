@@ -37,6 +37,7 @@ public class Menu {
 	private boolean Pause = true;
 	private boolean Toggle = false;
 	private Button button = new Button("Submit");
+	private Button refresh = new Button("Refresh");
 	private Label notification = new Label();
 	private TextField SaveAs = new TextField("");
 	private TextField Bugs = new TextField("");
@@ -327,7 +328,6 @@ public class Menu {
 		modifyLifeForm.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent arg0) {
-				Button refresh = new Button("Refresh");
 
 				final Stage stage = new Stage();
 				Group root = new Group();
@@ -539,7 +539,7 @@ public class Menu {
 				Group root = new Group();
 				Scene scene = new Scene(root, 700, 300);
 				stage.setTitle("Display Configuration");
-				GridPane grid = new GridPane();
+				final GridPane grid = new GridPane();
 				grid.setVgap(4);
 				grid.setHgap(10);
 				grid.setPadding(new Insets(5, 5, 5, 5));
@@ -548,6 +548,7 @@ public class Menu {
 				grid.add(new Label("Food: " + getWorld().foodLeft()), 0, 0);
 				grid.add(new Label("Obstacles: " + getWorld().getObstacles()), 0, 1);
 				grid.add(new Label("Shelters: " + getWorld().getShelters()), 0, 2);
+				grid.add(refresh, 9,0);
 				//Print out the number animals and the details of each animal
 				grid.add(new Label("Animals: " + getWorld().animalList.size()), 0, 3);
 				for (int i = 0; i < getWorld().animalList.size(); i++) {
@@ -561,6 +562,24 @@ public class Menu {
 						grid.add(new Label("Members: " + (getWorld().animalList.get(i)).getMembers()), 7, i + 4);
 					}
 				}
+
+				refresh.setOnAction(new EventHandler<ActionEvent>() {
+					@Override
+					public void handle(ActionEvent actionEvent) {
+						grid.getChildren().remove(5,11);
+						for (int i = 0; i < getWorld().animalList.size(); i++) {
+							grid.add(new Label("ID: " + getWorld().animalList.get(i).getBugID()), 1, i + 4);
+							grid.add(new Label("Specie: " + getWorld().animalList.get(i).getType()), 2, i + 4);
+							grid.add(new Label("Name: " + getWorld().animalList.get(i).getName()), 3, i + 4);
+							grid.add(new Label("X-position: " + getWorld().animalList.get(i).getXpos()), 4, i + 4);
+							grid.add(new Label("Y-position: " + getWorld().animalList.get(i).getYpos()), 5, i + 4);
+							grid.add(new Label("Energy: " + getWorld().animalList.get(i).getEnergy()), 6, i + 4);
+							if(getWorld().animalList.get(i) instanceof Herd){
+								grid.add(new Label("Members: " + (getWorld().animalList.get(i)).getMembers()), 7, i + 4);
+							}
+						}
+					}
+				});
 
 				root = (Group) scene.getRoot();
 				root.getChildren().add(grid);
