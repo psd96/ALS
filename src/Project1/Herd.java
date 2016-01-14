@@ -14,7 +14,7 @@ public class Herd extends Carnivore {
 
     @Override
     public String getType() {
-        String type = "Herd";
+        String type = getHerdType() + " Herd";
         return type;
     }
 

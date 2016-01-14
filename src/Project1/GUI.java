@@ -37,7 +37,7 @@ public class GUI extends Application {
 		final Scene scene = new Scene(root);
 
 		final Menu menu = new Menu(primaryStage, root);
-		root.getChildren().add(menu.getMenuBar());
+		root.getChildren().add(menu.getBorder());
 
 
 		KeyFrame frame = new KeyFrame(Duration.millis(300), new EventHandler<ActionEvent>() {

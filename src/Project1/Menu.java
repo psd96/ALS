@@ -18,26 +18,34 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
+import javafx.geometry.Orientation;
 import javafx.scene.Group;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.MenuBar;
-import javafx.scene.control.MenuItem;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
+import javafx.scene.effect.BlendMode;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+
+import javax.swing.border.Border;
 
 public class Menu {
 	//Done stuff
 
 	final TextField Energy = new TextField("");
 	private MenuBar menuBar;
+	private VBox topConatiner;
+	private BorderPane border;
 	private boolean Pause = true;
 	private boolean Toggle = false;
 	private Button button = new Button("Submit");
 	private Button refresh = new Button("Refresh");
+	private Button runbtn = new Button("Run");
+	private Button pausebtn = new Button("Pause");
+	private Button restartbtn = new Button("Restart");
+	private Button stopbtn = new Button("Stop");
+	private Button resetbtn = new Button("Reset");
 	private Label notification = new Label();
 	private TextField SaveAs = new TextField("");
 	private TextField Bugs = new TextField("");
@@ -856,6 +864,62 @@ public class Menu {
 
 		});
 
+		ToolBar toolBar = new ToolBar(runbtn, pausebtn, restartbtn, resetbtn, stopbtn);
+		BorderPane pane = new BorderPane();
+		pane.setTop(toolBar);
+		toolBar.setOpacity(0.8);
+
+		runbtn.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent actionEvent) {
+				Pause = false;
+			}
+		});
+
+		pausebtn.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent actionEvent) {
+				Pause = true;
+			}
+		});
+
+		restartbtn.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent actionEvent) {
+				getWorld().clearGroups();
+				try {
+					loadLatest();
+				} catch (FileNotFoundException e) {
+					e.printStackTrace();
+				}
+				Pause = false;
+			}
+		});
+
+		resetbtn.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent actionEvent) {
+				getWorld().clearGroups();
+				try {
+					loadLatest();
+				} catch (FileNotFoundException e) {
+					e.printStackTrace();
+				}
+				Pause = true;
+			}
+		});
+
+		stopbtn.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent actionEvent) {
+				int x = getWorld().getXdimension();
+				int y = getWorld().getYdimension();
+				getWorld().clearGroups();
+				setWorld(new World(getRoot(), 0, 0, 0, 0, x, y, 0));
+			}
+		});
+
+
 		//Adds the menu options to the menu bar
 		menuBar.getMenus().add(file);
 		menuBar.getMenus().add(edit);
@@ -863,7 +927,13 @@ public class Menu {
 		menuBar.getMenus().add(simulate);
 		menuBar.getMenus().add(help);
 
-		menuBar.prefWidthProperty().bind(primaryStage.widthProperty());
+		topConatiner = new VBox();
+		topConatiner.prefWidthProperty().bind(primaryStage.widthProperty());
+		topConatiner.getChildren().add(menuBar);
+		topConatiner.getChildren().add(toolBar);
+
+		border = new BorderPane();
+		border.setTop(topConatiner);
 	}
 
 	//Returns the pause value
@@ -876,9 +946,9 @@ public class Menu {
 		return Toggle;
 	}
 
-	//Returns the menu bar
-	public MenuBar getMenuBar() {
-		return menuBar;
+	//Returns the border
+	public BorderPane getBorder(){
+		return border;
 	}
 
 	//Retruns the current world

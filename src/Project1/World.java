@@ -391,7 +391,7 @@ public class World implements Serializable {
 	//Creates a circle and sets its colour
 	public void CreateCircle(double px, double py, Circle circle, Group root, Color fill) {
 		double xpos = 20 * (px + 1.0);
-		double ypos = 20 * (py + 2.0);
+		double ypos = 20 * (py + 3.5);
 		circle = new Circle(xpos, ypos, 9);
 		circle.setFill(fill);
 		root.getChildren().add(circle);
