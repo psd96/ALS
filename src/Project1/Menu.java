@@ -608,6 +608,8 @@ public class Menu {
 				Food.setText(food);
 				String obstacles = Integer.toString(getWorld().getObstacles());
 				Obstacles.setText(obstacles);
+				String shelters = Integer.toString(getWorld().getShelters());
+				Shelters.setText(shelters);
 				String xDimension = Integer.toString(getWorld().getXdimension());
 				Xdimension.setText(xDimension);
 				String yDimension = Integer.toString(getWorld().getYdimension());
