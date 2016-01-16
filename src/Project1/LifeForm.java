@@ -357,7 +357,7 @@ public abstract class LifeForm implements Serializable {
 		}
 	}
 
-public enum Direction {
+	public enum Direction {
 		North, East, South, West
 	}
 

@@ -665,7 +665,7 @@ public class Menu {
 					}
 				});
 
-				Scene scene = new Scene(grid, 750, 400);
+				Scene scene = new Scene(grid, 800, 400);
 				stage.setScene(scene);
 				stage.show();
 				System.out.println("was clicked");
