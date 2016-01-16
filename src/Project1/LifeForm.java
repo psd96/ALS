@@ -6,6 +6,7 @@ import java.util.Random;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -286,14 +287,13 @@ public abstract class LifeForm implements Serializable {
 		final Label notification = new Label("");
 		Button button = new Button("Submit");
 		final Stage stage = new Stage();
-		Group root = new Group();
-		Scene scene = new Scene(root, 300, 300);
 		stage.setTitle("Add " + specie);
 
 		final GridPane grid = new GridPane();
 		grid.setVgap(4);
 		grid.setHgap(10);
 		grid.setPadding(new Insets(5, 5, 5, 5));
+		grid.setAlignment(Pos.CENTER);
 		Text title = new Text("Animal: " + specie);
 		title.setFont(Font.font("Verdana", FontWeight.NORMAL,20));
 		grid.add(title,0,0,3,1);
@@ -338,8 +338,7 @@ public abstract class LifeForm implements Serializable {
 
 		});
 
-		root = (Group) scene.getRoot();
-		root.getChildren().add(grid);
+		Scene scene = new Scene(grid, 300, 300);
 		stage.setScene(scene);
 		stage.show();
 	}
