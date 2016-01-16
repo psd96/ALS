@@ -13,6 +13,9 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 public abstract class LifeForm implements Serializable {
@@ -291,7 +294,9 @@ public abstract class LifeForm implements Serializable {
 		grid.setVgap(4);
 		grid.setHgap(10);
 		grid.setPadding(new Insets(5, 5, 5, 5));
-		grid.add(new Label("Animals: " + specie), 0, 0);
+		Text title = new Text("Animal: " + specie);
+		title.setFont(Font.font("Verdana", FontWeight.NORMAL,20));
+		grid.add(title,0,0,3,1);
 		grid.add(button, 0, 11);
 		grid.add(new Label("Name: "), 0, 3);
 		grid.add(Name, 1, 3, 3, 1);
