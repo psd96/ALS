@@ -16,9 +16,16 @@ import javafx.stage.Stage;
 public class Bug extends Herbivore {
 
 
-	public Bug(int dx, int dy) { //Constructor
+	public Bug(int dx, int dy, String name, int xpos, int ypos, int energy, int ID, int smellRange ) { //Constructor
 		super(dx, dy, "Bug");
-		AddAnimal(getType());
+		//AddAnimal(getType());
+		setName(name);
+		setBugID(ID);
+		setEnergy(energy);
+		setSymbol(name.charAt(0));
+		setXpos(xpos);
+		setYpos(ypos);
+		setSmellrange(smellRange);
 	}
 
 	public Color getFill() { //Sets the colour which bugs should be displayed on the grid

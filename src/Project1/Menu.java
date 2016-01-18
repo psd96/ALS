@@ -1,15 +1,6 @@
 package Project1;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
+import java.io.*;
 import java.util.ArrayList;
 
 import javafx.application.Platform;
@@ -18,12 +9,10 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
-import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.effect.BlendMode;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
@@ -45,6 +34,8 @@ public class Menu {
 	private BorderPane border;
 	private boolean Pause = true;
 	private boolean Toggle = false;
+	private boolean Stop = false;
+	private boolean Editted = false;
 	private Button button = new Button("Submit");
 	private Button refresh = new Button("Refresh");
 	private Button runbtn = new Button("Run");
@@ -54,8 +45,6 @@ public class Menu {
 	private Button resetbtn = new Button("Reset");
 	private Label notification = new Label();
 	private TextField SaveAs = new TextField("");
-	private TextField Bugs = new TextField("");
-	private TextField Lions = new TextField("");
 	private TextField Food = new TextField("");
 	private TextField Obstacles = new TextField("");
 	private TextField Shelters = new TextField("");
@@ -73,14 +62,14 @@ public class Menu {
 	public Menu(Stage primaryStage, Group root) {
 		setRoot(root);
 		// Load latest config here to start
-		try {
+		/*try {
 			loadLatest();
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
-			setWorld(new World(getRoot(), 0, 0, 0, 0, 25, 25, 0));
-		}
+			setWorld(new World(getRoot(), 0, 0, 25, 25, 0));
+		}*/
 
-		//setWorld(new World(getRoot(), 0, 0, 0, 0, 25, 25, 0));
+		setWorld(new World(getRoot(), 0, 0, 25, 25, 0));
 
 
 		// Top Menu Bar
@@ -118,21 +107,17 @@ public class Menu {
 				grid.add(new Label("Save As:"), 0, 1);
 				grid.setPadding(new Insets(5, 5, 5, 5));
 				grid.add(SaveAs, 1, 1, 3, 1);
-				grid.add(new Label("Bugs:"), 0, 2);
-				grid.add(Bugs, 1, 2, 3, 1);
-				grid.add(new Label("Lions:"), 0, 3);
-				grid.add(Lions, 1, 3, 3, 1);
-				grid.add(new Label("Food:"), 0, 4);
-				grid.add(Food, 1, 4, 3, 1);
-				grid.add(new Label("Obstacles:"), 0, 5);
-				grid.add(Obstacles, 1, 5, 3, 1);
-				grid.add(new Label("Shelters:"), 0, 6);
-				grid.add(Shelters, 1, 6, 3, 1);
-				grid.add(new Label("X Dimension:"), 0, 7);
-				grid.add(Xdimension, 1, 7, 3, 1);
-				grid.add(new Label("Y Dimension:"), 0, 8);
-				grid.add(Ydimension, 1, 8, 3, 1);
-				grid.add(notification, 0, 9, 3, 1);
+				grid.add(new Label("Food:"), 0, 2);
+				grid.add(Food, 1, 2, 3, 1);
+				grid.add(new Label("Obstacles:"), 0, 3);
+				grid.add(Obstacles, 1, 3, 3, 1);
+				grid.add(new Label("Shelters:"), 0, 4);
+				grid.add(Shelters, 1, 4, 3, 1);
+				grid.add(new Label("X Dimension:"), 0, 5);
+				grid.add(Xdimension, 1, 5, 3, 1);
+				grid.add(new Label("Y Dimension:"), 0, 6);
+				grid.add(Ydimension, 1, 6, 3, 1);
+				grid.add(notification, 0, 7, 3, 1);
 				addSubmit(grid, 0, 10);
 
 				//When the button is clicked the following is done
@@ -140,12 +125,12 @@ public class Menu {
 
 					@Override
 					public void handle(ActionEvent arg0) {
-						if (!SaveAs.getText().isEmpty() && !Bugs.getText().isEmpty() && !Lions.getText().isEmpty() && !Food.getText().isEmpty() && !Obstacles.getText().isEmpty()
+						if (!SaveAs.getText().isEmpty() && !Food.getText().isEmpty() && !Obstacles.getText().isEmpty()
 								&& !Shelters.getText().isEmpty() && !Xdimension.getText().isEmpty() && !Ydimension.getText().isEmpty()) {
-							if(!checkValid(Xdimension) || !checkValid(Ydimension) || !checkValid(Shelters) || !checkValid(Obstacles)|| !checkValid(Food) || !checkValid(Lions) || !checkValid(Bugs)) {
+							if(!checkValid(Xdimension) || !checkValid(Ydimension) || !checkValid(Shelters) || !checkValid(Obstacles)|| !checkValid(Food)) {
                                 notification.setText("ERROR!!: PLEASE ENTER AN INTEGER");
                             } else {
-								if (Integer.parseInt(Food.getText()) + Integer.parseInt(Obstacles.getText()) + Integer.parseInt(Bugs.getText()) + Integer.parseInt(Lions.getText()) + Integer.parseInt(Shelters.getText()) >
+								if (Integer.parseInt(Food.getText()) + Integer.parseInt(Obstacles.getText()) + Integer.parseInt(Shelters.getText()) >
 										Integer.parseInt(Xdimension.getText()) * Integer.parseInt(Ydimension.getText())) {
 									notification.setText("ERROR!!: TOO MANY OBJECT FOR WORLD DIMENSIONS");
 								} else {
@@ -153,11 +138,13 @@ public class Menu {
 									setFileName(SaveAs.getText());
 									getWorld().clearGroups();
 									setWorld(new World(getRoot(), Integer.parseInt(Food.getText()),
-											Integer.parseInt(Obstacles.getText()), Integer.parseInt(Bugs.getText()), Integer.parseInt(Lions.getText()), Integer.parseInt(Xdimension.getText()),
+											Integer.parseInt(Obstacles.getText()), Integer.parseInt(Xdimension.getText()),
 											Integer.parseInt(Ydimension.getText()), Integer.parseInt(Shelters.getText())));
 
+									AddAnimal();
 									// Closes the stage
 									stage.close();
+									Editted = false;
 								}
 							}
 						} else {
@@ -167,14 +154,6 @@ public class Menu {
 					}
 				});
 				//Save the config to the entered file name
-				try {
-					os1 = new ObjectOutputStream(new FileOutputStream("Configurations/" + getFileName() + ".txt"));
-					os1.writeObject(getWorld());
-					os1.close();
-					saveLatest(getFileName() + ".txt");
-				}catch (IOException e1) {
-					e1.printStackTrace();
-				}
 
 				Scene scene = new Scene(grid, 300, 300);
 				stage.setScene(scene);
@@ -243,6 +222,7 @@ public class Menu {
 							} catch (IOException | ClassNotFoundException e) {
 								e.printStackTrace();
 							}
+							Editted = false;
 							//Closes stage
 							stage.close();
 
@@ -287,6 +267,7 @@ public class Menu {
 					hbtn.getChildren().add(ok);
 					grid.add(hbtn,0,1);
 
+					Editted = false;
 					ok.setOnAction(new EventHandler<ActionEvent>() {
 						@Override
 						public void handle(ActionEvent actionEvent) {
@@ -296,6 +277,7 @@ public class Menu {
 					Scene scene = new Scene(grid, 150, 100);
 					stage.setScene(scene);
 					stage.show();
+
 				} catch (IOException e1) {
 					e1.printStackTrace();
 					final Stage stage = new Stage();
@@ -361,6 +343,7 @@ public class Menu {
 								os1.writeObject(getWorld());
 								os1.close();
 								saveLatest(getFileName() + ".txt");
+								Editted = false;
 							} catch (IOException e) {
 								e.printStackTrace();
 							}
@@ -477,6 +460,8 @@ public class Menu {
 								getWorld().animalList.get(selected).setXpos(Integer.parseInt(Xpos.getText()));
 								getWorld().animalList.get(selected).setYpos(Integer.parseInt(Ypos.getText()));
 
+								Editted = true;
+								saveEdit();
 								//Closes stage
 								stage.close();
 							} else {
@@ -486,7 +471,6 @@ public class Menu {
 					}
 
 				});
-
 				Scene scene = new Scene(grid, 400, 250);
 				stage.setScene(scene);
 				stage.show();
@@ -539,6 +523,8 @@ public class Menu {
 							int selected = animalsComboBox.getSelectionModel().getSelectedIndex();
 							getWorld().animalList.remove(selected);
 							//Closes the stage
+							Editted = true;
+							saveEdit();
 							stage.close();
 						}
 					}
@@ -554,49 +540,7 @@ public class Menu {
 		addLifeForm.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent arg0) {
-				final Stage stage = new Stage();
-				notification.setText("");
-				stage.setTitle("Add lifeform");
-				Text title = new Text("Add Lifeform");
-				title.setFont(Font.font("Verdana", FontWeight.NORMAL,20));
-
-				//Adds the life forms available to the ComboBox
-				final ComboBox<String> animalsComboBox = new ComboBox<>();
-				animalsComboBox.getItems().addAll("Bug", "Lion");
-				final GridPane grid = new GridPane();
-				grid.setVgap(4);
-				grid.setHgap(10);
-				grid.setAlignment(Pos.CENTER);
-				grid.setPadding(new Insets(5, 5, 5, 5));
-				grid.add(title,0,0,3,1);
-				grid.add(new Label("Animals: "), 0, 1);
-				grid.add(animalsComboBox, 1, 1);
-				addSubmit(grid,2,1);
-				grid.add(notification, 0, 2, 3, 1);
-
-				//The following is done when the button is clicked
-				button.setOnAction(new EventHandler<ActionEvent>() {
-					@Override
-					public void handle(ActionEvent arg0) {
-						if(animalsComboBox.getValue() == null){
-							notification.setText("ERROR!!: PLEASE FILL ALL FIELDS");
-						} else {
-							//Will get the selected index and add that animal to the world
-							int selected = animalsComboBox.getSelectionModel().getSelectedIndex();
-							if (selected == 0) {
-								getWorld().AddBug();
-							} else if (selected == 1) {
-								getWorld().AddLion();
-							}
-							stage.close();
-						}
-					}
-
-				});
-
-				Scene scene = new Scene(grid, 250, 100);
-				stage.setScene(scene);
-				stage.show();
+				AddAnimal();
 				System.out.println("add life form clicked");
 			}
 		});
@@ -620,7 +564,7 @@ public class Menu {
 				Stage stage = new Stage();
 				notification.setText("");
 				stage.setTitle("Display Configuration");
-				Text title = new Text("Display Configuration");
+				final Text title = new Text("Display Configuration");
 				title.setFont(Font.font("Verdana", FontWeight.NORMAL,20));
 				final GridPane grid = new GridPane();
 				grid.setVgap(4);
@@ -628,41 +572,17 @@ public class Menu {
 				grid.setPadding(new Insets(5, 5, 5, 5));
 
 				//Will print out the number of food, obstacles and shelters in the current world
-				grid.add(title,0,0,8,1);
-				grid.add(new Label("Food: " + getWorld().foodLeft()), 0, 1);
-				grid.add(new Label("Obstacles: " + getWorld().getObstacles()), 0, 2);
-				grid.add(new Label("Shelters: " + getWorld().getShelters()), 0, 3);
 				grid.add(refresh, 9,0);
-				//Print out the number animals and the details of each animal
-				grid.add(new Label("Animals: " + getWorld().animalList.size()), 0, 4);
-				for (int i = 0; i < getWorld().animalList.size(); i++) {
-					grid.add(new Label("ID: " + getWorld().animalList.get(i).getBugID()), 1, i + 5);
-					grid.add(new Label("Specie: " + getWorld().animalList.get(i).getType()), 2, i + 5);
-					grid.add(new Label("Name: " + getWorld().animalList.get(i).getName()), 3, i + 5);
-					grid.add(new Label("X-position: " + getWorld().animalList.get(i).getXpos()), 4, i + 5);
-					grid.add(new Label("Y-position: " + getWorld().animalList.get(i).getYpos()), 5, i + 5);
-					grid.add(new Label("Energy: " + getWorld().animalList.get(i).getEnergy()), 6, i + 5);
-					if(getWorld().animalList.get(i) instanceof Herd){
-						grid.add(new Label("Members: " + (getWorld().animalList.get(i)).getMembers()), 7, i + 5);
-					}
-				}
+				displayConfig(grid, title);
 
 				refresh.setOnAction(new EventHandler<ActionEvent>() {
 					@Override
 					public void handle(ActionEvent actionEvent) {
-						grid.getChildren().remove(6,11);
-						for (int i = 0; i < getWorld().animalList.size(); i++) {
-							grid.add(new Label("ID: " + getWorld().animalList.get(i).getBugID()), 1, i + 5);
-							grid.add(new Label("Specie: " + getWorld().animalList.get(i).getType()), 2, i + 5);
-							grid.add(new Label("Name: " + getWorld().animalList.get(i).getName()), 3, i + 5);
-							grid.add(new Label("X-position: " + getWorld().animalList.get(i).getXpos()), 4, i + 5);
-							grid.add(new Label("Y-position: " + getWorld().animalList.get(i).getYpos()), 5, i + 5);
-							grid.add(new Label("Energy: " + getWorld().animalList.get(i).getEnergy()), 6, i + 5);
-							if(getWorld().animalList.get(i) instanceof Herd){
-								grid.add(new Label("Members: " + (getWorld().animalList.get(i)).getMembers()), 7, i + 5);
-							}
-						}
+						grid.getChildren().clear();
+						grid.add(refresh, 9,0);
+						displayConfig(grid, title);
 					}
+
 				});
 
 				Scene scene = new Scene(grid, 800, 400);
@@ -689,29 +609,22 @@ public class Menu {
 				grid.add(new Label("Save As:"), 0, 1);
 				grid.setPadding(new Insets(5, 5, 5, 5));
 				grid.add(SaveAs, 1, 1, 3, 1);
-				grid.add(new Label("Bugs:"), 0, 2);
-				grid.add(Bugs, 1, 2, 3, 1);
-				grid.add(new Label("Lions:"), 0, 3);
-				grid.add(Lions, 1, 3, 3, 1);
-				grid.add(new Label("Food:"), 0, 4);
-				grid.add(Food, 1, 4, 3, 1);
-				grid.add(new Label("Obstacles:"), 0, 5);
-				grid.add(Obstacles, 1, 5, 3, 1);
-				grid.add(new Label("Shelters:"), 0, 6);
-				grid.add(Shelters, 1, 6, 3, 1);
-				grid.add(new Label("X Dimension:"), 0, 7);
-				grid.add(Xdimension, 1, 7, 3, 1);
-				grid.add(new Label("Y Dimension:"), 0, 8);
-				grid.add(Ydimension, 1, 8, 3, 1);
-				grid.add(notification, 0, 9, 3, 1);
+				grid.add(new Label("Food:"), 0, 2);
+				grid.add(Food, 1, 2, 3, 1);
+				grid.add(new Label("Obstacles:"), 0, 3);
+				grid.add(Obstacles, 1, 3, 3, 1);
+				grid.add(new Label("Shelters:"), 0, 4);
+				grid.add(Shelters, 1, 4, 3, 1);
+				grid.add(new Label("X Dimension:"), 0, 5);
+				grid.add(Xdimension, 1, 5, 3, 1);
+				grid.add(new Label("Y Dimension:"), 0, 6);
+				grid.add(Ydimension, 1, 6, 3, 1);
+				grid.add(notification, 0, 7, 3, 1);
 				addSubmit(grid, 0, 10);
 
 				//Will display the current configuration
 				SaveAs.setText(getFileName());
 				String bugsSize = Integer.toString(getWorld().bugList.size());
-				Bugs.setText(bugsSize);
-				String lionsSize = Integer.toString(getWorld().lionList.size());
-				Lions.setText(lionsSize);
 				String food = Integer.toString(getWorld().getFood());
 				Food.setText(food);
 				String obstacles = Integer.toString(getWorld().getObstacles());
@@ -728,13 +641,13 @@ public class Menu {
 
 					@Override
 					public void handle(ActionEvent arg0) {
-						if (!Bugs.getText().isEmpty() && !Lions.getText().isEmpty() && !Food.getText().isEmpty() && !Obstacles.getText().isEmpty()
+						if (!Food.getText().isEmpty() && !Obstacles.getText().isEmpty()
 								&& !Shelters.getText().isEmpty() && !Xdimension.getText().isEmpty() && !Ydimension.getText().isEmpty()) {
-							if (!checkValid(Xdimension) || !checkValid(Ydimension) || !checkValid(Shelters) || !checkValid(Obstacles) || !checkValid(Food) || !checkValid(Lions) || !checkValid(Bugs)) {
+							if (!checkValid(Xdimension) || !checkValid(Ydimension) || !checkValid(Shelters) || !checkValid(Obstacles) || !checkValid(Food)) {
 								notification.setText("ERROR!!: PLEASE ENTER AN INTEGER");
 							} else {
 								//Checks if number of objects is greater than max allowed in the entered dimensions
-								if (Integer.parseInt(Food.getText()) + Integer.parseInt(Obstacles.getText()) + Integer.parseInt(Bugs.getText()) + Integer.parseInt(Lions.getText()) + Integer.parseInt(Shelters.getText()) >
+								if (Integer.parseInt(Food.getText()) + Integer.parseInt(Obstacles.getText()) + Integer.parseInt(Shelters.getText()) >
 										Integer.parseInt(Xdimension.getText()) * Integer.parseInt(Ydimension.getText())) {
 									notification.setText("ERROR!!: TOO MANY OBJECT FOR WORLD DIMENSIONS");
 								} else {
@@ -742,9 +655,10 @@ public class Menu {
 									setFileName(SaveAs.getText());
 									getWorld().clearGroups();
 									setWorld(new World(getRoot(), Integer.parseInt(Food.getText()),
-											Integer.parseInt(Obstacles.getText()), Integer.parseInt(Bugs.getText()), Integer.parseInt(Lions.getText()), Integer.parseInt(Xdimension.getText()),
+											Integer.parseInt(Obstacles.getText()), Integer.parseInt(Xdimension.getText()),
 											Integer.parseInt(Ydimension.getText()), Integer.parseInt(Shelters.getText())));
 
+									Editted = true;
 									// Closes the stage
 									stage.close();
 								}
@@ -842,6 +756,14 @@ public class Menu {
 		run.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent arg0) {
+				if(Stop == true){
+					try {
+						loadLatest();
+					} catch (FileNotFoundException e) {
+						e.printStackTrace();
+					}
+					Stop = false;
+				}
 				Pause = false;
 			}
 		});
@@ -859,12 +781,17 @@ public class Menu {
 			@Override
 			public void handle(ActionEvent arg0) {
 				getWorld().clearGroups();
-				try {
-					loadLatest();
-				} catch (FileNotFoundException e) {
-					e.printStackTrace();
+				if(Editted){
+					loadEdit();
+				} else{
+					try {
+						loadLatest();
+					} catch (FileNotFoundException e) {
+						e.printStackTrace();
+					}
 				}
-				Pause = false;
+				Editted = false;
+				Pause = true;
 			}
 		});
 
@@ -875,7 +802,7 @@ public class Menu {
 				int x = getWorld().getXdimension();
 				int y = getWorld().getYdimension();
 				getWorld().clearGroups();
-				setWorld(new World(getRoot(), 0, 0, 0, 0, x, y, 0));
+				setWorld(new World(getRoot(), 0, 0, x, y, 0));
 
 
 			}
@@ -904,7 +831,6 @@ public class Menu {
 					toggleMap.setText("Toggle Map : ON");
 				} else {
 					toggleMap.setText("Toggle Map : OFF");
-
 				}
 
 				System.out.println("was clicked");
@@ -956,8 +882,15 @@ public class Menu {
 		runbtn.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent actionEvent) {
-				Pause = false;
-			}
+				if(Stop == true){
+					try {
+						loadLatest();
+					} catch (FileNotFoundException e) {
+						e.printStackTrace();
+					}
+					Stop = false;
+				}
+				Pause = false;			}
 		});
 
 		pausebtn.setOnAction(new EventHandler<ActionEvent>() {
@@ -971,12 +904,17 @@ public class Menu {
 			@Override
 			public void handle(ActionEvent actionEvent) {
 				getWorld().clearGroups();
-				try {
-					loadLatest();
-				} catch (FileNotFoundException e) {
-					e.printStackTrace();
+				if(Editted){
+					loadEdit();
+				} else{
+					try {
+						loadLatest();
+					} catch (FileNotFoundException e) {
+						e.printStackTrace();
+					}
 				}
-				Pause = false;
+				Editted = false;
+				Pause = true;
 			}
 		});
 
@@ -999,7 +937,8 @@ public class Menu {
 				int x = getWorld().getXdimension();
 				int y = getWorld().getYdimension();
 				getWorld().clearGroups();
-				setWorld(new World(getRoot(), 0, 0, 0, 0, x, y, 0));
+				Stop = true;
+				setWorld(new World(getRoot(), 0, 0, x, y, 0));
 			}
 		});
 
@@ -1023,6 +962,10 @@ public class Menu {
 	//Returns the pause value
 	public boolean Pause() {
 		return Pause;
+	}
+
+	public boolean isEditted() {
+		return Editted;
 	}
 
 	//Returns the toggle value
@@ -1081,7 +1024,7 @@ public class Menu {
 		
 	}
 
-	//Loads the last opened cofig
+	//Loads the last opened config
 	public void loadLatest() throws FileNotFoundException {
 		File file = new File("last.txt");
 		String line;
@@ -1117,10 +1060,203 @@ public class Menu {
 		}
 	}
 
+	public void saveEdit(){
+		try {
+			os1 = new ObjectOutputStream(new FileOutputStream("Temp/temp.txt"));
+			os1.writeObject(getWorld());
+			os1.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void loadEdit(){
+		World w;
+		try {
+			is1 = new ObjectInputStream(new FileInputStream("Temp/temp.txt"));
+			w = (World) is1.readObject();
+			getWorld().clearGroups();
+			// Creates new world with the info in the config file
+			setWorld(new World(w, getRoot()));
+		} catch (IOException | ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+	}
+
 	public void addSubmit(GridPane grid, int x, int y){
 		HBox hbtn = new HBox(10);
 		hbtn.setAlignment(Pos.BOTTOM_LEFT);
 		hbtn.getChildren().add(button);
 		grid.add(hbtn, x, y);
 	}
+
+	public void AddAnimal() { //This method displays the form for user to enter bugs details and sets them.
+		final TextField Xpos = new TextField("");
+		final TextField Ypos = new TextField("");
+		final TextField Energy = new TextField("");
+		final TextField Name = new TextField("");
+		final TextField ID = new TextField("");
+		final TextField SmellRange= new TextField("");
+		final Label notification = new Label("");
+		Button button = new Button("Submit");
+		final Stage stage = new Stage();
+		stage.setTitle("Add Animal");
+
+		final GridPane grid = new GridPane();
+		grid.setVgap(4);
+		grid.setHgap(10);
+		grid.setPadding(new Insets(5, 5, 5, 5));
+		grid.setAlignment(Pos.CENTER);
+		final ComboBox<String> animalsComboBox = new ComboBox<>();
+		animalsComboBox.getItems().addAll("Bug", "Lion");
+		Text title = new Text("Animal: ");
+		title.setFont(Font.font("Verdana", FontWeight.NORMAL,15));
+		grid.add(title,0,0,3,1);
+		grid.add(animalsComboBox,1,0);
+		grid.add(button, 0, 11);
+
+		grid.add(new Label("Name: "), 0, 3);
+		grid.add(Name, 1, 3, 3, 1);
+		grid.add(new Label("ID: "), 0, 4);
+		grid.add(ID, 1, 4, 3, 1);
+		grid.add(new Label("Energy: "), 0, 5);
+		grid.add(Energy, 1, 5, 3, 1);
+		grid.add(new Label("Smell Range: "), 0, 6);
+		grid.add(SmellRange, 1, 6, 3, 1);
+		grid.add(new Label("Xpos: "), 0, 7);
+		grid.add(Xpos, 1, 7, 3, 1);
+		grid.add(new Label("Ypos: "), 0, 8);
+		grid.add(Ypos, 1, 8, 3, 1);
+		grid.add(notification, 0, 9, 3, 1);
+		button.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent arg0) {
+				if (animalsComboBox.getSelectionModel() == null || Name.getText().isEmpty() || ID.getText().isEmpty() || Energy.getText().isEmpty() || Xpos.getText().isEmpty()
+						|| Ypos.getText().isEmpty()) {
+					notification.setText("ERROR!!: PLEASE FILL ALL FIELDS");
+
+				} else if(!checkValid(ID)|| !checkValid(Energy) || !checkValid(SmellRange) || !checkValid(Xpos) || !checkValid(Ypos)) {
+					notification.setText("ERROR!!: PLEASE ENTER AN INTEGER");
+				}else if (Integer.parseInt(Xpos.getText()) > getWorld().getXdimension() || Integer.parseInt(Ypos.getText()) > getWorld().getYdimension()){
+					notification.setText("ERROR!!: CO-ORDINATES LIE OUTSIDE THE DIMENSIONS OF THE MAP");
+				}
+				else {
+					int selection = animalsComboBox.getSelectionModel().getSelectedIndex();
+					if(selection == 0){
+						String name = (Name.getText());
+						int BugID = (Integer.parseInt(ID.getText()));
+						int energy = (Integer.parseInt(Energy.getText()));
+						int xpos = (Integer.parseInt(Xpos.getText()));
+						int ypos = (Integer.parseInt(Ypos.getText()));
+						int smellrange = (Integer.parseInt(SmellRange.getText()));
+						getWorld().AddBug(name, xpos, ypos, energy, BugID, smellrange);
+					} else if(selection == 1){
+						String name = (Name.getText());
+						int lionID = (Integer.parseInt(ID.getText()));
+						int energy = (Integer.parseInt(Energy.getText()));
+						int xpos = (Integer.parseInt(Xpos.getText()));
+						int ypos = (Integer.parseInt(Ypos.getText()));
+						int smellrange = (Integer.parseInt(SmellRange.getText()));
+						getWorld().AddLion(name, xpos, ypos, energy, lionID, smellrange);
+					}
+
+					if(isEditted()){
+						saveEdit();
+					} else {
+						try {
+							os1 = new ObjectOutputStream(new FileOutputStream("Configurations/" + getFileName() + ".txt"));
+							os1.writeObject(getWorld());
+							os1.close();
+							saveLatest(getFileName() + ".txt");
+						}catch (IOException e1) {
+							e1.printStackTrace();
+						}
+					}
+					addAnother();
+					stage.close();
+				}
+			}
+
+
+
+		});
+
+		Scene scene = new Scene(grid, 300, 300);
+		stage.setScene(scene);
+		stage.show();
+	}
+
+	public void addAnother(){
+		final Stage stage = new Stage();
+		stage.setTitle("Add another animal?");
+
+		Text title = new Text("Add another animal?");
+		title.setFont(Font.font("Verdana", FontWeight.NORMAL,15));
+
+		GridPane grid = new GridPane();
+		grid.setVgap(10);
+		grid.setHgap(10);
+		grid.setPadding(new Insets(5, 5, 5, 5));
+		grid.setAlignment(Pos.CENTER);
+
+		Button yes = new Button("Yes");
+		Button no = new Button("No");
+
+		grid.add(title, 0,0,2,1);
+		grid.add(yes, 0,1);
+		grid.add(no,1,1);
+
+		yes.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent actionEvent) {
+				AddAnimal();
+				stage.close();
+			}
+		});
+
+		no.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent actionEvent) {
+				stage.close();
+			}
+		});
+
+		Scene scene = new Scene(grid, 200, 200);
+		stage.setScene(scene);
+		stage.show();
+	}
+
+	public void displayConfig(GridPane grid, Text title){
+		//Print out the number animals and the details of each animal
+		grid.add(title, 0, 0, 8, 1);
+		grid.add(new Label("Food: " + getWorld().foodLeft()), 0, 1);
+		grid.add(new Label("Obstacles: " + getWorld().getObstacles()), 0, 2);
+		grid.add(new Label("Shelters: " + getWorld().getShelters()), 0, 3);
+		grid.add(new Label("Animals: " + getWorld().animalList.size()), 0, 4);
+		for (int i = 0; i < getWorld().animalList.size(); i++) {
+			grid.add(new Label("ID: " + getWorld().animalList.get(i).getBugID()), 1, i + 5);
+			grid.add(new Label("Specie: " + getWorld().animalList.get(i).getType()), 2, i + 5);
+			grid.add(new Label("Name: " + getWorld().animalList.get(i).getName()), 3, i + 5);
+			grid.add(new Label("X-position: " + getWorld().animalList.get(i).getXpos()), 4, i + 5);
+			grid.add(new Label("Y-position: " + getWorld().animalList.get(i).getYpos()), 5, i + 5);
+			grid.add(new Label("Energy: " + getWorld().animalList.get(i).getEnergy()), 6, i + 5);
+			if(getWorld().animalList.get(i) instanceof Herd){
+				grid.add(new Label("Members: " + (getWorld().animalList.get(i)).getMembers()), 7, i + 5);
+			}
+		}
+
+		grid.add(new Label("Animals in Shelters: " + getWorld().shelterList.size()), 0, getWorld().animalList.size() + 6);
+		for (int i = 0; i < getWorld().shelterList.size(); i++) {
+			int ypos = i + getWorld().animalList.size() + 7;
+			grid.add(new Label("ID: " + getWorld().shelterList.get(i).getBugID()), 1, ypos);
+			grid.add(new Label("Specie: " + getWorld().shelterList.get(i).getType()), 2, ypos);
+			grid.add(new Label("Name: " + getWorld().shelterList.get(i).getName()), 3, ypos);
+			grid.add(new Label("X-position: " + getWorld().shelterList.get(i).getXpos()), 4, ypos);
+			grid.add(new Label("Y-position: " + getWorld().shelterList.get(i).getYpos()), 5, ypos);
+			grid.add(new Label("Energy: " + getWorld().shelterList.get(i).getEnergy()), 6, ypos);
+
+		}
+
+	}
+
 }

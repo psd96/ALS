@@ -4,23 +4,8 @@ package Project1;
 public abstract class Carnivore extends LifeForm {
 
 
-	public Carnivore(String name, char symbol, int energy, int xpos, int ypos, int bugID, int smellrange, int dx, int dy, String specie) {//Constructor
-		this.setName(name);
-		this.setSymbol(symbol);
-		this.setEnergy(energy);
-		this.setXpos(xpos);
-		this.setYpos(ypos);
-		this.setBugID(bugID);
-		this.setSmellrange(smellrange);
-		this.setXdimension(dx);
-		this.setYdimension(dy);
-		this.setType(specie);
-	}
-
 	public Carnivore(int dx, int dy, String specie) { //Constructor
-		this.setXdimension(dx);
-		this.setYdimension(dy);
-		this.setType(specie);
+		super(dx,dy,specie);
 	}
 
 	public boolean smellFood(Direction direction) { //Smaell food fuction detects food or other lifeforms in a given direction

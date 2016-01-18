@@ -36,6 +36,12 @@ public abstract class LifeForm implements Serializable {
 	private int members;
 	private String type;
 
+	public LifeForm(int dx,int dy, String specie) { //Constructor
+		this.setXdimension(dx);
+		this.setYdimension(dy);
+		this.setType(specie);
+	}
+
 	//Getter and Setter methods
 	public int getXdimension() {
 		return size_x;
@@ -275,85 +281,6 @@ public abstract class LifeForm implements Serializable {
 		System.out.println("\tposition: x = " + xpos + " y = " + ypos);
 
 		setGridpos();
-	}
-
-	public void AddAnimal(String specie) { //This method displays the form for user to enter bugs details and sets them.
-		final TextField Xpos = new TextField("");
-		final TextField Ypos = new TextField("");
-		final TextField Energy = new TextField("");
-		final TextField Name = new TextField("");
-		final TextField ID = new TextField("");
-		final TextField SmellRange= new TextField("");
-		final Label notification = new Label("");
-		Button button = new Button("Submit");
-		final Stage stage = new Stage();
-		stage.setTitle("Add " + specie);
-
-		final GridPane grid = new GridPane();
-		grid.setVgap(4);
-		grid.setHgap(10);
-		grid.setPadding(new Insets(5, 5, 5, 5));
-		grid.setAlignment(Pos.CENTER);
-		Text title = new Text("Animal: " + specie);
-		title.setFont(Font.font("Verdana", FontWeight.NORMAL,20));
-		grid.add(title,0,0,3,1);
-		grid.add(button, 0, 11);
-		grid.add(new Label("Name: "), 0, 3);
-		grid.add(Name, 1, 3, 3, 1);
-		grid.add(new Label("ID: "), 0, 4);
-		grid.add(ID, 1, 4, 3, 1);
-		grid.add(new Label("Energy: "), 0, 5);
-		grid.add(Energy, 1, 5, 3, 1);
-		grid.add(new Label("Smell Range: "), 0, 6);
-		grid.add(SmellRange, 1, 6, 3, 1);
-		grid.add(new Label("Xpos: "), 0, 7);
-		grid.add(Xpos, 1, 7, 3, 1);
-		grid.add(new Label("Ypos: "), 0, 8);
-		grid.add(Ypos, 1, 8, 3, 1);
-		grid.add(notification, 0, 9, 3, 1);
-		button.setOnAction(new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(ActionEvent arg0) {
-				if (Name.getText().isEmpty() || ID.getText().isEmpty() || Energy.getText().isEmpty() || Xpos.getText().isEmpty()
-						|| Ypos.getText().isEmpty()) {
-					notification.setText("ERROR!!: PLEASE FILL ALL FIELDS");
-
-				} else if(!checkValid(ID)|| !checkValid(Energy) || !checkValid(SmellRange) || !checkValid(Xpos) || !checkValid(Ypos)) {
-					notification.setText("ERROR!!: PLEASE ENTER AN INTEGER");
-				}else if (Integer.parseInt(Xpos.getText()) > getXdimension() || Integer.parseInt(Ypos.getText()) > getYdimension()){
-					notification.setText("ERROR!!: CO-ORDINATES LIE OUTSIDE THE DIMENSIONS OF THE MAP");
-				}
-				else {
-					setName(Name.getText());
-					setBugID(Integer.parseInt(ID.getText()));
-					setEnergy(Integer.parseInt(Energy.getText()));
-					setSymbol(Name.getText().charAt(0));
-					setXpos(Integer.parseInt(Xpos.getText()));
-					setYpos(Integer.parseInt(Ypos.getText()));
-					setXdimension(getXdimension());
-					setSmellrange(Integer.parseInt(SmellRange.getText()));
-					stage.close();
-				}
-			}
-
-		});
-
-		Scene scene = new Scene(grid, 300, 300);
-		stage.setScene(scene);
-		stage.show();
-	}
-
-	public boolean checkValid(TextField text) {
-		if (Integer.parseInt(text.getText()) >= 0) {
-			try {
-				Integer.parseInt(text.getText());
-				return true;
-			} catch (NumberFormatException e) {
-				return false;
-			}
-		} else {
-			return false;
-		}
 	}
 
 	public enum Direction {

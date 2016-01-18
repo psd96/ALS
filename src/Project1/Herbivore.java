@@ -5,18 +5,14 @@ import java.util.Random;
 
 
 public abstract class Herbivore extends LifeForm implements Serializable {
-	private char original;
 
 	public Herbivore(int dx,int dy, String specie) { //Constructor
-		this.setXdimension(dx);
-		this.setYdimension(dy);
-		original = getSymbol();
-		this.setType(specie);
+		super(dx,dy,specie);
 		
 	}
 	
 
-	public boolean smellShelter(Direction direction) { //Function thats finds the nearest shelter in a given smellRange
+	public boolean smellShelter(Direction direction) { //Function that finds the nearest shelter in a given smellRange
 		boolean found;
 		switch (direction) {
 		case North:
@@ -123,13 +119,13 @@ public abstract class Herbivore extends LifeForm implements Serializable {
 
 	public void update() {
 		//Bug moves towards a shelter if its energy is below 20 toherwise it goes around looking for food
-		if (energy < 20) {
+		if (this.energy < 20) {
 			MoveHome(getDirectionOfShelter());
 		} else {
 			Move(getDirectionOfFood());
 		}
 
-		this.setSymbol(original);
+		this.setSymbol(getName().charAt(0));
 
 		if (this.grid[this.xpos][this.ypos] == '^') {
 			this.setSymbol('^');

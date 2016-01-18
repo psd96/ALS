@@ -5,7 +5,14 @@ import javafx.scene.paint.Color;
 public class Herd extends Carnivore {
 
     public Herd(int energy, int xpos, int ypos, int dx, int dy) {
-        super("Herd", 'H', energy, xpos, ypos, 003, 5, dx, dy, "Herd");
+        super(dx, dy, "Herd");
+        this.setName("Herd");
+        this.setSymbol('H');
+        this.setEnergy(energy);
+        this.setXpos(xpos);
+        this.setYpos(ypos);
+        this.setBugID(003);
+        this.setSmellrange(5);
     }
 
     public Color getFill(){

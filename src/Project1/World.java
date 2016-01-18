@@ -28,7 +28,7 @@ public class World implements Serializable {
 	private int Obstacles = 0;
 
 	//Constructor
-	World(Group root, int food, int obstacles, int bugs, int lions, int sizex, int sizey, int shelters) {
+	World(Group root, int food, int obstacles, int sizex, int sizey, int shelters) {
 		clearGroups();
 		setFood(food);
 		setObstacles(obstacles);
@@ -48,14 +48,6 @@ public class World implements Serializable {
 		root.getChildren().add(obstacleGroup);
 		root.getChildren().add(shelterGroup);
 
-		for (int i = 0; i < bugs; i++) {
-			AddBug();
-		}
-
-		for (int i = 0; i < lions; i++) {
-			AddLion();
-		}
-		
 		for (int i = 0; i < getFood(); i++) {
 			AddFood();
 		}
@@ -68,6 +60,8 @@ public class World implements Serializable {
 			AddShelter();
 		}
 
+		Bug bug = new Bug(getXdimension(), getYdimension(),"Bob",0,0,100,1,5);
+		shelterList.add(bug);
 	}
 
 	//Constructor - used when loading world from a config file
@@ -186,8 +180,8 @@ public class World implements Serializable {
 	}
 
 	//Adds Bug to the grid
-	public void AddBug() {
-		Bug bug = new Bug(getXdimension(), getYdimension());
+	public void AddBug(String name, int xpos, int ypos, int energy, int ID, int smellRange) {
+		Bug bug = new Bug(getXdimension(), getYdimension(), name, xpos, ypos, energy, ID, smellRange);
 		bug.setGrid(grid);
 		bug.setGridpos();
 		animalList.add(bug);
@@ -195,8 +189,8 @@ public class World implements Serializable {
 	}
 
 	//Adds Lion to the grid
-	public void AddLion() {
-		Lion lion = new Lion(getXdimension(), getYdimension());
+	public void AddLion(String name, int xpos, int ypos, int energy, int ID, int smellRange) {
+		Lion lion = new Lion(getXdimension(), getYdimension(), name, xpos, ypos, energy, ID, smellRange);
 		lion.setGrid(grid);
 		lion.setGridpos();
 		animalList.add(lion);
@@ -365,9 +359,9 @@ public class World implements Serializable {
 	//Runs the world
 	public void run(boolean isToggle) {
 
-		checkCollision();
 		checkShelter();
 		Toggle(isToggle);
+		checkCollision();
 		for (int j = 0; j < animalList.size(); j++) {
 			System.out.println("    bug: " + animalList.get(j).getSymbol());
 			//Updates each bug
