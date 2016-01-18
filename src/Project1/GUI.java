@@ -23,7 +23,7 @@ public class GUI extends Application {
 
 	@Override
 	public void start(final Stage primaryStage) throws Exception {
-		// Fix for OS X El Capitan
+		// Fix for OS X El Capitan (fix for font error using Java FX on El Capitan)
 		try {
 			Class<?> macFontFinderClass = Class.forName("com.sun.t2k.MacFontFinder");
 			Field psNameToPathMap = macFontFinderClass.getDeclaredField("psNameToPathMap");
@@ -44,11 +44,16 @@ public class GUI extends Application {
 
 			@Override
 			public void handle(ActionEvent arg0) {
+				//Will get the user entered dimensions of the map and adjust the stage accordingly
 				primaryStage.setWidth(menu.getWorld().getXdimension() * 24);
 				primaryStage.setHeight(menu.getWorld().getYdimension() * 26);
+
+				//If pause is not true the application will run
 				if (!menu.Pause()) {
 					menu.getWorld().run(menu.Toggle());
-				} else{
+				}
+				//If it is paused the application will only display the fixed positions of the world
+				else{
 					menu.getWorld().display();
 				}
 			}

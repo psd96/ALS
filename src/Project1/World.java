@@ -42,6 +42,7 @@ public class World implements Serializable {
 				grid[i][j] = ' ';
 			}
 		}
+
 		root.getChildren().add(bugGroup);
 		root.getChildren().add(foodGroup);
 		root.getChildren().add(obstacleGroup);
