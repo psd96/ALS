@@ -60,8 +60,6 @@ public class World implements Serializable {
 			AddShelter();
 		}
 
-		Bug bug = new Bug(getXdimension(), getYdimension(),"Bob",0,0,100,1,5);
-		shelterList.add(bug);
 	}
 
 	//Constructor - used when loading world from a config file
