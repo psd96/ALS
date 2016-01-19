@@ -28,7 +28,6 @@ import javax.swing.border.Border;
 public class Menu {
 	//Done stuff
 
-	final TextField Energy = new TextField("");
 	private MenuBar menuBar;
 	private VBox topConatiner;
 	private BorderPane border;
@@ -52,6 +51,10 @@ public class Menu {
 	private TextField Ypos = new TextField("");
 	private TextField Ydimension = new TextField("");
 	private TextField Xdimension = new TextField("");
+	private TextField Energy = new TextField("");
+	private TextField Name = new TextField("");
+	private TextField ID = new TextField("");
+	private TextField SmellRange= new TextField("");
 	private String[] paths;
 	private World world;
 	private Group root;
@@ -62,12 +65,12 @@ public class Menu {
 	public Menu(Stage primaryStage, Group root) {
 		setRoot(root);
 		// Load latest config here to start
-		/*try {
+		try {
 			loadLatest();
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 			setWorld(new World(getRoot(), 0, 0, 25, 25, 0));
-		}*/
+		}
 
 		setWorld(new World(getRoot(), 0, 0, 25, 25, 0));
 
@@ -442,7 +445,7 @@ public class Menu {
 				});
 
 
-				//When the sumbit button is clicked the following is done
+				//When the submit button is clicked the following is done
 				button.setOnAction(new EventHandler<ActionEvent>() {
 
 					@Override
@@ -452,20 +455,22 @@ public class Menu {
 						} else if (!checkValid(Xpos) || !checkValid(Ypos) || !checkValid(Energy)) {
 							notification.setText("ERROR!!: PLEASE ENTER AN INTEGER");
 						} else {
-							if (Integer.parseInt(Xpos.toString()) <= getWorld().getXdimension() && Integer.parseInt(Ypos.toString()) <= getWorld().getYdimension()) {
+							if (Integer.parseInt(Xpos.getText()) <= getWorld().getXdimension() && Integer.parseInt(Ypos.getText()) <= getWorld().getYdimension()) {
 								// Edit the animals attributes to what the user has entered
 								int selected = animalsComboBox.getSelectionModel().getSelectedIndex();
 								getWorld().grid[getWorld().animalList.get(selected).getXpos()][getWorld().animalList
 										.get(selected).getYpos()] = ' ';
 								getWorld().animalList.get(selected).setXpos(Integer.parseInt(Xpos.getText()));
 								getWorld().animalList.get(selected).setYpos(Integer.parseInt(Ypos.getText()));
+								getWorld().animalList.get(selected).setEnergy(Integer.parseInt(Energy.getText()));
+
 
 								Editted = true;
 								saveEdit();
 								//Closes stage
 								stage.close();
 							} else {
-								notification.setText("ERROR!!: CO-ORDINATES LIE OUTSIDE THE DIMENSIONS OF THE MAP");
+								notification.setText("ERROR!!: CO-ORDINATES LIE OUTSIDE\n" +  "THE DIMENSIONS OF THE MAP");
 							}
 						}
 					}
@@ -1037,6 +1042,7 @@ public class Menu {
 			reader.close();
 
 			String filename = sb.toString();
+			setFileName(filename);
 			is1 = new ObjectInputStream(new FileInputStream("Configurations/" + filename));
 			World w;
 			w = (World) is1.readObject();
@@ -1091,14 +1097,6 @@ public class Menu {
 	}
 
 	public void AddAnimal() { //This method displays the form for user to enter bugs details and sets them.
-		final TextField Xpos = new TextField("");
-		final TextField Ypos = new TextField("");
-		final TextField Energy = new TextField("");
-		final TextField Name = new TextField("");
-		final TextField ID = new TextField("");
-		final TextField SmellRange= new TextField("");
-		final Label notification = new Label("");
-		Button button = new Button("Submit");
 		final Stage stage = new Stage();
 		stage.setTitle("Add Animal");
 
