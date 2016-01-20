@@ -11,7 +11,7 @@ public class Bug extends Herbivore {
 	/**
 	 * The bug constructor that creates a new bug with the following entered attributes.
 	 * @param dx - X dimensions of the map
-	 * @param dy - ç
+	 * @param dy - X dimensions of the map
 	 * @param name - the name of the bug
 	 * @param xpos -  the X-position of the bug
 	 * @param ypos - the Y-position of the bug

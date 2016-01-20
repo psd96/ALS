@@ -9,11 +9,11 @@ public class Herd extends Carnivore {
 
     /**
      * Will create a Herd.
-     * @param energy -  the energy value of the herd
-     * @param xpos -  the X-position of the herd
-     * @param ypos - the Y-position of the herd
-     * @param dx - the X-dimension of the map
-     * @param dy - the Y-dimension of the map
+     * @param dx - X dimensions of the map
+     * @param dy - X dimensions of the map
+     * @param xpos -  the X-position of the bug
+     * @param ypos - the Y-position of the bug
+     * @param energy -the energy level of the bug
      */
     public Herd(int dx,int dy, int xpos, int ypos, int energy) {
         super(dx, dy, "Herd","Herd",003,xpos,ypos,10,energy);

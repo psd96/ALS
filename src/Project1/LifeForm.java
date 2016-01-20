@@ -3,22 +3,11 @@ package Project1;
 import java.io.Serializable;
 import java.util.Random;
 
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
-import javafx.scene.Group;
-import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
-import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
-import javafx.scene.text.FontWeight;
-import javafx.scene.text.Text;
-import javafx.stage.Stage;
 
+/**
+ * This class contains all the basic attributes of a LifeForm.
+ */
 public abstract class LifeForm implements Serializable {
 
 	//Encapulated variables
@@ -162,8 +151,13 @@ public abstract class LifeForm implements Serializable {
 	//Abstract methods
 	public abstract Color getFill();
 
+	/**
+	 * This method will find the nearest food in a given direction.
+	 * @param direction - passes in which direction the method should check
+	 * @return - returns if food is found in a given direction.
+	 */
 		//Main methods
-	public boolean smellFood(Direction direction) { //Returns the direction if food is found
+	public boolean smellFood(Direction direction) {
 		boolean found;
 		switch (direction) {
 		case North:
@@ -218,6 +212,10 @@ public abstract class LifeForm implements Serializable {
 		return false;
 	}
 
+	/**
+	 * Will generate a random direction the animal should move
+	 * @return - in which direction the LifeForm should move.
+	 */
 	public Direction getRandomDirection(Direction d) { //Picks a random direction and returns it
 		Random rand = new Random();
 		int temp = rand.nextInt(Direction.values().length);
@@ -225,6 +223,11 @@ public abstract class LifeForm implements Serializable {
 		return d;
 	}
 
+	/**
+	 * Will determine in which direction the animal should move.
+	 * Either in the direction food is found or a random direction.
+	 * @return - in which direction the LifeForm should move.
+	 */
 	public Direction getDirectionOfFood() { //Will return the direction of the food
 		Direction direction = Direction.North;
 		boolean found = false;
@@ -242,6 +245,10 @@ public abstract class LifeForm implements Serializable {
 		}
 	}
 
+	/**
+	 * This method will move the LifeForm in a given direction
+	 * @param d - the direction in which the LifeForm should move
+	 */
 	public void Move(Direction d){//Move the animals towards the food
 		this.grid[this.xpos][this.ypos] = ' ';
 
@@ -273,6 +280,9 @@ public abstract class LifeForm implements Serializable {
 		}
 	}
 
+	/**
+	 * This method will update the LifeForms attributes after each cycle
+	 */
 	public void update() { //Updates the attributes of the animals
 		Move(getDirectionOfFood());//Moves animal towards the food
 

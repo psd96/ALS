@@ -9,6 +9,10 @@ import javafx.scene.Group;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 
+/**
+ * This class is used for setting up a World. It mainly deals with the grid and adds objects to it.
+ * It will update the grid and display the contents of it.
+ */
 public class World implements Serializable {
 	char[][] grid;
 	List<LifeForm> animalList = new ArrayList<>();
@@ -27,8 +31,17 @@ public class World implements Serializable {
 	private int Food = 0;
 	private int Obstacles = 0;
 
+	/**
+	 * This constructor is for creating a new world.
+	 * @param root - take a passed in a main Group to add to other groups to.
+	 * @param food - takes the number of food objects in the world
+	 * @param obstacles - take the number of obstacles in the world
+	 * @param sizex - takes the X-dimension of the world
+	 * @param sizey - takes the Y-dimension of thw world
+	 * @param shelters - takes the number of shelters in the world
+	 */
 	//Constructor
-	World(Group root, int food, int obstacles, int sizex, int sizey, int shelters) {
+	public World(Group root, int food, int obstacles, int sizex, int sizey, int shelters) {
 		clearGroups();
 		setFood(food);
 		setObstacles(obstacles);
@@ -62,7 +75,11 @@ public class World implements Serializable {
 
 	}
 
-	//Constructor - used when loading world from a config file
+	/**
+	 * This constructor is used when loading a world from a saved configuration file.
+	 * @param w - passed in World object
+	 * @param root - passed in main Group to add other groups to it
+	 */
 	public World(World w, Group root) {
 		root.getChildren().add(bugGroup);
 		root.getChildren().add(foodGroup);
@@ -83,6 +100,7 @@ public class World implements Serializable {
 		}
 
 	}
+
 	public char[][] getGrid() {
 		return grid;
 
@@ -132,7 +150,10 @@ public class World implements Serializable {
 		this.shelters = shelters;
 	}
 
-	//Adds shelter to the grid
+	/**
+	 * This method will add a shelter to the world.
+	 * It will randomly generate the positions
+	 */
 	public void AddShelter() {
 		Random rand = new Random();
 		int px, py;
@@ -143,7 +164,10 @@ public class World implements Serializable {
 		grid[px][py] = '^';
 	}
 
-	//Adds food to the grid
+	/**
+	 * Will add food to the world.
+	 * It will randomly generate the positions
+	 */
 	public void AddFood() {
 		Random rand = new Random();
 		int px, py;
@@ -159,13 +183,22 @@ public class World implements Serializable {
 		}
 	}
 
-	//Adds food to the grid in a given position
+	/**
+	 * This method will add food in a given position.
+	 * This method is used to add food in the position where a animal died.
+	 * @param px - the X co-ordinate
+	 * @param py - the Y co-ordinate
+	 */
 	public void AddFood(int px, int py) {
 		Random rand = new Random();
 		grid[px][py] = (char) ('0' + (rand.nextInt(9) + 1));
 
 	}
 
+	/**
+	 * This method will add a obstacle to the world.
+	 * It will randomly generate the positions
+	 */
 	//Adds obstacle to the grid
 	public void AddObstacle() {
 		Random rand = new Random();
@@ -177,7 +210,15 @@ public class World implements Serializable {
 		grid[px][py] = 'X';
 	}
 
-	//Adds Bug to the grid
+	/**
+	 *This method will set the bugs attributes and add them to the grid.
+	 * @param name - bugs name
+	 * @param xpos - X-position of the bug
+	 * @param ypos - Y-position of the bug
+	 * @param energy - energy of the bug
+	 * @param ID - ID of the bug
+	 * @param smellRange - smellrange of the bug
+	 */
 	public void AddBug(String name, int xpos, int ypos, int energy, int ID, int smellRange) {
 		Bug bug = new Bug(getXdimension(), getYdimension(), name, xpos, ypos, energy, ID, smellRange);
 		bug.setGrid(grid);
@@ -186,7 +227,15 @@ public class World implements Serializable {
 		bugList.add(bug);
 	}
 
-	//Adds Lion to the grid
+	/**
+	 *This method will set the lions attributes and add them to the grid.
+	 * @param name - lions name
+	 * @param xpos - X-position of the lion
+	 * @param ypos - Y-position of the lion
+	 * @param energy - energy of the lion
+	 * @param ID - ID of the lion
+	 * @param smellRange - smellrange of the lion
+	 */
 	public void AddLion(String name, int xpos, int ypos, int energy, int ID, int smellRange) {
 		Lion lion = new Lion(getXdimension(), getYdimension(), name, xpos, ypos, energy, ID, smellRange);
 		lion.setGrid(grid);
@@ -195,6 +244,12 @@ public class World implements Serializable {
 		lionList.add(lion);
 	}
 
+	/**
+	 *This method will set the herds attributes and add them to the grid.
+	 * @param xpos - X-position of the herd
+	 * @param ypos - Y-position of the herd
+	 * @param energy - energy of the herd
+	 */
 	//Adds a herd to the grid in a given position and with a given energy
 	public void AddHerd(int xpos, int ypos, int energy, String specie) {
 		Herd herd = new Herd(energy, xpos, ypos, getXdimension(), getYdimension());
@@ -205,7 +260,9 @@ public class World implements Serializable {
 		animalList.add(herd);
 	}
 
-	//Checks to see if the bug can enter a shelter - has to be a herbivore and energy < 20
+	/**
+	 * Checks to see if the bug can enter a shelter - has to be a herbivore and energy < 20
+	 */
 	public void enterShelter() {
 		for (int i = 0; i < animalList.size(); i++) {
 			if (this.grid[animalList.get(i).getXpos()][animalList.get(i).getYpos()] == '^'
@@ -217,7 +274,9 @@ public class World implements Serializable {
 		}
 	}
 
-	//Will check the shelters to see if any of the animals in there have an energy value greater than 60
+	/**
+	 * Will check the shelters to see if any of the animals in there have an energy value greater than 60
+	 */
 	public void checkShelter() {
 		enterShelter();
 		for (int i = 0; i < shelterList.size(); i++) {
@@ -230,6 +289,10 @@ public class World implements Serializable {
 		}
 	}
 
+	/**
+	 * Will remove selected animal from the shelter
+	 * @param i - the selected animal has enough energy to leave the shelter
+	 */
 	//Removes bugs from the shelter
 	public void emptyShelter(int i) {
 		//Removes them from shelterList and adds them back to the animalList and they go back onto the grid
@@ -238,7 +301,9 @@ public class World implements Serializable {
 		shelterList.remove(i);
 	}
 
-	//Checks if animals are colliding with another animal
+	/**
+	 * 	Checks if animals are colliding with another animal
+	 */
 	public void checkCollision() {
 		for (int i = 0; i < animalList.size(); i++) {
 			for (int j = 0; j < animalList.size(); j++) {
@@ -299,6 +364,9 @@ public class World implements Serializable {
 
 	}
 
+	/**
+	 * This method cycles through the grid and creates circles depending on what objects they are.
+	 */
 	public void display() {
 		//Clears the groups
 		clearGroups();
@@ -333,7 +401,10 @@ public class World implements Serializable {
 
 	}
 
-	//Caluclates how many food is left in the world
+	/**
+	 * Caluclates how many food is left in the world
+	 * @return - the value of food left
+	 */
 	public int foodLeft() {
 		foodLeft = 0;
 		for (int x = 0; x < getXdimension(); x++) {
@@ -346,6 +417,10 @@ public class World implements Serializable {
 		return foodLeft;
 	}
 
+	/**
+	 * This method will hide the display function if isToggle is true
+	 * @param isToggle - determines whether to hide or show simulation
+	 */
 	public void Toggle (boolean isToggle){
 		if(isToggle){
 			clearGroups();
@@ -354,6 +429,12 @@ public class World implements Serializable {
 		}
 	}
 
+	/**
+	 * This method will run the simulation.
+	 * It updates each bug and displays the grid.
+	 * It also checks for any collisions between bugs
+	 * @param isToggle - determines whether to hide or show simulation
+	 */
 	//Runs the world
 	public void run(boolean isToggle) {
 
@@ -381,6 +462,15 @@ public class World implements Serializable {
 		}
 	}
 
+	/**
+	 * Creates a circle. It takes the initial confidantes and enlarges them and sets a color,
+	 * depending on what object the circle is for.
+	 * @param px - initial X position.
+	 * @param py  - initial Y position.
+	 * @param circle - which circle is being edited.
+	 * @param root - which Group the circle is being added to.
+	 * @param fill - what the color of the circle should be.
+	 */
 	//Creates a circle and sets its colour
 	public void CreateCircle(double px, double py, Circle circle, Group root, Color fill) {
 		double xpos = 20 * (px + 1.0);
@@ -390,7 +480,9 @@ public class World implements Serializable {
 		root.getChildren().add(circle);
 	}
 
-	//Clears all the groups
+	/**
+	 * This method clears all the Groups
+	 */
 	public void clearGroups() {
 		bugGroup.getChildren().clear();
 		foodGroup.getChildren().clear();

@@ -13,7 +13,13 @@ public abstract class Herbivore extends LifeForm implements Serializable {
 	 * This is the herbivore constructor. Within this it sets the map diemnsions and the specie of the LifeForm
 	 * @param dx - X dimensions of the map
 	 * @param dy - X dimensions of the map
-	 * @param specie - the specie of the LifeForm
+	 * @param specie - the specie of the animal
+	 * @param name - the name of the bug
+	 * @param xpos -  the X-position of the bug
+	 * @param ypos - the Y-position of the bug
+	 * @param energy -the energy level of the bug
+	 * @param ID - the ID of the bug
+	 * @param smellRange - the smellrange of the bug
 	 */
 	public Herbivore(int dx,int dy, String specie, String name, int ID, int xpos, int ypos, int smellRange, int energy) {
 		super(dx, dy, specie ,name,ID,xpos,ypos,smellRange,energy);
