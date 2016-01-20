@@ -13,8 +13,8 @@ public abstract class Carnivore extends LifeForm {
 	 * @param dy - X dimensions of the map
 	 * @param specie - the specie of the LifeForm
 	 */
-	public Carnivore(int dx, int dy, String specie) {
-		super(dx,dy,specie);
+	public Carnivore(int dx,int dy, String specie, String name, int ID, int xpos, int ypos, int smellRange, int energy) {
+		super(dx, dy, specie,name,ID,xpos,ypos,smellRange,energy);
 	}
 
 	/**

@@ -19,15 +19,8 @@ public class Bug extends Herbivore {
 	 * @param ID - the ID of the bug
 	 * @param smellRange - the smellrange of the bug
 	 */
-	public Bug(int dx, int dy, String name, int xpos, int ypos, int energy, int ID, int smellRange ) {
-		super(dx, dy, "Bug");
-		setName(name);
-		setBugID(ID);
-		setEnergy(energy);
-		setSymbol(name.charAt(0));
-		setXpos(xpos);
-		setYpos(ypos);
-		setSmellrange(smellRange);
+	public Bug(int dx,int dy, String name, int ID, int xpos, int ypos, int smellRange, int energy) {
+		super(dx, dy, "Bug",name,ID,xpos,ypos,smellRange,energy);
 	}
 
 	/**

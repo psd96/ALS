@@ -18,7 +18,7 @@ import javafx.util.Duration;
  * This class will add everything to the GUI and display it.
  */
 public class GUI extends Application {
-	public static void main(String[] args) throws FileNotFoundException, IOException {
+	public static void main(String[] args) throws IOException {
 		Application.launch(args);
 	}
 

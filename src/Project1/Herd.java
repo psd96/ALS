@@ -15,15 +15,9 @@ public class Herd extends Carnivore {
      * @param dx - the X-dimension of the map
      * @param dy - the Y-dimension of the map
      */
-    public Herd(int energy, int xpos, int ypos, int dx, int dy) {
-        super(dx, dy, "Herd");
-        this.setName("Herd");
-        this.setSymbol('H');
-        this.setEnergy(energy);
-        this.setXpos(xpos);
-        this.setYpos(ypos);
-        this.setBugID(003);
-        this.setSmellrange(5);
+    public Herd(int dx,int dy, int xpos, int ypos, int energy) {
+        super(dx, dy, "Herd","Herd",003,xpos,ypos,10,energy);
+
     }
 
     /**

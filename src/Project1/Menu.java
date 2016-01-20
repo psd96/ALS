@@ -63,12 +63,12 @@ public class Menu {
 	public Menu(Stage primaryStage, Group root) {
 		setRoot(root);
 		// Load latest config here to start
-		try {
+		/*try {
 			loadLatest();
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 			setWorld(new World(getRoot(), 0, 0, 25, 25, 0));
-		}
+		}*/
 
 		setWorld(new World(getRoot(), 0, 0, 25, 25, 0));
 

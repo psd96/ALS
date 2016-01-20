@@ -15,15 +15,8 @@ import javafx.stage.Stage;
 
 public class Lion extends Carnivore {
 
-	public Lion(int dx, int dy, String name, int xpos, int ypos, int energy, int ID, int smellRange) { //Constrctor
-		super(dx, dy, "Lion");
-		setName(name);
-		setBugID(ID);
-		setEnergy(energy);
-		setSymbol(name.charAt(0));
-		setXpos(xpos);
-		setYpos(ypos);
-		setSmellrange(smellRange);
+	public Lion(int dx,int dy, String name, int ID, int xpos, int ypos, int smellRange, int energy) {
+		super(dx, dy, "Lion",name,ID,xpos,ypos,smellRange,energy);
 	}
 	
 	public Color getFill(){ //Sets the colour which lions should be displayed on the grid

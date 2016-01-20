@@ -36,10 +36,18 @@ public abstract class LifeForm implements Serializable {
 	private int members;
 	private String type;
 
-	public LifeForm(int dx,int dy, String specie) { //Constructor
+
+	public LifeForm(int dx,int dy, String specie, String name, int ID, int xpos, int ypos, int smellRange, int energy) { //Constructor
 		this.setXdimension(dx);
 		this.setYdimension(dy);
 		this.setType(specie);
+		this.setName(name);
+		this.setSymbol(name.charAt(0));
+		this.setBugID(ID);
+		this.setXpos(xpos);
+		this.setYpos(ypos);
+		this.setSmellrange(smellRange);
+		this.setEnergy(energy);
 	}
 
 	//Getter and Setter methods
