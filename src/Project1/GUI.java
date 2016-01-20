@@ -4,7 +4,6 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.HashMap;
-
 import javafx.animation.KeyFrame;
 import javafx.animation.TimelineBuilder;
 import javafx.application.Application;
@@ -15,11 +14,19 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
+/**
+ * This class will add everything to the GUI and display it.
+ */
 public class GUI extends Application {
 	public static void main(String[] args) throws FileNotFoundException, IOException {
 		Application.launch(args);
 	}
 
+	/**
+	 * This method is overwriting the Java.Application method.
+	 * @param primaryStage - the primary stage of the GUI in which all nodes are linked.
+	 * @throws Exception
+	 */
 	@Override
 	public void start(final Stage primaryStage) throws Exception {
 		// Fix for OS X El Capitan (fix for font error using Java FX on El Capitan)

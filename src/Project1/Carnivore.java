@@ -1,14 +1,30 @@
 package Project1;
 
 
+/**
+ * This class sets the attributes of a Carnivore. It extends from LifeForm class and inherits all of its methods.
+ */
 public abstract class Carnivore extends LifeForm {
 
 
-	public Carnivore(int dx, int dy, String specie) { //Constructor
+	/**
+	 * This is the carnivore constructor. Within this it sets the map diemnsions and the specie of the LifeForm
+	 * @param dx - X dimensions of the map
+	 * @param dy - X dimensions of the map
+	 * @param specie - the specie of the LifeForm
+	 */
+	public Carnivore(int dx, int dy, String specie) {
 		super(dx,dy,specie);
 	}
 
-	public boolean smellFood(Direction direction) { //Smaell food fuction detects food or other lifeforms in a given direction
+	/**
+	 * This smellFood function overrides the one in LifeForm class.
+	 * This is because a carnivore can eat other animals as well as other animals.
+	 * This method will return the in which direction an eatable object is found.
+	 * @param direction - passes in which direction the method should check
+	 * @return - returns if food is found in a given direction.
+	 */
+	public boolean smellFood(Direction direction) {
 		boolean found;
 		switch (direction) {
 		case North:

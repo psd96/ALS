@@ -4,15 +4,30 @@ import java.io.Serializable;
 import java.util.Random;
 
 
+/**
+ * This class sets the attributes of a Herbivore. It extends from LifeForm class and inherits all of its methods.
+ */
 public abstract class Herbivore extends LifeForm implements Serializable {
 
-	public Herbivore(int dx,int dy, String specie) { //Constructor
+	/**
+	 * This is the herbivore constructor. Within this it sets the map diemnsions and the specie of the LifeForm
+	 * @param dx - X dimensions of the map
+	 * @param dy - X dimensions of the map
+	 * @param specie - the specie of the LifeForm
+	 */
+	public Herbivore(int dx,int dy, String specie) {
 		super(dx,dy,specie);
 		
 	}
-	
 
-	public boolean smellShelter(Direction direction) { //Function that finds the nearest shelter in a given smellRange
+
+	/**
+	 * This method will find the nearest shelter in a given direction.
+	 * It will return if a shelter is found in a given direction.
+	 * @param direction - passes in which direction the method should check
+	 * @return - returns if a shelter is found in a given direction.
+	 */
+	public boolean smellShelter(Direction direction) {
 		boolean found;
 		switch (direction) {
 		case North:
@@ -67,6 +82,11 @@ public abstract class Herbivore extends LifeForm implements Serializable {
 		return false;
 	}
 
+	/**
+	 * Will determine in which direction the animal should move.
+	 * Either in the direction a shelter is found or a random direction.
+	 * @return - in which direction the Herbivore should move.
+	 */
 	public Direction getDirectionOfShelter() { //Will return the direction in which a shelter lies
 		Direction direction = Direction.North;
 		boolean found = false;
@@ -83,7 +103,11 @@ public abstract class Herbivore extends LifeForm implements Serializable {
 			return getRandomDirection(direction);
 		}
 	}
-	
+
+	/**
+	 * This method will move the animal in the given direction of a shelter.
+	 * @param d - the direction a shelter has been found.
+	 */
 	public void MoveHome(Direction d) { //Moves the bug towards the shelter
 		if (this.grid[this.xpos][this.ypos] != '^') {
 			this.grid[this.xpos][this.ypos] = ' ';
@@ -117,6 +141,12 @@ public abstract class Herbivore extends LifeForm implements Serializable {
 		}
 	}
 
+	/**
+	 * This is a overwrite method of the update method in the LifeForm class.
+	 * It will determine if the animal should move towards food or a shelter depending on it energy level.
+	 * And will update the bugs position on the grid.
+	 * And remove any bugs with an energy value of 0, and replace them with food.
+	 */
 	public void update() {
 		//Bug moves towards a shelter if its energy is below 20 toherwise it goes around looking for food
 		if (this.energy < 20) {

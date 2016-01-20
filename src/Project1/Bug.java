@@ -1,24 +1,26 @@
 package Project1;
 
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
-import javafx.geometry.Insets;
-import javafx.scene.Group;
-import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
-import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
-import javafx.stage.Stage;
 
+/**
+ * This class creates a Bug lifeform. This class extends from Herbivore and inherits all of its methods.
+ */
 public class Bug extends Herbivore {
 
 
-	public Bug(int dx, int dy, String name, int xpos, int ypos, int energy, int ID, int smellRange ) { //Constructor
+	/**
+	 * The bug constructor that creates a new bug with the following entered attributes.
+	 * @param dx - X dimensions of the map
+	 * @param dy - ç
+	 * @param name - the name of the bug
+	 * @param xpos -  the X-position of the bug
+	 * @param ypos - the Y-position of the bug
+	 * @param energy -the energy level of the bug
+	 * @param ID - the ID of the bug
+	 * @param smellRange - the smellrange of the bug
+	 */
+	public Bug(int dx, int dy, String name, int xpos, int ypos, int energy, int ID, int smellRange ) {
 		super(dx, dy, "Bug");
-		//AddAnimal(getType());
 		setName(name);
 		setBugID(ID);
 		setEnergy(energy);
@@ -28,7 +30,11 @@ public class Bug extends Herbivore {
 		setSmellrange(smellRange);
 	}
 
-	public Color getFill() { //Sets the colour which bugs should be displayed on the grid
+	/**
+	 * Sets the colour which bugs should be displayed on the grid
+	 * @return - returns the color that will represents the bug
+	 */
+	public Color getFill() {
 		return Color.RED;
 	}
 

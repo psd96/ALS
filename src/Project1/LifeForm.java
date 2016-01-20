@@ -135,7 +135,6 @@ public abstract class LifeForm implements Serializable {
 		this.herdType = herdType;
 	}
 
-
 	public int getMembers() {
 		return members;
 	}
