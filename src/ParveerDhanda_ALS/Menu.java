@@ -647,7 +647,7 @@ public class Menu {
 						int xpos = (Integer.parseInt(Xpos.getText()));
 						int ypos = (Integer.parseInt(Ypos.getText()));
 						int smellrange = (Integer.parseInt(SmellRange.getText()));
-						getWorld().AddBug(name, xpos, ypos, energy, BugID, smellrange);
+						getWorld().AddBug(name, BugID, xpos, ypos, smellrange, energy);
 					} else if(selection == 1){
 						String name = (Name.getText());
 						int lionID = (Integer.parseInt(ID.getText()));
@@ -655,7 +655,7 @@ public class Menu {
 						int xpos = (Integer.parseInt(Xpos.getText()));
 						int ypos = (Integer.parseInt(Ypos.getText()));
 						int smellrange = (Integer.parseInt(SmellRange.getText()));
-						getWorld().AddLion(name, xpos, ypos, energy, lionID, smellrange);
+						getWorld().AddLion(name, lionID, xpos, ypos, smellrange, energy);
 					}
 
 					//If the file has been edited it will save it as an edit
