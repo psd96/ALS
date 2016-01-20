@@ -1,4 +1,4 @@
-package Project1;
+package ParveerDhanda_ALS;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -40,7 +40,6 @@ public class World implements Serializable {
 	 * @param sizey - takes the Y-dimension of thw world
 	 * @param shelters - takes the number of shelters in the world
 	 */
-	//Constructor
 	public World(Group root, int food, int obstacles, int sizex, int sizey, int shelters) {
 		clearGroups();
 		setFood(food);
@@ -101,6 +100,7 @@ public class World implements Serializable {
 
 	}
 
+	//Getter and Setter for the grid that stores the objects
 	public char[][] getGrid() {
 		return grid;
 
@@ -110,6 +110,7 @@ public class World implements Serializable {
 		this.grid = grid;
 	}
 
+	//Getter and Setter for X diemensions of the map
 	public int getXdimension() {
 		return size_x;
 	}
@@ -118,6 +119,7 @@ public class World implements Serializable {
 		this.size_x = size_x;
 	}
 
+	//Getter and Setter for Y diemensions of the map
 	public int getYdimension() {
 		return size_y;
 	}
@@ -126,6 +128,7 @@ public class World implements Serializable {
 		this.size_y = size_y;
 	}
 
+	//Getter and Setter for the number of food objects in the world
 	public int getFood() {
 		return Food;
 	}
@@ -134,6 +137,7 @@ public class World implements Serializable {
 		Food = food;
 	}
 
+	//Getter and Setter for the number of obstacle objects in the world
 	public int getObstacles() {
 		return Obstacles;
 	}
@@ -142,6 +146,7 @@ public class World implements Serializable {
 		Obstacles = obstacles;
 	}
 
+	//Getter and Setter for the number of shelter objects in the world
 	public int getShelters() {
 		return shelters;
 	}
@@ -156,6 +161,7 @@ public class World implements Serializable {
 	 */
 	public void AddShelter() {
 		Random rand = new Random();
+		//Randomly generates numbers within the dimensions of the map
 		int px, py;
 		do {
 			px = rand.nextInt(getXdimension());
@@ -170,15 +176,19 @@ public class World implements Serializable {
 	 */
 	public void AddFood() {
 		Random rand = new Random();
+		//Randomly generates numbers within the dimensions of the map
 		int px, py;
 		do {
 			px = rand.nextInt(getXdimension());
 			py = rand.nextInt(getYdimension());
 		} while (this.grid[px][py] != ' ');
-		//Randomly generate boolean to determine if to add food or poison
+		//Randomly generates number between 0 - 2
 		if(rand.nextInt(3) > 0) {
+			//If number is greater than 0, it adds food
+			//Randomly generates number in between 1 and 9
 			grid[px][py] = (char) ('0' + (rand.nextInt(9) + 1));
 		} else{
+			//Otherwise adds poison
 			grid[px][py] = '*';
 		}
 	}
@@ -191,6 +201,7 @@ public class World implements Serializable {
 	 */
 	public void AddFood(int px, int py) {
 		Random rand = new Random();
+		//Randomly generates number in between 1 and 9
 		grid[px][py] = (char) ('0' + (rand.nextInt(9) + 1));
 
 	}
@@ -201,6 +212,7 @@ public class World implements Serializable {
 	 */
 	//Adds obstacle to the grid
 	public void AddObstacle() {
+		//Randomly generates numbers within the dimensions of the map
 		Random rand = new Random();
 		int px, py;
 		do {
@@ -280,6 +292,7 @@ public class World implements Serializable {
 	public void checkShelter() {
 		enterShelter();
 		for (int i = 0; i < shelterList.size(); i++) {
+			//Adds 1 to the energy of the bugs in the shelter
 			shelterList.get(i).setEnergy(shelterList.get(i).getEnergy() + 1);
 
 			if (shelterList.get(i).getEnergy() > 60) {
@@ -407,6 +420,7 @@ public class World implements Serializable {
 	 */
 	public int foodLeft() {
 		foodLeft = 0;
+		//Loops through the grid and counts the number of food left and retruns that value
 		for (int x = 0; x < getXdimension(); x++) {
 			for (int y = 0; y < getYdimension(); y++) {
 				if (Character.isDigit(grid[x][y]) || grid[x][y]=='*') {
@@ -422,6 +436,7 @@ public class World implements Serializable {
 	 * @param isToggle - determines whether to hide or show simulation
 	 */
 	public void Toggle (boolean isToggle){
+		//Will hide the display if toggle is ON.
 		if(isToggle){
 			clearGroups();
 		} else {
@@ -438,8 +453,11 @@ public class World implements Serializable {
 	//Runs the world
 	public void run(boolean isToggle) {
 
+		//Checks all shelters
 		checkShelter();
+		//Determines if toggle option is selected or not
 		Toggle(isToggle);
+		//Checks if any animals are colliding
 		checkCollision();
 		for (int j = 0; j < animalList.size(); j++) {
 			System.out.println("    bug: " + animalList.get(j).getSymbol());
@@ -484,6 +502,7 @@ public class World implements Serializable {
 	 * This method clears all the Groups
 	 */
 	public void clearGroups() {
+		//Clears groups
 		bugGroup.getChildren().clear();
 		foodGroup.getChildren().clear();
 		obstacleGroup.getChildren().clear();

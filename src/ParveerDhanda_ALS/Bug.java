@@ -1,4 +1,4 @@
-package Project1;
+package ParveerDhanda_ALS;
 
 import javafx.scene.paint.Color;
 

@@ -1,4 +1,4 @@
-package Project1;
+package ParveerDhanda_ALS;
 
 
 /**
@@ -32,12 +32,18 @@ public abstract class Carnivore extends LifeForm {
 	public boolean smellFood(Direction direction) {
 		boolean found;
 		switch (direction) {
+			//In each case the method will for loop the grid at a distance of the smell range.
+			//If it finds a food object or another bug to eat, it will return that it has found and in
+			//which direction.
 		case North:
 			found = false;
 			for (int i = 0; i < this.smellrange; i++) {
+				//Checks if the next position is at the end of the grid
 				if (this.ypos - i - 1 >= 0) {
+					//Checks if the position is a obstacle or shelter
 					if (this.grid[this.xpos][this.ypos - i - 1] == 'X' || this.grid[this.xpos][this.ypos - i - 1] == '^') {
 						break;
+						//If position is not free then it is another animal or food
 					} else if (this.grid[this.xpos][this.ypos - i - 1] != ' ') {
 							found = true;
 						}
@@ -46,10 +52,13 @@ public abstract class Carnivore extends LifeForm {
 			return found;
 		case East:
 			found = false;
+			//Checks if the next position is at the end of the grid
 			for (int i = 0; i < this.smellrange; i++) {
 				if (this.xpos + i + 1 < size_x) {
+					//Checks if the position is a obstacle or shelter
 					if (this.grid[this.xpos + 1 + i][this.ypos] == 'X' || this.grid[this.xpos + 1 + i][this.ypos] == '^') {
 						break;
+						//If position is not free then it is another animal or food
 					}else if (this.grid[this.xpos + 1 + i][this.ypos] != ' ') {
 							found = true;
 						}
@@ -58,10 +67,13 @@ public abstract class Carnivore extends LifeForm {
 			return found;
 		case South:
 			found = false;
+			//Checks if the next position is at the end of the grid
 			for (int i = 0; i < this.smellrange; i++) {
 				if (this.ypos + 1 + i < size_y) {
+					//Checks if the position is a obstacle or shelter
 					if (this.grid[this.xpos][this.ypos + 1 + i] == 'X' || this.grid[this.xpos][this.ypos + 1 + i] == '^') {
 						break;
+						//If position is not free then it is another animal or food
 					}else if (this.grid[this.xpos][this.ypos + 1 + i] != ' ') {
 							found = true;
 						}
@@ -70,10 +82,13 @@ public abstract class Carnivore extends LifeForm {
 			return found;
 		case West:
 			found = false;
+			//Checks if the next position is at the end of the grid
 			for (int i = 0; i < smellrange; i++) {
 				if (this.xpos - 1 - i >= 0) {
+					//Checks if the position is a obstacle or shelter
 					if (this.grid[this.xpos - 1 - i][this.ypos] == 'X' || this.grid[this.xpos - 1 - i][this.ypos] == '^') {
 						break;
+					//If position is not free then it is another animal or food
 					} else if (this.grid[this.xpos - 1 - i][this.ypos] != ' ') {
 							found = true;
 						}

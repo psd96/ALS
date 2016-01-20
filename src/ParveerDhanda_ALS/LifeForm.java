@@ -1,4 +1,4 @@
-package Project1;
+package ParveerDhanda_ALS;
 
 import java.io.Serializable;
 import java.util.Random;
@@ -39,7 +39,7 @@ public abstract class LifeForm implements Serializable {
 		this.setEnergy(energy);
 	}
 
-	//Getter and Setter methods
+	//Getter and Setter for X dimension of the map
 	public int getXdimension() {
 		return size_x;
 	}
@@ -48,6 +48,7 @@ public abstract class LifeForm implements Serializable {
 		this.size_x = size_x;
 	}
 
+	//Getter and Setter for Y dimension of the map
 	public int getYdimension() {
 		return size_y;
 	}
@@ -56,6 +57,7 @@ public abstract class LifeForm implements Serializable {
 		this.size_y = size_y;
 	}
 
+	//Getter and Setter for name of animal
 	public String getName() {
 		return name;
 	}
@@ -64,6 +66,7 @@ public abstract class LifeForm implements Serializable {
 		this.name = name;
 	}
 
+	//Getter and Setter for symbol of animal
 	public char getSymbol() {
 		return symbol;
 	}
@@ -72,6 +75,7 @@ public abstract class LifeForm implements Serializable {
 		this.symbol = symbol;
 	}
 
+	//Getter and Setter for energy of animal
 	public int getEnergy() {
 		return energy;
 	}
@@ -80,6 +84,7 @@ public abstract class LifeForm implements Serializable {
 		this.energy = energy;
 	}
 
+	//Getter and Setter for grid variable
 	public char[][] getGrid() {
 		return grid;
 	}
@@ -88,6 +93,7 @@ public abstract class LifeForm implements Serializable {
 		this.grid = grid;
 	}
 
+	//Getter and Setter for X position of animal
 	public int getXpos() {
 		return xpos;
 	}
@@ -96,6 +102,7 @@ public abstract class LifeForm implements Serializable {
 		this.xpos = xpos;
 	}
 
+	//Getter and Setter for Y position of animal
 	public int getYpos() {
 		return ypos;
 	}
@@ -104,6 +111,7 @@ public abstract class LifeForm implements Serializable {
 		this.ypos = ypos;
 	}
 
+	//Getter and Setter for ID of animal
 	public int getBugID() {
 		return BugID;
 	}
@@ -112,6 +120,7 @@ public abstract class LifeForm implements Serializable {
 		BugID = bugID;
 	}
 
+	//Getter and Setter for smell range of animal
 	public int getSmellrange() {
 		return smellrange;
 	}
@@ -120,10 +129,12 @@ public abstract class LifeForm implements Serializable {
 		this.smellrange = smellrange;
 	}
 
+	//Adds the animal to the grid
 	public void setGridpos() {
 		grid[xpos][ypos] = symbol;
 	}
 
+	//Getter and Setter for which specie makes up the herd
 	public String getHerdType() {
 		return herdType;
 	}
@@ -132,6 +143,7 @@ public abstract class LifeForm implements Serializable {
 		this.herdType = herdType;
 	}
 
+	//Getter and setter for the number of members in a herd
 	public int getMembers() {
 		return members;
 	}
@@ -140,6 +152,7 @@ public abstract class LifeForm implements Serializable {
 		this.members = members;
 	}
 
+	//Getter and setter for the specie of animal
 	public String getType(){
 		return type;
 	}
@@ -162,10 +175,14 @@ public abstract class LifeForm implements Serializable {
 		switch (direction) {
 		case North:
 			found = false;
+			//Loops in a given direction, and looks a distance equal to the smell range.
 			for (int i = 0; i < this.smellrange; i++) {
+				//Checks if the position is within the map
 				if (this.ypos - i - 1 >= 0) {
+					//If the position is a animal, shelter or obstacle it will break
 					if (Character.isUpperCase(this.grid[this.xpos][this.ypos - i - 1]) || this.grid[this.xpos][this.ypos - i - 1] == '^') {
 						break;
+						//If it is not empty, then it is food, then it will return it has found it.
 					} else if (this.grid[this.xpos][this.ypos - i - 1] != ' ') {
 							found = true;
 						}
@@ -174,10 +191,14 @@ public abstract class LifeForm implements Serializable {
 			return found;
 		case East:
 			found = false;
+			//Loops in a given direction, and looks a distance equal to the smell range.
 			for (int i = 0; i < this.smellrange; i++) {
+				//Checks if the position is within the map
 				if (this.xpos + i + 1 < getXdimension()) {
+					//If the position is a animal, shelter or obstacle it will break
 					if (Character.isUpperCase(this.grid[this.xpos + 1 + i][this.ypos]) || this.grid[this.xpos + 1 + i][this.ypos] == '^') {
 						break;
+						//If it is not empty, then it is food, then it will return it has found it.
 					}else if (this.grid[this.xpos + 1 + i][this.ypos] != ' ') {
 							found = true;
 						}
@@ -186,10 +207,14 @@ public abstract class LifeForm implements Serializable {
 			return found;
 		case South:
 			found = false;
+			//Loops in a given direction, and looks a distance equal to the smell range.
 			for (int i = 0; i < this.smellrange; i++) {
+				//Checks if the position is within the map
 				if (this.ypos + 1 + i < getYdimension()) {
+					//If the position is a animal, shelter or obstacle it will break
 					if (Character.isUpperCase(this.grid[this.xpos][this.ypos + 1 + i]) || this.grid[this.xpos][this.ypos + 1 + i] == '^') {
 						break;
+						//If it is not empty, then it is food, then it will return it has found it.
 					}else if (this.grid[this.xpos][this.ypos + 1 + i] != ' ') {
 							found = true;
 						}
@@ -198,10 +223,14 @@ public abstract class LifeForm implements Serializable {
 			return found;
 		case West:
 			found = false;
+			//Loops in a given direction, and looks a distance equal to the smell range.
 			for (int i = 0; i < smellrange; i++) {
+				//Checks if the position is within the map
 				if (this.xpos - 1 - i >= 0) {
+					//If the position is a animal, shelter or obstacle it will break
 					if (Character.isUpperCase(this.grid[this.xpos - 1 - i][this.ypos]) || this.grid[this.xpos - 1 - i][this.ypos] == '^') {
 						break;
+						//If it is not empty, then it is food, then it will return it has found it.
 					} else if (this.grid[this.xpos - 1 - i][this.ypos] != ' ') {
 							found = true;
 						}
@@ -216,7 +245,7 @@ public abstract class LifeForm implements Serializable {
 	 * Will generate a random direction the animal should move
 	 * @return - in which direction the LifeForm should move.
 	 */
-	public Direction getRandomDirection(Direction d) { //Picks a random direction and returns it
+	public Direction getRandomDirection(Direction d) {
 		Random rand = new Random();
 		int temp = rand.nextInt(Direction.values().length);
 		d = Direction.values()[temp];
@@ -228,19 +257,22 @@ public abstract class LifeForm implements Serializable {
 	 * Either in the direction food is found or a random direction.
 	 * @return - in which direction the LifeForm should move.
 	 */
-	public Direction getDirectionOfFood() { //Will return the direction of the food
+	public Direction getDirectionOfFood() {
 		Direction direction = Direction.North;
 		boolean found = false;
 
+		//Loops in all directions
 		for (Direction d : Direction.values()) {
 			if (smellFood(d)) {
 				found = true;
 				direction = d;
 			}
 		}
+		//If found it will return the direction in which shelter was found.
 		if (found) {
 			return direction;
 		} else {
+			//If not, it will get a random direction
 			return getRandomDirection(direction);
 		}
 	}
@@ -252,6 +284,8 @@ public abstract class LifeForm implements Serializable {
 	public void Move(Direction d){//Move the animals towards the food
 		this.grid[this.xpos][this.ypos] = ' ';
 
+		//In each case it will check if the position is food, and if not it will move in that direction.
+		//It will decrease the animals energy after each movement.
 		switch (d) {
 		case North:
 			if (this.ypos - 1 >= 0 && this.grid[this.xpos][this.ypos - 1] != 'X' && this.grid[this.xpos][this.ypos - 1] != '^') {
@@ -283,7 +317,7 @@ public abstract class LifeForm implements Serializable {
 	/**
 	 * This method will update the LifeForms attributes after each cycle
 	 */
-	public void update() { //Updates the attributes of the animals
+	public void update() {
 		Move(getDirectionOfFood());//Moves animal towards the food
 
 		if (this.grid[this.xpos][this.ypos] == '^') {

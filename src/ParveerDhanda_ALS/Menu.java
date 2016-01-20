@@ -1,4 +1,4 @@
-package Project1;
+package ParveerDhanda_ALS;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -27,8 +27,6 @@ import javafx.stage.Stage;
  * This class contains all the attributes for the Menu.
  */
 public class Menu {
-	//Done stuff
-
 	private MenuBar menuBar;
 	private VBox topConatiner;
 	private BorderPane border;
@@ -490,6 +488,7 @@ public class Menu {
 	 * @param filename - the name of the last configuration loaded
 	 */
 	public void saveLatest(String filename){
+		//Saves the last file loaded into a file called last
 		File file = new File("last.txt");
 		try {
 			FileWriter filewriter = new FileWriter(file);
@@ -508,6 +507,7 @@ public class Menu {
 	 * @throws FileNotFoundException
 	 */
 	public void loadLatest() throws FileNotFoundException {
+		//Will load the last configuration file opened from the last.txt file
 		File file = new File("last.txt");
 		String line;
 		StringBuilder  sb = new StringBuilder();
@@ -538,9 +538,11 @@ public class Menu {
 	public boolean checkValid(TextField text) {
 		if (Integer.parseInt(text.getText()) >= 0) {
 			try {
+				//If input is a integer return true
 				Integer.parseInt(text.getText());
 				return true;
 			} catch (NumberFormatException e) {
+				//Else return false
 				return false;
 			}
 		} else {
@@ -553,6 +555,7 @@ public class Menu {
 	 * has been edited.
 	 */
 	public void saveEdit(){
+		//Will save the eddited version of the current world in a temp file
 		try {
 			os1 = new ObjectOutputStream(new FileOutputStream("Temp/temp.txt"));
 			os1.writeObject(getWorld());
@@ -566,6 +569,7 @@ public class Menu {
 	 * Will load the last edit of the current configuration
 	 */
 	public void loadEdit(){
+		//Will load the edited world from the temp.txt file
 		World w;
 		try {
 			is1 = new ObjectInputStream(new FileInputStream("Temp/temp.txt"));
@@ -622,16 +626,19 @@ public class Menu {
 		button.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent arg0) {
+				//Checks if all fields are filled in
 				if (animalsComboBox.getSelectionModel() == null || Name.getText().isEmpty() || ID.getText().isEmpty() || Energy.getText().isEmpty() || Xpos.getText().isEmpty()
 						|| Ypos.getText().isEmpty()) {
 					notification.setText("ERROR!!: PLEASE FILL ALL FIELDS");
 
+					//Checks if inputs are valid
 				} else if(!checkValid(ID)|| !checkValid(Energy) || !checkValid(SmellRange) || !checkValid(Xpos) || !checkValid(Ypos)) {
 					notification.setText("ERROR!!: PLEASE ENTER AN INTEGER");
 				}else if (Integer.parseInt(Xpos.getText()) > getWorld().getXdimension() || Integer.parseInt(Ypos.getText()) > getWorld().getYdimension()){
 					notification.setText("ERROR!!: CO-ORDINATES LIE OUTSIDE THE DIMENSIONS OF THE MAP");
 				}
 				else {
+					//Creates the animals and adds them to the worl
 					int selection = animalsComboBox.getSelectionModel().getSelectedIndex();
 					if(selection == 0){
 						String name = (Name.getText());
@@ -651,8 +658,10 @@ public class Menu {
 						getWorld().AddLion(name, xpos, ypos, energy, lionID, smellrange);
 					}
 
+					//If the file has been edited it will save it as an edit
 					if(isEditted()){
 						saveEdit();
+						//Else it will save as a configuration file
 					} else {
 						try {
 							os1 = new ObjectOutputStream(new FileOutputStream("Configurations/" + getFileName() + ".txt"));
@@ -685,6 +694,7 @@ public class Menu {
 		final Stage stage = new Stage();
 		stage.setTitle("Add another animal?");
 
+		//Sets the tile of the scene
 		Text title = new Text("Add another animal?");
 		title.setFont(Font.font("Verdana", FontWeight.NORMAL,15));
 
@@ -744,7 +754,7 @@ public class Menu {
 				grid.add(new Label("Members: " + (getWorld().animalList.get(i)).getMembers()), 7, i + 5);
 			}
 		}
-
+		// Prints all the animals with in a shelter
 		grid.add(new Label("Animals in Shelters: " + getWorld().shelterList.size()), 0, getWorld().animalList.size() + 6);
 		for (int i = 0; i < getWorld().shelterList.size(); i++) {
 			int ypos = i + getWorld().animalList.size() + 7;
@@ -794,8 +804,10 @@ public class Menu {
 
 			@Override
 			public void handle(ActionEvent arg0) {
+				//Checks if all inputs are filled
 				if (!SaveAs.getText().isEmpty() && !Food.getText().isEmpty() && !Obstacles.getText().isEmpty()
 						&& !Shelters.getText().isEmpty() && !Xdimension.getText().isEmpty() && !Ydimension.getText().isEmpty()) {
+					//Checks if the inputs are valid
 					if(!checkValid(Xdimension) || !checkValid(Ydimension) || !checkValid(Shelters) || !checkValid(Obstacles)|| !checkValid(Food)) {
 						notification.setText("ERROR!!: PLEASE ENTER AN INTEGER");
 					} else {
@@ -822,8 +834,6 @@ public class Menu {
 
 			}
 		});
-		//Save the config to the entered file name
-
 		Scene scene = new Scene(grid, 300, 300);
 		stage.setScene(scene);
 		stage.show();
@@ -910,6 +920,7 @@ public class Menu {
 			os1.close();
 			saveLatest(getFileName() + ".txt");
 
+			//Prints if save is successful
 			final Stage stage = new Stage();
 			GridPane grid = new GridPane();
 			grid.setVgap(4);
@@ -937,6 +948,7 @@ public class Menu {
 			stage.show();
 
 		} catch (IOException e1) {
+			//Prints if save is unsuccessful
 			e1.printStackTrace();
 			final Stage stage = new Stage();
 			GridPane grid = new GridPane();
@@ -1025,6 +1037,7 @@ public class Menu {
 						stage.setScene(scene);
 						stage.show();
 					} catch (IOException e) {
+						//Prints if save is unsuccessful
 						e.printStackTrace();
 						final Stage stage = new Stage();
 						GridPane grid = new GridPane();

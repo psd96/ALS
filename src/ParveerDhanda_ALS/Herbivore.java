@@ -1,4 +1,4 @@
-package Project1;
+package ParveerDhanda_ALS;
 
 import java.io.Serializable;
 import java.util.Random;
@@ -37,10 +37,14 @@ public abstract class Herbivore extends LifeForm implements Serializable {
 		switch (direction) {
 		case North:
 			found = false;
+			//Loops in a given direction, and looks a distance equal to the smell range.
 			for (int i = 0; i < this.smellrange; i++) {
+				//Checks if the position is within the map
 				if (this.ypos - i - 1 >= 0) {
+					//If the position is a animal or obstacle it will break
 					if (Character.isUpperCase(this.grid[this.xpos][this.ypos - i - 1])) {
 						break;
+						//If it is not empty, then it is a shelter, then it will return it has found it.
 					} else if (this.grid[this.xpos][this.ypos - i - 1] == '^') {
 						found = true;
 					}
@@ -49,10 +53,14 @@ public abstract class Herbivore extends LifeForm implements Serializable {
 			return found;
 		case East:
 			found = false;
+			//Loops in a given direction, and looks a distance equal to the smell range.
 			for (int i = 0; i < this.smellrange; i++) {
+				//Checks if the position is within the map
 				if (this.xpos + i + 1 < size_x) {
+					//If the position is a animal or obstacle it will break
 					if (Character.isUpperCase(this.grid[this.xpos + 1 + i][this.ypos])) {
 						break;
+						//If it is not empty, then it is a shelter, then it will return it has found it.
 					} else if (this.grid[this.xpos + 1 + i][this.ypos] == '^') {
 						found = true;
 					}
@@ -61,10 +69,14 @@ public abstract class Herbivore extends LifeForm implements Serializable {
 			return found;
 		case South:
 			found = false;
+			//Loops in a given direction, and looks a distance equal to the smell range.
 			for (int i = 0; i < this.smellrange; i++) {
+				//Checks if the position is within the map
 				if (this.ypos + 1 + i < size_y) {
+					//If the position is a animal or obstacle it will break
 					if (Character.isUpperCase(this.grid[this.xpos][this.ypos + 1 + i])) {
 						break;
+						//If it is not empty, then it is a shelter, then it will return it has found it.
 					} else if (this.grid[this.xpos][this.ypos + 1 + i] == '^') {
 						found = true;
 					}
@@ -73,10 +85,14 @@ public abstract class Herbivore extends LifeForm implements Serializable {
 			return found;
 		case West:
 			found = false;
+			//Loops in a given direction, and looks a distance equal to the smell range.
 			for (int i = 0; i < smellrange; i++) {
+				//Checks if the position is within the map
 				if (this.xpos - 1 - i >= 0) {
+					//If the position is a animal or obstacle it will break
 					if (Character.isUpperCase(this.grid[this.xpos - 1 - i][this.ypos])) {
 						break;
+						//If it is not empty, then it is a shelter, then it will return it has found it.
 					} else if (this.grid[this.xpos - 1 - i][this.ypos] == '^') {
 						found = true;
 					}
@@ -84,6 +100,7 @@ public abstract class Herbivore extends LifeForm implements Serializable {
 			}
 			return found;
 		}
+		//Never reached, but required
 		return false;
 	}
 
@@ -92,19 +109,22 @@ public abstract class Herbivore extends LifeForm implements Serializable {
 	 * Either in the direction a shelter is found or a random direction.
 	 * @return - in which direction the Herbivore should move.
 	 */
-	public Direction getDirectionOfShelter() { //Will return the direction in which a shelter lies
+	public Direction getDirectionOfShelter() {
 		Direction direction = Direction.North;
 		boolean found = false;
 
+		//Loops in all directions
 		for (Direction d : Direction.values()) {
 			if (smellShelter(d)) {
 				found = true;
 				direction = d;
 			}
 		}
+		//If found it will return the direction in which shelter was found.
 		if (found) {
 			return direction;
 		} else {
+			//If not, it will get a random direction
 			return getRandomDirection(direction);
 		}
 	}
@@ -113,11 +133,12 @@ public abstract class Herbivore extends LifeForm implements Serializable {
 	 * This method will move the animal in the given direction of a shelter.
 	 * @param d - the direction a shelter has been found.
 	 */
-	public void MoveHome(Direction d) { //Moves the bug towards the shelter
+	public void MoveHome(Direction d) {
 		if (this.grid[this.xpos][this.ypos] != '^') {
 			this.grid[this.xpos][this.ypos] = ' ';
 		}
-
+		//In each case it will check if the position is a shelter, and if not it will move in that direction.
+		//It will decrease the animals energy after each movement.
 		switch (d) {
 		case North:
 			if (this.ypos - 1 >= 0 && this.grid[this.xpos][this.ypos - 1] != 'X') {
@@ -153,15 +174,17 @@ public abstract class Herbivore extends LifeForm implements Serializable {
 	 * And remove any bugs with an energy value of 0, and replace them with food.
 	 */
 	public void update() {
-		//Bug moves towards a shelter if its energy is below 20 toherwise it goes around looking for food
+		//Bug moves towards a shelter if its energy is below 20 otherwise it goes around looking for food
 		if (this.energy < 20) {
 			MoveHome(getDirectionOfShelter());
 		} else {
 			Move(getDirectionOfFood());
 		}
 
+		//Used so that animals symbol is maintained after it leaves a shelter
 		this.setSymbol(getName().charAt(0));
 
+		//Used to make sure that shelters are not removed
 		if (this.grid[this.xpos][this.ypos] == '^') {
 			this.setSymbol('^');
 		}
@@ -169,7 +192,7 @@ public abstract class Herbivore extends LifeForm implements Serializable {
 		//If the position is a food value it will get the assigned food energy and add it to the animals energy
 		if (this.grid[this.xpos][this.ypos] != ' ') {
 			if (this.grid[this.xpos][this.ypos] == '*') {
-				//If it is a * it is poison so it will generate a number between 0 and 9 and take thats away from the animals energy
+				//If it is a * it is poison so it will generate a number between 0 and 9 and take that away from the animals energy
 				Random rand = new Random();
 				int poison = (rand.nextInt(9) + 1);
 				this.energy -= poison;
