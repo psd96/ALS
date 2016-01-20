@@ -232,7 +232,7 @@ public class World implements Serializable {
 	 * @param smellRange - smellrange of the bug
 	 */
 	public void AddBug(String name, int xpos, int ypos, int energy, int ID, int smellRange) {
-		Bug bug = new Bug(getXdimension(), getYdimension(), name, xpos, ypos, energy, ID, smellRange);
+		Bug bug = new Bug(getXdimension(), getYdimension(), name,ID, xpos, ypos, smellRange, energy);
 		bug.setGrid(grid);
 		bug.setGridpos();
 		animalList.add(bug);
@@ -249,7 +249,7 @@ public class World implements Serializable {
 	 * @param smellRange - smellrange of the lion
 	 */
 	public void AddLion(String name, int xpos, int ypos, int energy, int ID, int smellRange) {
-		Lion lion = new Lion(getXdimension(), getYdimension(), name, xpos, ypos, energy, ID, smellRange);
+		Lion lion = new Lion(getXdimension(), getYdimension(), name,ID, xpos, ypos, smellRange, energy);
 		lion.setGrid(grid);
 		lion.setGridpos();
 		animalList.add(lion);
@@ -264,7 +264,7 @@ public class World implements Serializable {
 	 */
 	//Adds a herd to the grid in a given position and with a given energy
 	public void AddHerd(int xpos, int ypos, int energy, String specie) {
-		Herd herd = new Herd(energy, xpos, ypos, getXdimension(), getYdimension());
+		Herd herd = new Herd(getXdimension(), getYdimension(), xpos, ypos, energy);
 		herd.setGrid(grid);
 		herd.setGridpos();
 		herd.setHerdType(specie);

@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" build-on-make="true" name="ParveerDhanda_ALS:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/ParveerDhanda_ALS_jar</output-path>
+    <root id="archive" name="ParveerDhanda_ALS.jar">
+      <element id="module-output" name="ParveerDhanda_ALS" />
+    </root>
+  </artifact>
+</component>
