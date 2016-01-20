@@ -906,6 +906,10 @@ public class Menu {
 				}
 			}
 		});
+		Scene scene = new Scene(grid, 300, 100);
+		stage.setScene(scene);
+		stage.show();
+
 	}
 
 	/**
