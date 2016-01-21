@@ -343,11 +343,16 @@ public class World implements Serializable {
 							//Stores which species the herd is made up off
 							String specie = animalList.get(i).getClass().getName();
 							int energy = animalList.get(i).getEnergy() + animalList.get(j).getEnergy();
-							hurdList.add(animalList.get(i));
-							hurdList.add(animalList.get(j));
-							animalList.remove(i);
-							animalList.remove(j);
-							AddHerd(x, y, energy, specie);
+							if(animalList.get(i) instanceof Herd && animalList.get(j) instanceof Herd){
+								animalList.get(j).setMembers(animalList.get(j).getMembers() + animalList.get(i).getMembers());
+								animalList.remove(i);
+							}else {
+								hurdList.add(animalList.get(i));
+								hurdList.add(animalList.get(j));
+								AddHerd(x, y, energy, specie);
+								animalList.remove(i);
+								animalList.remove(j);
+							}
 
 							//If one is a hurd and the other is the same specie it will join the herd
 						} else if (animalList.get(j) instanceof Herd && animalList.get(i).getClass().getName() == animalList.get(j).getHerdType()) {

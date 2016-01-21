@@ -693,7 +693,6 @@ public class Menu {
 		stage.show();
 	}
 
-
 	/**
 	 * Checks if the user wants to add another animal to the world
 	 */
