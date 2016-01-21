@@ -311,6 +311,7 @@ public class World implements Serializable {
 		//Removes them from shelterList and adds them back to the animalList and they go back onto the grid
 		animalList.add(shelterList.get(i));
 		animalList.get(animalList.size() - 1).setSymbol(shelterList.get(i).getSymbol());
+		grid[shelterList.get(i).getXpos()][shelterList.get(i).getXpos()] = '^';
 		shelterList.remove(i);
 	}
 

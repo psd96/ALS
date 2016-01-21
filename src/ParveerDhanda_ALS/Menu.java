@@ -489,7 +489,7 @@ public class Menu {
 	 */
 	public void saveLatest(String filename){
 		//Saves the last file loaded into a file called last
-		File file = new File("last.txt");
+		File file = new File("Last/last.txt");
 		try {
 			FileWriter filewriter = new FileWriter(file);
 			filewriter.write("");
@@ -508,7 +508,7 @@ public class Menu {
 	 */
 	public void loadLatest() throws FileNotFoundException {
 		//Will load the last configuration file opened from the last.txt file
-		File file = new File("last.txt");
+		File file = new File("Last/last.txt");
 		String line;
 		StringBuilder  sb = new StringBuilder();
 		BufferedReader reader = new BufferedReader( new FileReader (file));			
