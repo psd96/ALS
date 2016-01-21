@@ -594,6 +594,13 @@ public class Menu {
 	 * Method displays a form for the user to add a animal to the world.
 	 */
 	public void AddAnimal() { //This method displays the form for user to enter bugs details and sets them.
+		Name.clear();
+		ID.clear();
+		Energy.clear();
+		SmellRange.clear();
+		Xpos.clear();
+		Ypos.clear();
+		notification.setText("");
 		final Stage stage = new Stage();
 		stage.setTitle("Add Animal");
 
