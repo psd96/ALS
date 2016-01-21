@@ -67,6 +67,7 @@ public class Menu {
 	 * @param root - what will be displayed onto the stage
 	 */
 	public Menu(Stage primaryStage, Group root) {
+		checkDirs();
 		setRoot(root);
 		// Load latest config here to start
 		try {
@@ -1446,6 +1447,28 @@ public class Menu {
 			e.printStackTrace();
 		}
 		Pause = true;
+	}
+
+	/**
+	 * This will check the Directories exists and create them if they don't
+	 */
+	public void checkDirs(){
+		boolean configs = new File("./Configuration/").exists();
+		boolean temp = new File("./Temp/").exists();
+		boolean last = new File("./Last/").exists();
+
+		if(!configs){
+			File configuration = new File("./Configuration/");
+			configuration.mkdir();
+		} if(!temp){
+			File temps = new File("./Temps/");
+			temps.mkdir();
+		}if(!last){
+			File lasts = new File("./Last/");
+			lasts.mkdir();
+		}
+
+
 	}
 }
 
