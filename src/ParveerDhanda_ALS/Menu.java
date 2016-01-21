@@ -1274,7 +1274,8 @@ public class Menu {
 		addSubmit(grid, 0, 10);
 
 		//Will display the current configuration
-		SaveAs.setText(getFileName());
+		int last = getFileName().lastIndexOf('.');
+		SaveAs.setText(getFileName().substring(0,last));
 		String food = Integer.toString(getWorld().getFood());
 		Food.setText(food);
 		String obstacles = Integer.toString(getWorld().getObstacles());
