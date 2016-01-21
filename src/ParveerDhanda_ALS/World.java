@@ -343,9 +343,11 @@ public class World implements Serializable {
 							//Stores which species the herd is made up off
 							String specie = animalList.get(i).getClass().getName();
 							int energy = animalList.get(i).getEnergy() + animalList.get(j).getEnergy();
-							if(animalList.get(i) instanceof Herd && animalList.get(j) instanceof Herd){
-								animalList.get(j).setMembers(animalList.get(j).getMembers() + animalList.get(i).getMembers());
-								animalList.remove(i);
+							if(animalList.get(i) instanceof Herd && animalList.get(j) instanceof Herd) {
+								if (animalList.get(i).getHerdType() == animalList.get(j).getHerdType()) {
+									animalList.get(j).setMembers(animalList.get(j).getMembers() + animalList.get(i).getMembers());
+									animalList.remove(i);
+								}
 							}else {
 								hurdList.add(animalList.get(i));
 								hurdList.add(animalList.get(j));
@@ -459,12 +461,12 @@ public class World implements Serializable {
 	//Runs the world
 	public void run(boolean isToggle) {
 
+		//Checks if any animals are colliding
+		checkCollision();
 		//Checks all shelters
 		checkShelter();
 		//Determines if toggle option is selected or not
 		Toggle(isToggle);
-		//Checks if any animals are colliding
-		checkCollision();
 		for (int j = 0; j < animalList.size(); j++) {
 			System.out.println("    bug: " + animalList.get(j).getSymbol());
 			//Updates each bug
