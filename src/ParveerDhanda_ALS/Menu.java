@@ -1453,12 +1453,12 @@ public class Menu {
 	 * This will check the Directories exists and create them if they don't
 	 */
 	public void checkDirs(){
-		boolean configs = new File("./Configuration/").exists();
+		boolean configs = new File("./Configurations/").exists();
 		boolean temp = new File("./Temp/").exists();
 		boolean last = new File("./Last/").exists();
 
 		if(!configs){
-			File configuration = new File("./Configuration/");
+			File configuration = new File("./Configurations/");
 			configuration.mkdir();
 		} if(!temp){
 			File temps = new File("./Temps/");
