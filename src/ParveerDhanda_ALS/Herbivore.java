@@ -7,7 +7,7 @@ import java.util.Random;
 /**
  * This class sets the attributes of a Herbivore. It extends from LifeForm class and inherits all of its methods.
  */
-public abstract class Herbivore extends LifeForm implements Serializable {
+public abstract class Herbivore extends LifeForm {
 
 	/**
 	 * This is the herbivore constructor. Within this it sets the map diemnsions and the specie of the LifeForm
