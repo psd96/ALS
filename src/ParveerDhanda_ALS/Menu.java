@@ -77,12 +77,6 @@ public class Menu {
 			setWorld(new World(getRoot(), 0, 0, 25, 25, 0));
 		}
 
-		setWorld(new World(getRoot(), 0, 0, 25, 25, 0));
-
-
-		//setWorld(new World(getRoot(), 0, 0, 25, 25, 0));
-
-
 		// Top Menu Bar
 		menuBar = new MenuBar();
 		menuBar.setOpacity(0.8);
@@ -535,23 +529,35 @@ public class Menu {
 	}
 
 	/**
-	 * Used to check if he input for a integer field is valid
+	 * Used to check if he input for a integer field is a integer
 	 * @param text - the text field which being checked.
 	 * @return - will return a true or false value
 	 */
-	public boolean checkValid(TextField text) {
-		if (Integer.parseInt(text.getText()) >= 0) {
-			try {
-				//If input is a integer return true
-				Integer.parseInt(text.getText());
+	public boolean checkDigit(TextField text) {
+		try {
+			//If input is a integer return true
+			Integer.parseInt(text.getText());
+			return true;
+		} catch (NumberFormatException e) {
+			//Else return false
+			return false;
+		}
+	}
+
+	/**
+	 * Checks if the integer input is positive
+	 * @param text - the text field which being checked.
+	 * @return - will return a true or false value
+	 */
+	public boolean checkValid(TextField text){
+		if(checkDigit(text)){
+			if(Integer.parseInt(text.getText()) >= 0){
 				return true;
-			} catch (NumberFormatException e) {
-				//Else return false
-				return false;
 			}
 		} else {
 			return false;
 		}
+		return false;
 	}
 
 	/**
@@ -1341,8 +1347,8 @@ public class Menu {
 	public void displayLife(){
 		Stage stage = new Stage();
 		notification.setText("");
-		stage.setTitle("Display Configuration");
-		Text title = new Text("Display Configuration");
+		stage.setTitle("Display LifeForm Stats");
+		Text title = new Text("Display LifeForm Stats");
 		title.setFont(Font.font("Verdana", FontWeight.NORMAL,20));
 		GridPane grid = new GridPane();
 		grid.setVgap(4);

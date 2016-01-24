@@ -1,8 +1,9 @@
 <component name="ArtifactManager">
   <artifact type="jar" build-on-make="true" name="ParveerDhanda_ALS:jar">
-    <output-path>$PROJECT_DIR$/out/artifacts/ParveerDhanda_ALS_jar</output-path>
+    <output-path>$PROJECT_DIR$/../../Uni/Second Year/Java/Major Coursework #1/JAR</output-path>
     <root id="archive" name="ParveerDhanda_ALS.jar">
       <element id="module-output" name="ParveerDhanda_ALS" />
+      <element id="dir-copy" path="$PROJECT_DIR$/src" />
     </root>
   </artifact>
 </component>
